@@ -1,0 +1,281 @@
+// src/components/WordList.tsx
+'use client';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import Link from 'next/link'; // Doğru import yolu
+import dynamic from 'next/dynamic';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { saveWordProgress, getUserProgress } from '@/firebase/firestore';
+
+// WordList bileşeninin geri kalanı aynı
+
+// FlashCard dinamik olarak import ediliyor
+const FlashCard = dynamic(() => import('./FlashCard'), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-center">Yükleniyor...</div>
+    </div>
+  ),
+  ssr: false
+});
+interface Word {
+  en: string;
+  tr: string;
+}
+
+interface WordListProps {
+  words: Word[];
+  categoryId: string; // Kategori kimliği ekleyin
+}
+
+const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
+  const { colors } = useTheme();
+  const { user } = useAuth();
+  
+  // Ana state'ler
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<'list' | 'card'>('card');
+  const [studiedWords, setStudiedWords] = useState<Set<number>>(new Set([0]));
+  const [selectedWordIndex, setSelectedWordIndex] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Kullanıcı girişi ve ilerleme durumunu takip etme
+  useEffect(() => {
+    const loadProgress = async () => {
+      if (user && categoryId) {
+        setLoading(true);
+        try {
+          const { progress, error } = await getUserProgress(user.uid, categoryId);
+          
+          if (error) {
+            console.error('İlerleme yüklenirken hata:', error);
+            return;
+          }
+          
+          if (progress && progress.studiedWords) {
+            // Çalışılan kelime indekslerini belirle
+            const studiedIndices = new Set<number>();
+            progress.studiedWords.forEach((wordId: string) => {
+              const index = words.findIndex(w => w.en === wordId);
+              if (index !== -1) {
+                studiedIndices.add(index);
+              }
+            });
+            
+            // İlk kelimeyi her zaman çalışılmış olarak işaretle
+            studiedIndices.add(0);
+            
+            setStudiedWords(studiedIndices);
+          }
+        } catch (err) {
+          console.error('İlerleme yüklenirken hata:', err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    
+    loadProgress();
+  }, [user, categoryId, words]);
+
+  // Progress hesaplaması memoize edildi
+  const progress = useMemo(() => {
+    return Math.round((studiedWords.size / words.length) * 100);
+  }, [studiedWords.size, words.length]);
+
+  // Callback fonksiyonları
+  const handleNext = useCallback(() => {
+    if (currentIndex < words.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      
+      // Kelimeyi çalışılmış olarak işaretle
+      setStudiedWords(prev => {
+        const updated = new Set(prev);
+        updated.add(nextIndex);
+        return updated;
+      });
+      
+      // Kullanıcı giriş yapmışsa ilerlemeyi kaydet
+      if (user && categoryId) {
+        const wordId = words[nextIndex].en;
+        saveWordProgress(user.uid, categoryId, wordId, true).catch(err => {
+          console.error('İlerleme kaydedilirken hata:', err);
+        });
+      }
+    }
+  }, [currentIndex, words, user, categoryId]);
+
+  const handlePrevious = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1);
+    }
+  }, [currentIndex]);
+
+  const handleReset = useCallback(() => {
+    setCurrentIndex(0);
+    // İlk kelimeyi çalışılmış olarak işaretle
+    setStudiedWords(new Set([0])); 
+  }, []);
+
+  const toggleViewMode = useCallback(() => {
+    setViewMode(prev => prev === 'list' ? 'card' : 'list');
+    // Liste görünümüne geçerken seçili kelimeyi sıfırla
+    if (viewMode === 'card') {
+      setSelectedWordIndex(null);
+    }
+  }, [viewMode]);
+
+  // Liste görünümünde kelimeye tıklama
+  const handleWordClick = useCallback((index: number) => {
+    // Aynı kelimeye tekrar tıklanırsa seçimi kaldır
+    if (selectedWordIndex === index) {
+      setSelectedWordIndex(null);
+    } else {
+      setSelectedWordIndex(index);
+    }
+    
+    // Kelimeyi çalışılmış olarak işaretle
+    setStudiedWords(prev => {
+      const updated = new Set(prev);
+      updated.add(index);
+      return updated;
+    });
+    
+    // Kullanıcı giriş yapmışsa ilerlemeyi kaydet
+    if (user && categoryId) {
+      const wordId = words[index].en;
+      saveWordProgress(user.uid, categoryId, wordId, true).catch(err => {
+        console.error('İlerleme kaydedilirken hata:', err);
+      });
+    }
+  }, [selectedWordIndex, user, categoryId, words]);
+
+  // Yükleniyor durumu
+  if (loading) {
+    return (
+      <div className="w-full flex items-center justify-center py-12">
+        <div style={{ color: colors.text }}>İlerleme yükleniyor...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full mx-auto px-2 py-2">
+      {/* Üst Kontrol Paneli - sadeleştirildi */}
+      <div className="flex flex-col space-y-3 mb-3">
+        {/* Butonlar - mobil için optimize edildi */}
+        <div className="flex justify-center gap-2 mb-4">
+          <button
+            onClick={toggleViewMode}
+            className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
+            style={{ 
+              backgroundColor: colors.cardBackground,
+              color: colors.text
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              {viewMode === 'list' ? (
+                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+              ) : (
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+              )}
+            </svg>
+            {viewMode === 'list' ? 'Kart Görünümüne Geç' : 'Liste Görünümüne Geç'}
+          </button>
+          
+          <button
+            onClick={handleReset}
+            className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
+            style={{ 
+              backgroundColor: colors.cardBackground,
+              color: colors.text
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+            </svg>
+            Baştan Başla
+          </button>
+        </div>
+
+        {/* İlerleme Çubuğu */}
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <span style={{ color: colors.text }} className="text-sm">
+              Çalışılan: {studiedWords.size} / {words.length}
+            </span>
+            <span style={{ color: colors.text }} className="text-sm">
+              İlerleme: %{progress}
+            </span>
+          </div>
+          <div className="w-full rounded-full h-3" style={{ backgroundColor: colors.cardBackground }}>
+            <div 
+              className="h-3 rounded-full transition-all duration-300"
+              style={{ 
+                width: `${progress}%`,
+                backgroundColor: colors.accent 
+              }}
+            ></div>
+          </div>
+        </div>
+        
+        {/* Kullanıcı giriş yapmamışsa uyarı mesajı */}
+        {!user && (
+          <div className="text-center p-2 rounded-lg mt-2" style={{ backgroundColor: `${colors.accent}30`, color: colors.text }}>
+            <p className="text-sm">
+              İlerlemenizi kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Ana İçerik - Kart veya Liste */}
+      {viewMode === 'card' ? (
+        <FlashCard
+          words={words}
+          currentIndex={currentIndex}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+        />
+      ) : (
+        <div className="grid grid-cols-1 gap-3 mt-4">
+          {words.map((word, index) => (
+            <div
+              key={`${word.en}-${index}`}
+              className="p-4 rounded-lg cursor-pointer transition-all duration-300 shadow-md"
+              style={{ 
+                backgroundColor: studiedWords.has(index) 
+                  ? colors.accent 
+                  : colors.cardBackground
+              }}
+              onClick={() => handleWordClick(index)}
+            >
+              <div style={{ color: colors.text }} className="text-lg font-semibold">
+                {word.en}
+              </div>
+              
+              {/* Sadece seçili kelime için anlamını göster */}
+              {selectedWordIndex === index && (
+                <div style={{ color: colors.text, opacity: 0.8 }} className="mt-1">
+                  {word.tr}
+                </div>
+              )}
+              
+              {studiedWords.has(index) && (
+                <div className="mt-1 flex items-center text-xs" style={{ color: colors.text, opacity: 0.75 }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Çalışıldı
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default React.memo(WordList);

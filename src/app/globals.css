@@ -1,0 +1,344 @@
+/* 
+ * These CSS warnings about @tailwind directives can be safely ignored.
+ * They are valid directives for Tailwind CSS and will be processed correctly.
+ * The CSS linter doesn't recognize them as valid CSS, but they are necessary for Tailwind.
+ */
+/* Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Flash Card Base Styles */
+.perspective-1000 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Flashcard 3D transformation styles */
+.perspective-1000 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Flash Card Component Styles */
+.flash-card {
+  transition: all 700ms ease-in-out;
+  transform-origin: center center;
+}
+
+.flash-card-front,
+.flash-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  backface-visibility: hidden;
+  transform-origin: center center;
+}
+
+.flash-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Animation Classes */
+.slide-right-enter {
+  opacity: 0;
+  transform: translateX(100%) rotateY(0deg);
+}
+
+.slide-right-enter-active {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+  transition: all 300ms ease-in-out;
+}
+
+.slide-right-exit {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+}
+
+.slide-right-exit-active {
+  opacity: 0;
+  transform: translateX(-100%) rotateY(0deg);
+  transition: all 300ms ease-in-out;
+}
+
+.slide-left-enter {
+  opacity: 0;
+  transform: translateX(-100%) rotateY(0deg);
+}
+
+.slide-left-enter-active {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+  transition: all 300ms ease-in-out;
+}
+
+.slide-left-exit {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+}
+
+.slide-left-exit-active {
+  opacity: 0;
+  transform: translateX(100%) rotateY(0deg);
+  transition: all 300ms ease-in-out;
+}
+
+/* Card Appear Animation */
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-appear {
+  animation: card-appear 0.5s ease-out forwards;
+}
+
+/* Hover Effects */
+.flash-card:hover:not(.animating) {
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Add animation for hover effect on cards */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4), 0 0 20px rgba(6, 182, 212, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
+  }
+}
+
+.glow-effect {
+  animation: pulse-glow 3s infinite;
+}
+
+
+/* Flashcard Animations and Styles */
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Card flip animation */
+.flashcard-flip {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* Prevent text selection on cards */
+.flashcard-content {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Loading animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Tab transitions */
+.tab-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* File upload area hover effect */
+.file-upload-area:hover {
+  background-color: rgba(var(--accent-rgb), 0.08);
+  border-color: var(--accent-color);
+}
+
+/* Card shadow effects */
+.card-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+              0 0 0 1px rgba(var(--accent-rgb), 0.1);
+}
+
+.card-shadow:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 
+              0 0 0 1px rgba(var(--accent-rgb), 0.2);
+}
+
+/* Fullscreen mode styles */
+.fullscreen-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: var(--background-color);
+}
+
+/* Quiz mode input focus */
+.quiz-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1);
+}
+
+/* Success/Error notifications */
+.notification-enter {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.notification-exit {
+  animation: fadeIn 0.3s ease-out reverse;
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  .flashcard-container {
+    padding: 1rem;
+  }
+  
+  .flashcard {
+    height: 250px !important;
+  }
+  
+  /* Mobil tam ekran quiz modu için özel stiller */
+  .fullscreen-quiz-mobile {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: -webkit-fill-available !important;
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* iOS Safari için özel ayarlar */
+  .fullscreen-quiz-mobile input {
+    font-size: 16px !important; /* iOS zoom'u engellemek için */
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .card-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Disable focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}

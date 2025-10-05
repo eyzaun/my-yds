@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "front": "Example Word",
+    "back": "Örnek Kelime",
+    "notes": "This is a sample flashcard"
+  },
+  {
+    "id": "2",
+    "front": "Another Example",
+    "back": "Başka Bir Örnek",
+    "notes": ""
+  }
+]

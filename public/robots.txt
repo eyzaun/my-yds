@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Explicitly allow Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Allow Googlebot-Image to crawl images
+User-agent: Googlebot-Image
+Allow: /
+
+# Allow Adsbot to crawl for AdSense
+User-agent: Adsbot-Google
+Allow: /
+
+# Direct link to sitemap
+Sitemap: https://my-yds.web.app/sitemap1.xml

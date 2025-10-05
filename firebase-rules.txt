@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // İzin yardımcı fonksiyonları
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Herkesin words koleksiyonunu okumasına izin ver
+    match /words/{document=**} {
+      allow read: if true;
+      allow write: if false; // sadece yöneticiler yazabilir
+    }
+    
+    // Kullanıcıların kendi ilerlemelerini okumasına ve yazmasına izin ver
+    match /userProgress/{userId} {
+      allow read: if isSignedIn(); // Sadece giriş yapmış kullanıcılar okuyabilir
+      allow write, update, create: if isOwner(userId); // Sadece sahip yazabilir/oluşturabilir
+    }
+    
+    // Kullanıcıların kendi flashcard setlerini okumasına ve yazmasına izin ver
+    match /flashcardSets/{setId} {
+      allow create: if isSignedIn();
+      allow read: if isSignedIn();
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+    
+    // Kullanıcıların kendi flashcardlarını okumasına ve yazmasına izin ver
+    match /flashcards/{cardId} {
+      allow create: if isSignedIn();
+      allow read: if isSignedIn();
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+    
+    // Varsayılan olarak reddet
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
