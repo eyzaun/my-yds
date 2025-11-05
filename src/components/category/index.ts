@@ -1,11 +1,11 @@
 /**
  * Category Components
  * Barrel export for all reusable category page components
+ *
+ * Note: ModeSelector, CategoryContent, and TestResult removed
+ * These are now handled by FlashcardDeck component
  */
 
 export { CategoryHeader } from './CategoryHeader';
 export { CategoryDescription } from './CategoryDescription';
-export { ModeSelector } from './ModeSelector';
-export { TestResult } from './TestResult';
 export { CategoryAdditionalInfo } from './CategoryAdditionalInfo';
-export { CategoryContent } from './CategoryContent';
