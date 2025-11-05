@@ -12,13 +12,15 @@ interface FlashCardProps {
   currentIndex: number;
   onNext: () => void;
   onPrevious: () => void;
+  isQuizMode?: boolean;
 }
 
 const MemoizedFlashCard = React.memo(function FlashCard({
   words,
   currentIndex,
   onNext,
-  onPrevious
+  onPrevious,
+  isQuizMode = false
 }: FlashCardProps) {
   const { colors } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -130,24 +132,33 @@ const MemoizedFlashCard = React.memo(function FlashCard({
 
       switch (e.key) {
         case 'ArrowRight':
-          e.preventDefault();
-          handleNext();
+          // Quiz modunda ok tuşları çalışmaz
+          if (!isQuizMode) {
+            e.preventDefault();
+            handleNext();
+          }
           break;
         case 'ArrowLeft':
-          e.preventDefault();
-          handlePrevious();
+          // Quiz modunda ok tuşları çalışmaz
+          if (!isQuizMode) {
+            e.preventDefault();
+            handlePrevious();
+          }
           break;
         case ' ':
         case 'Enter':
-          e.preventDefault();
-          handleFlip();
+          // Quiz modunda space/enter tuşları da çalışmaz (quiz input'u kullanılacak)
+          if (!isQuizMode) {
+            e.preventDefault();
+            handleFlip();
+          }
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [handleFlip, handleNext, handlePrevious, isAnimating]);
+  }, [handleFlip, handleNext, handlePrevious, isAnimating, isQuizMode]);
 
   // Touch event handlers
   const handleTouchStart = (e: React.TouchEvent) => {

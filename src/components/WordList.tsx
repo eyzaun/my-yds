@@ -1,13 +1,8 @@
 // src/components/WordList.tsx
 'use client';
-import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import Link from 'next/link'; // Doğru import yolu
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { saveWordProgress, getUserProgress } from '@/firebase/firestore';
-
-// WordList bileşeninin geri kalanı aynı
 
 // FlashCard dinamik olarak import ediliyor
 const FlashCard = dynamic(() => import('./FlashCard'), {
@@ -30,64 +25,17 @@ interface WordListProps {
 
 const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
   const { colors } = useTheme();
-  const { user } = useAuth();
 
   // Ana state'ler
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewMode, setViewMode] = useState<'list' | 'card'>('card');
-  const [studiedWords, setStudiedWords] = useState<Set<number>>(new Set([0]));
   const [selectedWordIndex, setSelectedWordIndex] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isQuizMode, setIsQuizMode] = useState(false);
   const [quizAnswer, setQuizAnswer] = useState('');
   const [quizResult, setQuizResult] = useState<'correct' | 'incorrect' | null>(null);
   const [flipped, setFlipped] = useState(false);
   const quizInputRef = useRef<HTMLInputElement>(null);
-
-  // Kullanıcı girişi ve ilerleme durumunu takip etme
-  useEffect(() => {
-    const loadProgress = async () => {
-      if (user && categoryId) {
-        setLoading(true);
-        try {
-          const { progress, error } = await getUserProgress(user.uid, categoryId);
-          
-          if (error) {
-            console.error('İlerleme yüklenirken hata:', error);
-            return;
-          }
-          
-          if (progress && progress.studiedWords) {
-            // Çalışılan kelime indekslerini belirle
-            const studiedIndices = new Set<number>();
-            progress.studiedWords.forEach((wordId: string) => {
-              const index = words.findIndex(w => w.en === wordId);
-              if (index !== -1) {
-                studiedIndices.add(index);
-              }
-            });
-            
-            // İlk kelimeyi her zaman çalışılmış olarak işaretle
-            studiedIndices.add(0);
-            
-            setStudiedWords(studiedIndices);
-          }
-        } catch (err) {
-          console.error('İlerleme yüklenirken hata:', err);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-    
-    loadProgress();
-  }, [user, categoryId, words]);
-
-  // Progress hesaplaması memoize edildi
-  const progress = useMemo(() => {
-    return Math.round((studiedWords.size / words.length) * 100);
-  }, [studiedWords.size, words.length]);
 
   // Callback fonksiyonları
   const handleNext = useCallback(() => {
@@ -100,21 +48,6 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
       setQuizResult(null);
       setFlipped(false);
 
-      // Kelimeyi çalışılmış olarak işaretle
-      setStudiedWords(prev => {
-        const updated = new Set(prev);
-        updated.add(nextIndex);
-        return updated;
-      });
-
-      // Kullanıcı giriş yapmışsa ilerlemeyi kaydet
-      if (user && categoryId) {
-        const wordId = words[nextIndex].en;
-        saveWordProgress(user.uid, categoryId, wordId, true).catch(err => {
-          console.error('İlerleme kaydedilirken hata:', err);
-        });
-      }
-
       // Quiz modunda input'a focus
       if (isQuizMode) {
         setTimeout(() => {
@@ -124,7 +57,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
         }, 100);
       }
     }
-  }, [currentIndex, words, user, categoryId, isQuizMode]);
+  }, [currentIndex, words.length, isQuizMode]);
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
@@ -138,8 +71,6 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
 
   const handleReset = useCallback(() => {
     setCurrentIndex(0);
-    // İlk kelimeyi çalışılmış olarak işaretle
-    setStudiedWords(new Set([0]));
     // Quiz state'lerini sıfırla
     setQuizAnswer('');
     setQuizResult(null);
@@ -183,7 +114,23 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
     const correctAnswer = currentWord.tr.trim().toLowerCase();
     const userAnswer = quizAnswer.trim().toLowerCase();
 
-    // Tam eşleşme veya yaklaşık eşleşme kontrolü
+    // Eğer yanlış cevap durumundaysak ve kullanıcı doğru cevabı yazıyorsa
+    if (quizResult === 'incorrect' && flipped) {
+      // Kullanıcının yazdığı doğru cevapla eşleşiyor mu kontrol et
+      const isExactMatch = userAnswer === correctAnswer;
+      const isCloseMatch = correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2;
+
+      if (isExactMatch || isCloseMatch) {
+        // Doğru yazdı, sonraki kelimeye geç
+        handleNext();
+      } else {
+        // Hala yanlış yazıyor, input'u temizle
+        setQuizAnswer('');
+      }
+      return;
+    }
+
+    // İlk deneme - kullanıcının cevabını kontrol et
     const isExactMatch = userAnswer === correctAnswer;
     const isCloseMatch = correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2;
 
@@ -196,18 +143,12 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
         handleNext();
       }, 1000);
     } else {
+      // Yanlış cevap - doğru cevabı göster ve input'u temizle
       setQuizResult('incorrect');
       setFlipped(true);
+      setQuizAnswer('');
     }
-  }, [quizAnswer, currentIndex, words, handleNext]);
-
-  const handleQuizKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Yanlış cevap verildiyse ve kart çevrildiyse, Enter ile sonraki kelimeye geç
-    if (e.key === 'Enter' && quizResult === 'incorrect' && flipped) {
-      e.preventDefault();
-      handleNext();
-    }
-  }, [quizResult, flipped, handleNext]);
+  }, [quizAnswer, currentIndex, words, handleNext, quizResult, flipped]);
 
   // Liste görünümünde kelimeye tıklama
   const handleWordClick = useCallback((index: number) => {
@@ -217,22 +158,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
     } else {
       setSelectedWordIndex(index);
     }
-    
-    // Kelimeyi çalışılmış olarak işaretle
-    setStudiedWords(prev => {
-      const updated = new Set(prev);
-      updated.add(index);
-      return updated;
-    });
-    
-    // Kullanıcı giriş yapmışsa ilerlemeyi kaydet
-    if (user && categoryId) {
-      const wordId = words[index].en;
-      saveWordProgress(user.uid, categoryId, wordId, true).catch(err => {
-        console.error('İlerleme kaydedilirken hata:', err);
-      });
-    }
-  }, [selectedWordIndex, user, categoryId, words]);
+  }, [selectedWordIndex]);
 
   // Fullscreen mode için ESC tuşu desteği
   useEffect(() => {
@@ -251,15 +177,6 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
       };
     }
   }, [isFullscreen]);
-
-  // Yükleniyor durumu - hook'lardan sonra
-  if (loading) {
-    return (
-      <div className="w-full flex items-center justify-center py-12">
-        <div style={{ color: colors.text }}>İlerleme yükleniyor...</div>
-      </div>
-    );
-  }
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'w-full mx-auto'} px-2 py-2`}
@@ -337,36 +254,6 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
             Baştan Başla
           </button>
         </div>
-
-        {/* İlerleme Çubuğu */}
-        <div>
-          <div className="flex justify-between items-center mb-1">
-            <span style={{ color: colors.text }} className="text-sm">
-              Çalışılan: {studiedWords.size} / {words.length}
-            </span>
-            <span style={{ color: colors.text }} className="text-sm">
-              İlerleme: %{progress}
-            </span>
-          </div>
-          <div className="w-full rounded-full h-3" style={{ backgroundColor: colors.cardBackground }}>
-            <div 
-              className="h-3 rounded-full transition-all duration-300"
-              style={{ 
-                width: `${progress}%`,
-                backgroundColor: colors.accent 
-              }}
-            ></div>
-          </div>
-        </div>
-        
-        {/* Kullanıcı giriş yapmamışsa uyarı mesajı */}
-        {!user && (
-          <div className="text-center p-2 rounded-lg mt-2" style={{ backgroundColor: `${colors.accent}30`, color: colors.text }}>
-            <p className="text-sm">
-              İlerlemenizi kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Ana İçerik - Kart veya Liste */}
@@ -377,6 +264,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
             currentIndex={currentIndex}
             onNext={handleNext}
             onPrevious={handlePrevious}
+            isQuizMode={isQuizMode}
           />
 
           {/* Quiz Mode Input */}
@@ -385,7 +273,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
               <form onSubmit={handleQuizSubmit} className="flex flex-col">
                 <p className="text-sm mb-2" style={{ color: colors.text }}>
                   {quizResult === 'incorrect' && flipped
-                    ? 'Sonraki kelimeye geçmek için Enter tuşuna basın'
+                    ? 'Doğru cevabı yazıp Enter tuşuna basın:'
                     : 'Kelimenin Türkçe karşılığını yazın:'}
                 </p>
 
@@ -395,9 +283,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
                     type="text"
                     value={quizAnswer}
                     onChange={(e) => setQuizAnswer(e.target.value)}
-                    onKeyDown={handleQuizKeyDown}
                     className="flex-grow px-3 py-2 rounded-l-lg border focus:outline-none"
-                    placeholder={quizResult === 'incorrect' && flipped ? 'Enter tuşuna basın...' : 'Cevabınızı buraya yazın...'}
+                    placeholder={quizResult === 'incorrect' && flipped ? 'Doğru cevabı yazın...' : 'Cevabınızı buraya yazın...'}
                     style={{
                       backgroundColor: colors.background,
                       color: colors.text,
@@ -423,9 +310,9 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
                       fontSize: '16px',
                       height: '44px'
                     }}
-                    disabled={(!quizAnswer.trim() && !(quizResult === 'incorrect' && flipped)) || quizResult === 'correct'}
+                    disabled={!quizAnswer.trim() || quizResult === 'correct'}
                   >
-                    {quizResult === 'incorrect' && flipped ? 'Sonraki' : 'Kontrol Et'}
+                    {quizResult === 'incorrect' && flipped ? 'Devam Et' : 'Kontrol Et'}
                   </button>
                 </div>
 
@@ -433,12 +320,13 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
                   <p className="text-green-500 mt-2 text-sm font-medium">✓ Doğru cevap! 👍</p>
                 )}
 
-                {quizResult === 'incorrect' && (
+                {quizResult === 'incorrect' && flipped && (
                   <div className="mt-2">
                     <p className="text-red-500 text-sm font-medium">
-                      {flipped
-                        ? `✗ Doğru cevap: ${words[currentIndex].tr}`
-                        : '✗ Yanlış cevap, tekrar deneyin.'}
+                      ✗ Doğru cevap: <span className="font-bold">{words[currentIndex].tr}</span>
+                    </p>
+                    <p className="text-sm mt-1" style={{ color: colors.text }}>
+                      Sonraki kelimeye geçmek için doğru cevabı yazın.
                     </p>
                   </div>
                 )}
@@ -452,30 +340,19 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
             <div
               key={`${word.en}-${index}`}
               className="p-4 rounded-lg cursor-pointer transition-all duration-300 shadow-md"
-              style={{ 
-                backgroundColor: studiedWords.has(index) 
-                  ? colors.accent 
-                  : colors.cardBackground
+              style={{
+                backgroundColor: colors.cardBackground
               }}
               onClick={() => handleWordClick(index)}
             >
               <div style={{ color: colors.text }} className="text-lg font-semibold">
                 {word.en}
               </div>
-              
+
               {/* Sadece seçili kelime için anlamını göster */}
               {selectedWordIndex === index && (
                 <div style={{ color: colors.text, opacity: 0.8 }} className="mt-1">
                   {word.tr}
-                </div>
-              )}
-              
-              {studiedWords.has(index) && (
-                <div className="mt-1 flex items-center text-xs" style={{ color: colors.text, opacity: 0.75 }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  Çalışıldı
                 </div>
               )}
             </div>
