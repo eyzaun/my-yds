@@ -9,14 +9,14 @@ import {
   User
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { auth, db } from '@/lib/firebase';
 
 // İstemci tarafında mı çalışıyoruz kontrol et
 const isClient = typeof window !== 'undefined';
 
 // Yeni kullanıcı kaydı
 export const registerUser = async (email: string, password: string, displayName: string) => {
-  if (!isClient) return { error: 'Server-side auth operations are not supported' };
+  if (!isClient || !auth || !db) return { error: 'Server-side auth operations are not supported' };
   
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -44,7 +44,7 @@ export const registerUser = async (email: string, password: string, displayName:
 
 // Kullanıcı girişi
 export const loginUser = async (email: string, password: string) => {
-  if (!isClient) return { error: 'Server-side auth operations are not supported' };
+  if (!isClient || !auth) return { error: 'Server-side auth operations are not supported' };
   
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -56,7 +56,7 @@ export const loginUser = async (email: string, password: string) => {
 
 // Çıkış yapma
 export const logoutUser = async () => {
-  if (!isClient) return { error: 'Server-side auth operations are not supported' };
+  if (!isClient || !auth) return { error: 'Server-side auth operations are not supported' };
   
   try {
     await signOut(auth);
@@ -68,7 +68,7 @@ export const logoutUser = async () => {
 
 // Şifre sıfırlama e-postası gönderme
 export const sendPasswordReset = async (email: string) => {
-  if (!isClient) return { error: 'Server-side auth operations are not supported' };
+  if (!isClient || !auth) return { error: 'Server-side auth operations are not supported' };
   
   try {
     await sendPasswordResetEmail(auth, email);
@@ -80,7 +80,7 @@ export const sendPasswordReset = async (email: string) => {
 
 // Auth durumu listener'ı
 export const onAuthChange = (callback: (user: User | null) => void) => {
-  if (!isClient) {
+  if (!isClient || !auth) {
     callback(null);
     return () => {};
   }

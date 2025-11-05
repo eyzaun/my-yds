@@ -25,13 +25,13 @@ interface UserProgress {
 
 export function ProgressOverview() {
   const { colors } = useTheme();
-  const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth!);
   const [progress, setProgress] = useState<UserProgress>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadProgress = async () => {
-      if (!user) {
+      if (!user || !db) {
         setLoading(false);
         return;
       }

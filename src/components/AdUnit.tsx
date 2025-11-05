@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface AdUnitProps {
   slot: string;
@@ -9,78 +9,66 @@ interface AdUnitProps {
 }
 
 export default function AdUnit({ slot, format = 'auto', style = {}, className = '' }: AdUnitProps) {
-  const adContainerRef = useRef<HTMLDivElement>(null);
-  const adId = `ad-${slot}-${Math.random().toString(36).substring(2, 9)}`;
+  const [mounted, setMounted] = useState(false);
+  const [adError, setAdError] = useState(false);
+  const pushAttemptedRef = useRef(false);
   
   useEffect(() => {
-    // Ref'i değişkende tutuyoruz (cleanup için)
-    const currentRef = adContainerRef.current;
+    setMounted(true);
+  }, []);
+  
+  useEffect(() => {
+    if (!mounted || pushAttemptedRef.current) return;
     
-    // AdSense scriptinin yüklenmesini bekleyin
-    const checkAndInitAd = () => {
-      if (!currentRef) return;
-      
-      // Önceki içeriği temizleyin
-      currentRef.innerHTML = '';
-      
-      // AdSense scriptinin yüklenip yüklenmediğini kontrol edin
-      if (typeof window.adsbygoogle === 'undefined') {
-        console.log('AdSense script is not loaded yet. Waiting...');
-        setTimeout(checkAndInitAd, 200); // 200ms sonra tekrar dene
-        return;
-      }
-      
+    // Prevent multiple push attempts for the same ad
+    pushAttemptedRef.current = true;
+    
+    // Wait for AdSense script to be ready
+    const initAd = () => {
       try {
-        // Çok basit bir şekilde reklam elementini ekleyin
-        const ins = document.createElement('ins');
-        ins.className = 'adsbygoogle';
-        ins.style.display = 'block';
-        ins.style.width = '100%';
-        ins.style.height = format === 'rectangle' ? '250px' : '90px';
-        ins.dataset.adClient = 'ca-pub-3638586001556511';
-        ins.dataset.adSlot = slot;
-        ins.dataset.adFormat = format;
-        ins.dataset.fullWidthResponsive = 'true';
-        
-        // Div'e ekleyin
-        currentRef.appendChild(ins);
-        
-        // AdSense'i yükleyin
-        try {
+        if (typeof window !== 'undefined' && window.adsbygoogle) {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
-          console.log(`Ad pushed to queue: ${slot}`);
-        } catch (pushError) {
-          console.error('Error pushing ad to queue:', pushError);
         }
       } catch (error) {
-        console.error('Error creating ad:', error);
+        // Silently handle AdSense errors
+        setAdError(true);
       }
     };
     
-    // İlk deneme
-    checkAndInitAd();
+    // Delay to prevent race conditions
+    const timeoutId = setTimeout(initAd, 500);
     
-    // Temizleme - currentRef değişkenini kullan
     return () => {
-      if (currentRef) {
-        currentRef.innerHTML = '';
-      }
+      clearTimeout(timeoutId);
     };
-  }, [slot, format, adId]);
+  }, [mounted]);
+  
+  if (!mounted) {
+    return (
+      <div 
+        className={className}
+        style={{
+          width: '100%',
+          minHeight: format === 'rectangle' ? '250px' : '90px',
+          ...style
+        }}
+      />
+    );
+  }
   
   return (
-    <div 
-      ref={adContainerRef}
-      id={adId}
-      className={`ad-container ${className}`}
+    <ins 
+      className={`adsbygoogle ${className}`}
       style={{
+        display: 'block',
         width: '100%',
-        minHeight: format === 'rectangle' ? '250px' : '90px', 
-        overflow: 'hidden',
-        textAlign: 'center',
-        margin: '0 auto',
+        minHeight: format === 'rectangle' ? '250px' : '90px',
         ...style
       }}
+      data-ad-client="ca-pub-3638586001556511"
+      data-ad-slot={slot}
+      data-ad-format={format}
+      data-full-width-responsive="true"
     />
   );
 }

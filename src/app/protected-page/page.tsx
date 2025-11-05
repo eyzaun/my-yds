@@ -3,10 +3,7 @@
 import React from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import RequireAuth from '@/utils/requireAuth';
-import dynamic from 'next/dynamic';
-
-// Replace path alias import with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
+import AdBanner from '../../components/AdBanner';
 
 const ProtectedPage = () => {
   const { colors } = useTheme();
@@ -24,7 +21,7 @@ const ProtectedPage = () => {
             </p>
           </div>
         </div>
-        <ClientOnlyAd 
+        <AdBanner 
           slot="protected-page-banner"
           format="auto"
           className="my-4 mx-auto"

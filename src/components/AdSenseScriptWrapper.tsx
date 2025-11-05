@@ -1,39 +1,61 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
+// Global flag to prevent multiple script loads
+let scriptLoadAttempted = false;
+let scriptLoaded = false;
 
 export default function AdSenseScriptWrapper() {
+  const initAttempted = useRef(false);
+  
   useEffect(() => {
-    // Bu yaklaşım Next.js Script bileşeninin oluşturduğu sorunları aşıyor
+    // Prevent multiple initialization attempts
+    if (initAttempted.current || scriptLoadAttempted) return;
+    initAttempted.current = true;
+    scriptLoadAttempted = true;
+    
     const loadAdSenseScript = () => {
-      if (document.getElementById('google-adsense-script')) return;
+      // Check if already exists
+      if (document.getElementById('google-adsense-script') || scriptLoaded) {
+        return;
+      }
       
-      const script = document.createElement('script');
-      script.id = 'google-adsense-script';
-      script.async = true;
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638586001556511';
-      script.crossOrigin = 'anonymous';
-      
-      script.onload = () => {
-        console.log('AdSense script loaded via DOM method');
-        window.adsbygoogle = window.adsbygoogle || [];
-      };
-      
-      script.onerror = (e) => {
-        console.error('AdSense script failed to load:', e);
-      };
-      
-      document.head.appendChild(script);
+      try {
+        const script = document.createElement('script');
+        script.id = 'google-adsense-script';
+        script.async = true;
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638586001556511';
+        script.crossOrigin = 'anonymous';
+        
+        script.onload = () => {
+          scriptLoaded = true;
+          window.adsbygoogle = window.adsbygoogle || [];
+          // Sadece bir kez log
+          if (process.env.NODE_ENV === 'development') {
+            console.log('AdSense script loaded successfully');
+          }
+        };
+        
+        script.onerror = (error) => {
+          console.warn('AdSense script failed to load. This may be due to ad blockers or network issues.');
+          scriptLoadAttempted = false; // Allow retry on next mount
+        };
+        
+        document.head.appendChild(script);
+      } catch (error) {
+        console.warn('Error loading AdSense script:', error);
+        scriptLoadAttempted = false;
+      }
     };
 
-    // Sayfa yüklendikten sonra AdSense scriptini ekle
-    if (document.readyState === 'complete') {
-      loadAdSenseScript();
+    // Load after page is interactive
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      // Delay to avoid blocking main thread
+      setTimeout(loadAdSenseScript, 500);
     } else {
-      window.addEventListener('load', loadAdSenseScript);
-      return () => window.removeEventListener('load', loadAdSenseScript);
+      window.addEventListener('DOMContentLoaded', loadAdSenseScript, { once: true });
     }
   }, []);
 
-  // Bileşen herhangi bir şey render etmiyor
   return null;
 }

@@ -3,6 +3,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import Link from 'next/link'; // Make sure Link is imported
 import { useTheme } from '@/contexts/ThemeContext';
+import dynamic from 'next/dynamic';
 
 // Import components
 import { Heading, Paragraph } from '@/components/ui/Typography';
@@ -11,7 +12,12 @@ import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { FeatureSection } from '@/components/home/FeatureSection';
 import { ExcelUploadSection } from '@/components/home/ExcelUploadSection';
 import { FaqSection } from '@/components/home/FaqSection';
-import { ProgressOverview } from '@/components/home/ProgressOverview';
+
+// Dynamic import to avoid SSR issues with Firebase auth
+const ProgressOverview = dynamic(
+  () => import('@/components/home/ProgressOverview').then(mod => ({ default: mod.ProgressOverview })),
+  { ssr: false }
+);
 
 // Import data
 import { categories, features, faqItems, excelSampleData } from '@/data/homeData';

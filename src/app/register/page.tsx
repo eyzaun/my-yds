@@ -3,10 +3,7 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import RegisterForm from '@/components/auth/RegisterForm';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-
-// Replace path alias import with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
+import AdBanner from '../../components/AdBanner';
 
 const RegisterPage = () => {
   const { colors } = useTheme();
@@ -31,7 +28,7 @@ const RegisterPage = () => {
           </div>
         </div>
       </div>
-      <ClientOnlyAd 
+      <AdBanner 
         slot="register-banner"
         format="auto"
         className="my-4 mx-auto"
