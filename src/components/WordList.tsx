@@ -129,13 +129,22 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
+      // Quiz state'lerini sıfırla
+      setQuizAnswer('');
+      setQuizResult(null);
+      setFlipped(false);
     }
   }, [currentIndex]);
 
   const handleReset = useCallback(() => {
     setCurrentIndex(0);
     // İlk kelimeyi çalışılmış olarak işaretle
-    setStudiedWords(new Set([0])); 
+    setStudiedWords(new Set([0]));
+    // Quiz state'lerini sıfırla
+    setQuizAnswer('');
+    setQuizResult(null);
+    setFlipped(false);
+    setIsQuizMode(false);
   }, []);
 
   const toggleViewMode = useCallback(() => {
@@ -225,15 +234,6 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
     }
   }, [selectedWordIndex, user, categoryId, words]);
 
-  // Yükleniyor durumu
-  if (loading) {
-    return (
-      <div className="w-full flex items-center justify-center py-12">
-        <div style={{ color: colors.text }}>İlerleme yükleniyor...</div>
-      </div>
-    );
-  }
-
   // Fullscreen mode için ESC tuşu desteği
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -251,6 +251,15 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
       };
     }
   }, [isFullscreen]);
+
+  // Yükleniyor durumu - hook'lardan sonra
+  if (loading) {
+    return (
+      <div className="w-full flex items-center justify-center py-12">
+        <div style={{ color: colors.text }}>İlerleme yükleniyor...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'w-full mx-auto'} px-2 py-2`}
