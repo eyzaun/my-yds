@@ -13,6 +13,7 @@ interface FlashCardProps {
   onNext: () => void;
   onPrevious: () => void;
   isQuizMode?: boolean;
+  forceFlipped?: boolean;
 }
 
 const MemoizedFlashCard = React.memo(function FlashCard({
@@ -20,7 +21,8 @@ const MemoizedFlashCard = React.memo(function FlashCard({
   currentIndex,
   onNext,
   onPrevious,
-  isQuizMode = false
+  isQuizMode = false,
+  forceFlipped
 }: FlashCardProps) {
   const { colors } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -55,6 +57,13 @@ const MemoizedFlashCard = React.memo(function FlashCard({
       setLocalWordIndex(currentIndex);
     }
   }, [currentIndex, isAnimating]);
+
+  // forceFlipped prop'u ile dışarıdan kart çevirme kontrolü
+  useEffect(() => {
+    if (forceFlipped !== undefined) {
+      setIsFlipped(forceFlipped);
+    }
+  }, [forceFlipped]);
   
   // Kart çevirme işlemi
   const handleFlip = useCallback((e?: React.MouseEvent | KeyboardEvent | React.TouchEvent) => {

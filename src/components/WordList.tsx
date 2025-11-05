@@ -265,6 +265,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
             onNext={handleNext}
             onPrevious={handlePrevious}
             isQuizMode={isQuizMode}
+            forceFlipped={flipped}
           />
 
           {/* Quiz Mode Input */}
