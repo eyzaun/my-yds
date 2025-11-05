@@ -3,6 +3,12 @@
  * Generic, reusable page component for all category pages
  * Eliminates ~1,440 lines of duplicate code across 8+ category pages
  *
+ * REFACTORED: Now uses FlashcardDeck with mode="category"
+ * - Unified flashcard display
+ * - Automatic list/card/test view switching
+ * - Progress tracking via FlashcardDeck
+ * - Consistent UX with upload-flashcards page
+ *
  * Usage:
  * ```tsx
  * import { CategoryPage } from '@/components/pages/CategoryPage';
@@ -19,13 +25,9 @@
 import dynamic from 'next/dynamic';
 import { CategoryConfig } from '@/config/categories.config';
 import { useCategoryPage } from '@/hooks/useCategoryPage';
-import {
-  CategoryHeader,
-  CategoryDescription,
-  ModeSelector,
-  CategoryContent,
-  TestResult,
-} from '@/components/category';
+import { wordsToFlashcards } from '@/types/flashcard';
+import FlashcardDeck, { QuizQuestion } from '@/components/flashcards/FlashcardDeck';
+import { CategoryHeader, CategoryDescription } from '@/components/category';
 
 // Dynamic import for AdBanner to avoid SSR issues
 const AdBanner = dynamic(() => import('@/components/AdBanner'), { ssr: false });
@@ -40,16 +42,29 @@ interface CategoryPageProps {
  */
 export function CategoryPage({ config }: CategoryPageProps) {
   const {
-    showQuiz,
-    setShowQuiz,
-    score,
-    setScore,
     words,
     questions,
     questionCount,
     colors,
     user,
   } = useCategoryPage(config);
+
+  // Convert words to UnifiedFlashcard format
+  // Map Word format (english, turkish) to expected format (en, tr)
+  const mappedWords = words.map(word => ({
+    en: 'english' in word ? (word as any).english : (word as any).en,
+    tr: 'turkish' in word ? (word as any).turkish : (word as any).tr
+  }));
+  const flashcards = wordsToFlashcards(mappedWords, config.id);
+
+  // Convert questions to QuizQuestion format (ensure id is present)
+  const quizQuestions: QuizQuestion[] = questions.map((q, index) => ({
+    id: q.id ?? index + 1,
+    word: q.word,
+    sentence: q.sentence,
+    options: q.options,
+    correctAnswer: q.correctAnswer
+  }));
 
   return (
     <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
@@ -68,40 +83,34 @@ export function CategoryPage({ config }: CategoryPageProps) {
           accentColor={colors.accent}
         />
 
-        {/* Mode Selector (Word List / Quiz) */}
-        <ModeSelector
-          showQuiz={showQuiz}
-          onModeChange={setShowQuiz}
-          textColor={colors.text}
-          accentColor={colors.accent}
-          cardBackground={colors.cardBackground}
-        />
-
-        {/* Main Content (Word List or Quiz) */}
-        <CategoryContent
-          showQuiz={showQuiz}
-          words={words}
-          questions={questions}
-          categoryId={config.id}
-          questionCount={questionCount}
-          onQuizComplete={setScore}
-          textColor={colors.text}
-          cardBackground={colors.cardBackground}
-          additionalInfo={config.additionalInfo}
-          categoryTitle={config.title}
-        />
-
-        {/* Test Result (shown after quiz completion) */}
-        {score !== null && (
-          <TestResult
-            score={score}
-            questionCount={questionCount}
-            onRetry={() => setScore(null)}
-            textColor={colors.text}
-            cardBackground={colors.cardBackground}
-            accentColor={colors.accent}
-          />
+        {/* Additional Info Section */}
+        {config.additionalInfo && (
+          <div
+            className="mb-6 p-4 rounded-lg text-sm leading-relaxed"
+            style={{ backgroundColor: colors.cardBackground, color: colors.text }}
+          >
+            <details>
+              <summary className="cursor-pointer font-semibold mb-2">
+                {config.title} Hakkında Detaylı Bilgi
+              </summary>
+              <div className="mt-3 whitespace-pre-line opacity-90">
+                {config.additionalInfo}
+              </div>
+            </details>
+          </div>
         )}
+
+        {/* Main Content: FlashcardDeck with all view modes */}
+        <FlashcardDeck
+          flashcards={flashcards}
+          mode="category"
+          showListView={true}
+          showTestMode={true}
+          testQuestions={quizQuestions}
+          categoryId={config.id}
+          quizMode={false}
+          initialViewMode="card"
+        />
       </div>
 
       {/* Ad Banner */}
