@@ -8,8 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { FlashcardData } from '@/types/flashcard';
 import { parseExcelFile, convertExcelRowsToFlashcards } from '@/utils/excelParser';
 import { saveFlashcardSet, getUserFlashcardSets, getFlashcardsBySetId, deleteFlashcardSet } from '@/lib/firebase/flashcardStorage';
-
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
+import AdBanner from '../../components/AdBanner';
 
 // Gelişmiş FlashcardViewer komponenti
 const FlashcardViewer = ({ 
@@ -787,7 +786,7 @@ export default function UploadFlashcardsPage() {
 
       {/* Ad - Sayfanın en altında */}
       <div className="mt-24 pb-16">
-        <ClientOnlyAd
+        <AdBanner
           slot="flashcards-footer"
           format="auto"
           className="my-4 mx-auto"

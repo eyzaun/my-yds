@@ -1,12 +1,6 @@
 'use client';
 import React from 'react';
-import dynamic from 'next/dynamic';
-
-// Client-only reklam bileşeni
-const ClientOnlyAd = dynamic(() => import('./ClientOnlyAd'), { 
-  ssr: false,
-  loading: () => <div style={{ minHeight: '100px' }} />
-});
+import AdUnit from './AdUnit';
 
 interface AdBannerProps {
   slot?: string;
@@ -22,7 +16,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
   style = {}
 }) => {
   return (
-    <ClientOnlyAd
+    <AdUnit
       slot={slot}
       format={format}
       className={className}

@@ -85,7 +85,7 @@ export default function useFlashcardState({
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { colors } = useTheme();
-  const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth!);
   const [canAdvance, setCanAdvance] = useState(!quizMode);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
@@ -142,7 +142,7 @@ export default function useFlashcardState({
   // Firebase'den ilerleme durumunu yükle
   useEffect(() => {
     const loadSavedProgress = async () => {
-      if (!user || !flashcards.length) return;
+      if (!user || !flashcards.length || !db) return;
       
       try {
         const userProgressRef = doc(db, 'userProgress', user.uid);
@@ -172,7 +172,7 @@ export default function useFlashcardState({
 
   // İlerleme durumunu Firebase'e kaydet
   const saveProgress = useCallback(async () => {
-    if (!user) return;
+    if (!user || !db) return;
     
     try {
       const userProgressRef = doc(db, 'userProgress', user.uid);
@@ -324,7 +324,7 @@ export default function useFlashcardState({
     setFlipped(false);
     setIsAnimating(false);
 
-    if (user) {
+    if (user && db) {
       try {
         const userProgressRef = doc(db, 'userProgress', user.uid);
         const userProgressDoc = await getDoc(userProgressRef);

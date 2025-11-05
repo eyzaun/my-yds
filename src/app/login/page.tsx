@@ -3,11 +3,7 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import LoginForm from '@/components/auth/LoginForm';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import AdBanner from '../../components/AdBanner';
-
-// Replace the import using path alias with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const LoginPage = () => {
   const { colors } = useTheme();
@@ -37,7 +33,7 @@ const LoginPage = () => {
         format="horizontal" 
         className="my-4 mx-auto max-w-6xl px-4"
       />
-      <ClientOnlyAd 
+      <AdBanner 
         slot="login-banner"
         format="auto"
         className="my-4 mx-auto"

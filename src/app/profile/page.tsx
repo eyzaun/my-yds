@@ -8,10 +8,7 @@ import RequireAuth from '@/utils/requireAuth';
 import { getAllCategoryProgress, getUserScores } from '@/firebase/firestore';
 import Link from 'next/link';
 import { UserProgress, QuizScore } from '@/firebase/types';
-import dynamic from 'next/dynamic';
-
-// Replace path alias import with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
+import AdBanner from '../../components/AdBanner';
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -155,12 +152,12 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-        <ClientOnlyAd 
+        <AdBanner 
           slot="profile-banner"
           format="auto"
           className="my-4 mx-auto"
         />
-        <ClientOnlyAd 
+        <AdBanner 
           slot="profile-footer" 
           format="horizontal" 
           className="my-4 mx-auto max-w-6xl px-4"
