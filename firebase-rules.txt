@@ -21,7 +21,15 @@ service cloud.firestore {
       allow read: if isSignedIn(); // Sadece giriş yapmış kullanıcılar okuyabilir
       allow write, update, create: if isOwner(userId); // Sadece sahip yazabilir/oluşturabilir
     }
-    
+
+    // Kullanıcı profil bilgilerini yönetme
+    match /users/{userId} {
+      allow read: if isSignedIn() && isOwner(userId); // Sadece kendi profilini okuyabilir
+      allow create: if isSignedIn() && request.auth.uid == userId; // Kayıt sırasında profil oluşturabilir
+      allow update: if isSignedIn() && isOwner(userId); // Sadece kendi profilini güncelleyebilir
+      allow delete: if false; // Kullanıcılar silinmez, sadece deaktive edilir
+    }
+
     // Kullanıcıların kendi flashcard setlerini okumasına ve yazmasına izin ver
     match /flashcardSets/{setId} {
       allow create: if isSignedIn();
