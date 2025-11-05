@@ -273,7 +273,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
               <form onSubmit={handleQuizSubmit} className="flex flex-col">
                 <p className="text-sm mb-2" style={{ color: colors.text }}>
                   {quizResult === 'incorrect' && flipped
-                    ? 'Doğru cevabı yazıp Enter tuşuna basın:'
+                    ? 'Doğru cevabı yazın (kartın arkasında):'
                     : 'Kelimenin Türkçe karşılığını yazın:'}
                 </p>
 
@@ -323,10 +323,10 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
                 {quizResult === 'incorrect' && flipped && (
                   <div className="mt-2">
                     <p className="text-red-500 text-sm font-medium">
-                      ✗ Doğru cevap: <span className="font-bold">{words[currentIndex].tr}</span>
+                      ✗ Yanlış cevap!
                     </p>
                     <p className="text-sm mt-1" style={{ color: colors.text }}>
-                      Sonraki kelimeye geçmek için doğru cevabı yazın.
+                      Kartın arkasına bak ve doğru cevabı yazıp devam et.
                     </p>
                   </div>
                 )}

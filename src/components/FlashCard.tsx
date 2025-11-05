@@ -260,12 +260,12 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             <button
               onClick={handlePrevious}
               className={navigationButtonClass}
-              style={{ 
+              style={{
                 ...buttonStyle,
-                opacity: currentIndex === 0 || isAnimating ? 0.5 : 1,
-                cursor: currentIndex === 0 || isAnimating ? 'not-allowed' : 'pointer'
+                opacity: (currentIndex === 0 || isAnimating || isQuizMode) ? 0.5 : 1,
+                cursor: (currentIndex === 0 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
               }}
-              disabled={currentIndex === 0 || isAnimating}
+              disabled={currentIndex === 0 || isAnimating || isQuizMode}
               aria-label="Önceki kelime"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -280,12 +280,12 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             <button
               onClick={handleNext}
               className={navigationButtonClass}
-              style={{ 
+              style={{
                 ...buttonStyle,
-                opacity: currentIndex === words.length - 1 || isAnimating ? 0.5 : 1,
-                cursor: currentIndex === words.length - 1 || isAnimating ? 'not-allowed' : 'pointer'
+                opacity: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 0.5 : 1,
+                cursor: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
               }}
-              disabled={currentIndex === words.length - 1 || isAnimating}
+              disabled={currentIndex === words.length - 1 || isAnimating || isQuizMode}
               aria-label="Sonraki kelime"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -302,12 +302,12 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             <button
               onClick={handlePrevious}
               className={`${navigationButtonClass} mr-4`}
-              style={{ 
+              style={{
                 ...buttonStyle,
-                opacity: currentIndex === 0 || isAnimating ? 0.5 : 1,
-                cursor: currentIndex === 0 || isAnimating ? 'not-allowed' : 'pointer'
+                opacity: (currentIndex === 0 || isAnimating || isQuizMode) ? 0.5 : 1,
+                cursor: (currentIndex === 0 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
               }}
-              disabled={currentIndex === 0 || isAnimating}
+              disabled={currentIndex === 0 || isAnimating || isQuizMode}
               aria-label="Önceki kelime"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -356,15 +356,15 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             <button
               onClick={handleNext}
               className={`${navigationButtonClass} ml-4`}
-              style={{ 
+              style={{
                 ...buttonStyle,
-                opacity: currentIndex === words.length - 1 || isAnimating ? 0.5 : 1,
-                cursor: currentIndex === words.length - 1 || isAnimating ? 'not-allowed' : 'pointer'
+                opacity: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 0.5 : 1,
+                cursor: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
               }}
-              disabled={currentIndex === words.length - 1 || isAnimating}
+              disabled={currentIndex === words.length - 1 || isAnimating || isQuizMode}
               aria-label="Sonraki kelime"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
                 <path d="M9 18l6-6-6-6"/>
               </svg>
             </button>
