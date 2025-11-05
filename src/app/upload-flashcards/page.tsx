@@ -12,16 +12,16 @@ import { saveFlashcardSet, getUserFlashcardSets, getFlashcardsBySetId, deleteFla
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 // Gelişmiş FlashcardViewer komponenti
-const FlashcardViewer = ({ 
-  flashcards, 
+const FlashcardViewer = ({
+  flashcards,
   onClose,
   colors,
   isQuizMode = false,
   isFullscreen = false,
   onToggleFullscreen,
   onToggleQuizMode
-}: { 
-  flashcards: FlashcardData[], 
+}: {
+  flashcards: FlashcardData[],
   onClose: () => void,
   colors: any,
   isQuizMode?: boolean,
@@ -35,6 +35,8 @@ const FlashcardViewer = ({
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -168,6 +170,48 @@ const FlashcardViewer = ({
     overflow: 'hidden'
   } : {};
 
+  // Liste görünümünde kart tıklama
+  const handleListCardClick = (index: number) => {
+    if (selectedCardIndex === index) {
+      setSelectedCardIndex(null);
+    } else {
+      setSelectedCardIndex(index);
+    }
+  };
+
+  // Liste görünümü render
+  const renderListView = () => (
+    <div className="grid grid-cols-1 gap-3 mt-4 max-w-4xl mx-auto">
+      {flashcards.map((card, index) => (
+        <div
+          key={`${card.id}-${index}`}
+          className="p-4 rounded-lg cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg"
+          style={{
+            backgroundColor: colors.cardBackground,
+            border: selectedCardIndex === index ? `2px solid ${colors.accent}` : 'none'
+          }}
+          onClick={() => handleListCardClick(index)}
+        >
+          <div style={{ color: colors.text }} className="text-lg font-semibold">
+            {card.front}
+          </div>
+          {card.notes && (
+            <div className="text-xs mt-1 opacity-60" style={{ color: colors.text }}>
+              {card.notes}
+            </div>
+          )}
+
+          {/* Sadece seçili kart için cevabı göster */}
+          {selectedCardIndex === index && (
+            <div style={{ color: colors.accent, opacity: 0.9 }} className="mt-2 font-medium">
+              {card.back}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div 
       ref={containerRef}
@@ -182,30 +226,50 @@ const FlashcardViewer = ({
       {/* Header */}
       <div className="flex justify-between items-center p-4 flex-shrink-0">
         <h2 className="text-lg md:text-xl font-semibold" style={{ color: colors.text }}>
-          Kelime Kartları ({currentIndex + 1}/{flashcards.length})
+          Kelime Kartları ({viewMode === 'card' ? `${currentIndex + 1}/` : ''}{flashcards.length})
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={onToggleQuizMode}
+            onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}
             className="p-2 rounded-lg transition-all"
-            style={{ 
-              backgroundColor: isQuizMode ? colors.accent : `${colors.accent}20`,
-              color: isQuizMode ? 'white' : colors.text
+            style={{
+              backgroundColor: viewMode === 'list' ? colors.accent : `${colors.accent}20`,
+              color: viewMode === 'list' ? 'white' : colors.text
             }}
-            title="Quiz Modu"
+            title="Görünüm Modu"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-              <path fillRule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 00-2 2v6a2 2 0 002 2h2a1 1 0 100 2H6a4 4 0 01-4-4V5z" clipRule="evenodd" />
+              {viewMode === 'list' ? (
+                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+              ) : (
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+              )}
             </svg>
           </button>
-          
+
+          {viewMode === 'card' && (
+            <button
+              onClick={onToggleQuizMode}
+              className="p-2 rounded-lg transition-all"
+              style={{
+                backgroundColor: isQuizMode ? colors.accent : `${colors.accent}20`,
+                color: isQuizMode ? 'white' : colors.text
+              }}
+              title="Quiz Modu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                <path fillRule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 00-2 2v6a2 2 0 002 2h2a1 1 0 100 2H6a4 4 0 01-4-4V5z" clipRule="evenodd" />
+              </svg>
+            </button>
+          )}
+
           <button
             onClick={onToggleFullscreen}
             className="p-2 rounded-lg transition-all"
-            style={{ 
-              backgroundColor: `${colors.accent}20`,
-              color: colors.text
+            style={{
+              backgroundColor: isFullscreen ? colors.accent : `${colors.accent}20`,
+              color: isFullscreen ? 'white' : colors.text
             }}
             title="Tam Ekran"
           >
@@ -217,11 +281,11 @@ const FlashcardViewer = ({
               )}
             </svg>
           </button>
-          
+
           <button
             onClick={onClose}
             className="p-2 rounded-lg transition-all"
-            style={{ 
+            style={{
               backgroundColor: `${colors.accent}20`,
               color: colors.text
             }}
@@ -235,7 +299,12 @@ const FlashcardViewer = ({
       </div>
 
       {/* Card Area */}
-      <div className={`${isFullscreen && isMobile && isQuizMode ? 'flex-1 overflow-hidden' : 'flex-1'} flex flex-col items-center justify-center px-4 pb-4`}>
+      {viewMode === 'list' ? (
+        <div className="flex-1 overflow-auto px-4 pb-4">
+          {renderListView()}
+        </div>
+      ) : (
+        <div className={`${isFullscreen && isMobile && isQuizMode ? 'flex-1 overflow-hidden' : 'flex-1'} flex flex-col items-center justify-center px-4 pb-4`}>
         <div className="w-full max-w-2xl">
           {/* Flashcard */}
           <div 
@@ -372,6 +441,7 @@ const FlashcardViewer = ({
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

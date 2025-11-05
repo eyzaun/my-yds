@@ -1,6 +1,6 @@
 // src/components/Quiz.tsx
 'use client';
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizScore } from '@/firebase/firestore';
@@ -35,6 +35,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
   const [score, setScore] = useState(0);
   const [savingScore, setSavingScore] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const handleAnswerSelect = (questionId: number, answer: string) => {
     setUserAnswers(prev => ({
@@ -74,8 +75,49 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
     }
   };
 
+  // Fullscreen mode için ESC tuşu desteği
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+
+    if (isFullscreen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isFullscreen]);
+
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'max-w-4xl mx-auto'} p-4`}
+         style={isFullscreen ? { backgroundColor: colors.background } : {}}>
+      {/* Tam ekran toggle butonu */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setIsFullscreen(!isFullscreen)}
+          className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
+          style={{
+            backgroundColor: isFullscreen ? colors.accent : colors.cardBackground,
+            color: colors.text
+          }}
+          title="Tam Ekran"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {isFullscreen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+            )}
+          </svg>
+          {isFullscreen ? 'Normal Ekran' : 'Tam Ekran'}
+        </button>
+      </div>
+
       {!showResults ? (
         <>
           {questions.map((question) => (
