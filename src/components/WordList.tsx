@@ -1,6 +1,6 @@
 // src/components/WordList.tsx
 'use client';
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link'; // Doğru import yolu
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -39,6 +39,11 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
   const [selectedWordIndex, setSelectedWordIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isQuizMode, setIsQuizMode] = useState(false);
+  const [quizAnswer, setQuizAnswer] = useState('');
+  const [quizResult, setQuizResult] = useState<'correct' | 'incorrect' | null>(null);
+  const [flipped, setFlipped] = useState(false);
+  const quizInputRef = useRef<HTMLInputElement>(null);
 
   // Kullanıcı girişi ve ilerleme durumunu takip etme
   useEffect(() => {
@@ -89,14 +94,19 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
     if (currentIndex < words.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
-      
+
+      // Quiz state'lerini sıfırla
+      setQuizAnswer('');
+      setQuizResult(null);
+      setFlipped(false);
+
       // Kelimeyi çalışılmış olarak işaretle
       setStudiedWords(prev => {
         const updated = new Set(prev);
         updated.add(nextIndex);
         return updated;
       });
-      
+
       // Kullanıcı giriş yapmışsa ilerlemeyi kaydet
       if (user && categoryId) {
         const wordId = words[nextIndex].en;
@@ -104,8 +114,17 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
           console.error('İlerleme kaydedilirken hata:', err);
         });
       }
+
+      // Quiz modunda input'a focus
+      if (isQuizMode) {
+        setTimeout(() => {
+          if (quizInputRef.current) {
+            quizInputRef.current.focus();
+          }
+        }, 100);
+      }
     }
-  }, [currentIndex, words, user, categoryId]);
+  }, [currentIndex, words, user, categoryId, isQuizMode]);
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
@@ -130,6 +149,56 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
   const toggleFullscreen = useCallback(() => {
     setIsFullscreen(prev => !prev);
   }, []);
+
+  const toggleQuizMode = useCallback(() => {
+    setIsQuizMode(prev => !prev);
+    setQuizAnswer('');
+    setQuizResult(null);
+    setFlipped(false);
+
+    // Quiz modu açıldığında input'a focus
+    if (!isQuizMode) {
+      setTimeout(() => {
+        if (quizInputRef.current) {
+          quizInputRef.current.focus();
+        }
+      }, 100);
+    }
+  }, [isQuizMode]);
+
+  const handleQuizSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quizAnswer.trim()) return;
+
+    const currentWord = words[currentIndex];
+    const correctAnswer = currentWord.tr.trim().toLowerCase();
+    const userAnswer = quizAnswer.trim().toLowerCase();
+
+    // Tam eşleşme veya yaklaşık eşleşme kontrolü
+    const isExactMatch = userAnswer === correctAnswer;
+    const isCloseMatch = correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2;
+
+    if (isExactMatch || isCloseMatch) {
+      setQuizResult('correct');
+      setFlipped(true);
+
+      // Doğru cevap - 1 saniye sonra sonraki kelimeye geç
+      setTimeout(() => {
+        handleNext();
+      }, 1000);
+    } else {
+      setQuizResult('incorrect');
+      setFlipped(true);
+    }
+  }, [quizAnswer, currentIndex, words, handleNext]);
+
+  const handleQuizKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Yanlış cevap verildiyse ve kart çevrildiyse, Enter ile sonraki kelimeye geç
+    if (e.key === 'Enter' && quizResult === 'incorrect' && flipped) {
+      e.preventDefault();
+      handleNext();
+    }
+  }, [quizResult, flipped, handleNext]);
 
   // Liste görünümünde kelimeye tıklama
   const handleWordClick = useCallback((index: number) => {
@@ -208,6 +277,24 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
             {viewMode === 'list' ? 'Kart Görünümü' : 'Liste Görünümü'}
           </button>
 
+          {viewMode === 'card' && (
+            <button
+              onClick={toggleQuizMode}
+              className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
+              style={{
+                backgroundColor: isQuizMode ? colors.accent : colors.cardBackground,
+                color: colors.text
+              }}
+              title="Quiz Modu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                <path fillRule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 00-2 2v6a2 2 0 002 2h2a1 1 0 100 2H6a4 4 0 01-4-4V5z" clipRule="evenodd" />
+              </svg>
+              {isQuizMode ? 'Normal Mod' : 'Quiz Modu'}
+            </button>
+          )}
+
           <button
             onClick={toggleFullscreen}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
@@ -275,12 +362,81 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
 
       {/* Ana İçerik - Kart veya Liste */}
       {viewMode === 'card' ? (
-        <FlashCard
-          words={words}
-          currentIndex={currentIndex}
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-        />
+        <>
+          <FlashCard
+            words={words}
+            currentIndex={currentIndex}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+
+          {/* Quiz Mode Input */}
+          {isQuizMode && (
+            <div className="w-full max-w-md mx-auto mt-4">
+              <form onSubmit={handleQuizSubmit} className="flex flex-col">
+                <p className="text-sm mb-2" style={{ color: colors.text }}>
+                  {quizResult === 'incorrect' && flipped
+                    ? 'Sonraki kelimeye geçmek için Enter tuşuna basın'
+                    : 'Kelimenin Türkçe karşılığını yazın:'}
+                </p>
+
+                <div className="flex w-full">
+                  <input
+                    ref={quizInputRef}
+                    type="text"
+                    value={quizAnswer}
+                    onChange={(e) => setQuizAnswer(e.target.value)}
+                    onKeyDown={handleQuizKeyDown}
+                    className="flex-grow px-3 py-2 rounded-l-lg border focus:outline-none"
+                    placeholder={quizResult === 'incorrect' && flipped ? 'Enter tuşuna basın...' : 'Cevabınızı buraya yazın...'}
+                    style={{
+                      backgroundColor: colors.background,
+                      color: colors.text,
+                      borderColor: quizResult === 'correct' ? 'green' :
+                                   quizResult === 'incorrect' ? 'red' :
+                                   colors.accent,
+                      fontSize: '16px',
+                      height: '44px'
+                    }}
+                    autoComplete="off"
+                    readOnly={quizResult === 'correct'}
+                    autoFocus
+                  />
+
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-r-lg transition-colors font-medium"
+                    style={{
+                      backgroundColor: quizResult === 'correct' ? 'green' :
+                                      quizResult === 'incorrect' && flipped ? 'orange' :
+                                      colors.accent,
+                      color: 'white',
+                      fontSize: '16px',
+                      height: '44px'
+                    }}
+                    disabled={(!quizAnswer.trim() && !(quizResult === 'incorrect' && flipped)) || quizResult === 'correct'}
+                  >
+                    {quizResult === 'incorrect' && flipped ? 'Sonraki' : 'Kontrol Et'}
+                  </button>
+                </div>
+
+                {quizResult === 'correct' && (
+                  <p className="text-green-500 mt-2 text-sm font-medium">✓ Doğru cevap! 👍</p>
+                )}
+
+                {quizResult === 'incorrect' && (
+                  <div className="mt-2">
+                    <p className="text-red-500 text-sm font-medium">
+                      {flipped
+                        ? `✗ Doğru cevap: ${words[currentIndex].tr}`
+                        : '✗ Yanlış cevap, tekrar deneyin.'}
+                    </p>
+                  </div>
+                )}
+              </form>
+            </div>
+          )}
+        </>
       ) : (
         <div className="grid grid-cols-1 gap-3 mt-4">
           {words.map((word, index) => (
