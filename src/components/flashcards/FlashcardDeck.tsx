@@ -10,6 +10,7 @@ import FlashcardCard from '@/components/flashcards/FlashcardCard';
 import FlashcardControl from '@/components/flashcards/FlashcardControl';
 import FlashcardMobileView from '@/components/flashcards/FlashcardMobileView';
 import ListView from '@/components/flashcards/ListView';
+import TestView from '@/components/flashcards/TestView';
 
 /**
  * Quiz sorusu tipi - Test modu için
@@ -269,13 +270,24 @@ export default function FlashcardDeck({
     );
   };
 
-  // YENİ: Test görünümü renderer - Sonraki adımda implement edilecek
+  // YENİ: Test görünümü renderer
   const renderTestView = () => {
+    // Test soruları yoksa uyarı göster
+    if (!testQuestions || testQuestions.length === 0) {
+      return (
+        <div className="text-center p-8" style={{ color: colors.text }}>
+          <p className="mb-4">Bu kategori için test soruları bulunmuyor.</p>
+        </div>
+      );
+    }
+
     return (
-      <div className="text-center p-8" style={{ color: colors.text }}>
-        <p className="mb-4">Test modu bir sonraki adımda eklenecek...</p>
-        <p className="text-sm opacity-70">TestView komponenti henüz oluşturulmadı</p>
-      </div>
+      <TestView
+        questions={testQuestions}
+        flashcards={flashcards}
+        onComplete={onTestComplete}
+        showWordMeanings={true}
+      />
     );
   };
 
