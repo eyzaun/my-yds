@@ -1,40 +1,40 @@
 // contexts/ThemeContext.tsx
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { themes } from '@/styles/config';
+import { colorThemes, ThemeName } from '@/styles/designSystem';
 
-type Colors = typeof themes.blue;
+type Colors = typeof colorThemes.blue;
 
 type ThemeContextType = {
-  theme: string;
-  setTheme: (theme: string) => void;
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
   colors: Colors;
 };
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'blue',
   setTheme: () => {},
-  colors: themes.blue
+  colors: colorThemes.blue
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // localStorage yalnızca tarayıcıda çalışır
-  const [theme, setTheme] = useState('blue');
-  const [colors, setColors] = useState(themes.blue);
+  const [theme, setTheme] = useState<ThemeName>('blue');
+  const [colors, setColors] = useState(colorThemes.blue);
 
   // Sayfa yüklendiğinde localStorage'dan tema tercihi al
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'blue';
+    const savedTheme = (localStorage.getItem('theme') || 'blue') as ThemeName;
     setTheme(savedTheme);
-    setColors(themes[savedTheme as keyof typeof themes] || themes.blue);
+    setColors(colorThemes[savedTheme] || colorThemes.blue);
   }, []);
 
   // Tema değiştiğinde localStorage'a kaydet ve renkleri güncelle
-  const handleSetTheme = (newTheme: string) => {
+  const handleSetTheme = (newTheme: ThemeName) => {
     setTheme(newTheme);
-    setColors(themes[newTheme as keyof typeof themes] || themes.blue);
+    setColors(colorThemes[newTheme] || colorThemes.blue);
     localStorage.setItem('theme', newTheme);
   };
 
