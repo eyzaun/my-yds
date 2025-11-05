@@ -9,6 +9,7 @@ import useFlashcardState from '@/hooks/useFlashcardState';
 import FlashcardCard from '@/components/flashcards/FlashcardCard';
 import FlashcardControl from '@/components/flashcards/FlashcardControl';
 import FlashcardMobileView from '@/components/flashcards/FlashcardMobileView';
+import ListView from '@/components/flashcards/ListView';
 
 /**
  * Quiz sorusu tipi - Test modu için
@@ -234,13 +235,37 @@ export default function FlashcardDeck({
     );
   };
 
-  // YENİ: Liste görünümü renderer - Sonraki adımda implement edilecek
+  // YENİ: Liste görünümü renderer
   const renderListView = () => {
+    // Çalışılan kartları viewed state'inden al
+    const studiedCardsSet = new Set(
+      Object.keys(state.viewed)
+        .filter(key => state.viewed[key])
+        .map(key => {
+          // Key formatı: cardId veya index
+          const cardIndex = flashcards.findIndex(card => card.id === key);
+          return cardIndex !== -1 ? cardIndex : parseInt(key);
+        })
+        .filter(index => !isNaN(index))
+    );
+
+    // Kart çalışıldı olarak işaretle
+    const handleCardStudied = (index: number) => {
+      if (flashcards[index]) {
+        const card = flashcards[index];
+        handlers.handleComplete(); // Mevcut kartı complete olarak işaretle
+
+        // Viewed state'ini güncelle
+        state.viewed[card.id] = true;
+      }
+    };
+
     return (
-      <div className="text-center p-8" style={{ color: colors.text }}>
-        <p className="mb-4">Liste görünümü bir sonraki adımda eklenecek...</p>
-        <p className="text-sm opacity-70">ListView komponenti henüz oluşturulmadı</p>
-      </div>
+      <ListView
+        flashcards={flashcards}
+        studiedCards={studiedCardsSet}
+        onCardStudied={handleCardStudied}
+      />
     );
   };
 
