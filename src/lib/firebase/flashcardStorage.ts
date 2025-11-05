@@ -10,10 +10,15 @@ function generateId() {
 
 // Flashcard setini Firebase'e kaydet
 export async function saveFlashcardSet(name: string, flashcards: FlashcardData[]) {
+  // SSR kontrolü
+  if (typeof window === 'undefined') {
+    throw new Error('Bu fonksiyon sadece client-side çalışır');
+  }
+
   const auth = getAuth();
   const db = getFirestore();
-  
-  if (!auth.currentUser) {
+
+  if (!auth || !auth.currentUser) {
     throw new Error('Kullanıcı giriş yapmamış');
   }
   
@@ -61,10 +66,15 @@ export async function saveFlashcardSet(name: string, flashcards: FlashcardData[]
 
 // Kullanıcının flashcard setlerini getir
 export async function getUserFlashcardSets() {
+  // SSR kontrolü
+  if (typeof window === 'undefined') {
+    throw new Error('Bu fonksiyon sadece client-side çalışır');
+  }
+
   const auth = getAuth();
   const db = getFirestore();
-  
-  if (!auth.currentUser) {
+
+  if (!auth || !auth.currentUser) {
     throw new Error('Kullanıcı giriş yapmamış');
   }
   
@@ -103,10 +113,15 @@ export async function getUserFlashcardSets() {
 
 // Belirli bir setteki flashcardları getir
 export async function getFlashcardsBySetId(setId: string) {
+  // SSR kontrolü
+  if (typeof window === 'undefined') {
+    throw new Error('Bu fonksiyon sadece client-side çalışır');
+  }
+
   const auth = getAuth();
   const db = getFirestore();
-  
-  if (!auth.currentUser) {
+
+  if (!auth || !auth.currentUser) {
     throw new Error('Kullanıcı giriş yapmamış');
   }
   
@@ -142,10 +157,15 @@ export async function getFlashcardsBySetId(setId: string) {
 
 // Flashcard setini ve içindeki tüm kartları sil
 export async function deleteFlashcardSet(setId: string) {
+  // SSR kontrolü
+  if (typeof window === 'undefined') {
+    throw new Error('Bu fonksiyon sadece client-side çalışır');
+  }
+
   const auth = getAuth();
   const db = getFirestore();
-  
-  if (!auth.currentUser) {
+
+  if (!auth || !auth.currentUser) {
     throw new Error('Kullanıcı giriş yapmamış');
   }
   

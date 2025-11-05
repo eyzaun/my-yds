@@ -6,8 +6,13 @@ import { normalizeFirebaseError } from './errors';
  * @returns True if authenticated, throws error if not
  */
 export function ensureAuthenticated(): boolean {
+  // SSR kontrolü
+  if (typeof window === 'undefined') {
+    throw new Error('Authentication check can only run on client-side');
+  }
+
   const auth = getAuth();
-  if (!auth.currentUser) {
+  if (!auth || !auth.currentUser) {
     throw new Error('User must be authenticated');
   }
   return true;
@@ -63,21 +68,31 @@ export async function fetchFirebaseDataSafely<T>(
  * Checks if user is authenticated and has necessary permissions
  */
 export function userCanAccess(path: string): boolean {
+  // SSR kontrolü
+  if (typeof window === 'undefined') {
+    // Public paths anyone can access on SSR
+    const publicPaths = ['wordLists', 'categories'];
+    if (publicPaths.some(p => path.startsWith(p))) {
+      return true;
+    }
+    return false;
+  }
+
   const auth = getAuth();
-  const user = auth.currentUser;
-  
+  const user = auth?.currentUser;
+
   // Public paths anyone can access
   const publicPaths = ['wordLists', 'categories'];
   if (publicPaths.some(p => path.startsWith(p))) {
     return true;
   }
-  
+
   // User-specific paths require auth
   if (path.includes('users/') && user) {
     // Check if accessing own data
     return path.includes(`users/${user.uid}`);
   }
-  
+
   // Default to requiring authentication
   return !!user;
 }
