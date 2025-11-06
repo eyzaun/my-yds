@@ -20,6 +20,7 @@ export default function OfficialPage() {
 
   // Kategori ID'si ve soruları
   const categoryId = 'official';
+  const categoryName = 'Resmi Dil';
   const questionCount = quizData.official_language.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -121,14 +122,16 @@ export default function OfficialPage() {
             <Quiz 
               questions={quizData.official_language}
               categoryWords={vocabulary.official_language}
-              categoryId={categoryId} // Kategori ID'sini ekleyin
+              categoryId={categoryId}
+              categoryName={categoryName}
               onQuizComplete={setScore}
             />
           </div>
         ) : (
           <WordList 
             words={vocabulary.official_language} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+            categoryId={categoryId}
+              categoryName={categoryName}
           />
         )}
 

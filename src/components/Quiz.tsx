@@ -4,6 +4,7 @@ import React, { useState} from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizScore } from '@/firebase/firestore';
+import { saveQuizResult } from '@/lib/firebase/spacedRepetition';
 import AdBanner from './AdBanner';
 import Link from 'next/link';
 
@@ -24,10 +25,11 @@ interface QuizProps {
   questions: QuizQuestion[];
   categoryWords: Word[];
   categoryId: string; // Kategori ID'si ekleyin
+  categoryName?: string; // Kategori adı (Spaced Repetition için)
   onQuizComplete?: (score: number) => void;
 }
 
-const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQuizComplete }) => {
+const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, categoryName, onQuizComplete }) => {
   const { colors } = useTheme();
   const { user } = useAuth();
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
@@ -47,25 +49,56 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
     const totalScore = questions.reduce((acc, question) => {
       return acc + (userAnswers[question.id] === question.correctAnswer ? 1 : 0);
     }, 0);
-    
+
     setScore(totalScore);
     setShowResults(true);
-    
+
     // onQuizComplete prop'u varsa çağır
     if (onQuizComplete) {
       onQuizComplete(totalScore);
     }
-    
+
     // Kullanıcı giriş yapmışsa sonucu kaydet
     if (user && categoryId) {
       setSavingScore(true);
-      
+
       try {
+        // Geleneksel quiz score kaydet
         const result = await saveQuizScore(user.uid, categoryId, totalScore, questions.length);
-        
+
         if (result.success) {
           setScoreSaved(true);
         }
+
+        // Spaced Repetition: Her soru için ayrı ayrı kaydet
+        const savingPromises = questions.map(async (question) => {
+          const userAnswer = userAnswers[question.id];
+          const isCorrect = userAnswer === question.correctAnswer;
+
+          // Kelimenin Türkçe karşılığını bul
+          const wordData = categoryWords.find(w => w.en === question.word);
+          const translation = wordData?.tr || question.word;
+
+          try {
+            await saveQuizResult(
+              user.uid,
+              'category',
+              question.word,
+              translation,
+              isCorrect,
+              categoryId,
+              categoryName
+            );
+          } catch (error) {
+            console.error(`Spaced repetition save error for word "${question.word}":`, error);
+          }
+        });
+
+        // Tüm kayıtların tamamlanmasını bekle
+        await Promise.all(savingPromises);
+
+        console.log(`✅ Spaced Repetition: ${questions.length} kelime kaydedildi`);
+
       } catch (error) {
         console.error('Quiz sonucu kaydedilirken hata:', error);
       } finally {

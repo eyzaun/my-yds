@@ -20,6 +20,7 @@ export default function Conjunctions() {
 
   // Kategori ID'si ve soruları
   const categoryId = 'conjunctions';
+  const categoryName = 'Bağlaçlar';
   const questionCount = quizData.conjunctions_and_transitions.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -121,14 +122,16 @@ export default function Conjunctions() {
             <Quiz 
               questions={quizData.conjunctions_and_transitions}
               categoryWords={vocabulary.conjunctions_and_transitions}
-              categoryId={categoryId} // Kategori ID'sini ekleyin
+              categoryId={categoryId}
+              categoryName={categoryName}
               onQuizComplete={setScore}
             />
           </div>
         ) : (
           <WordList 
             words={vocabulary.conjunctions_and_transitions} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+            categoryId={categoryId}
+              categoryName={categoryName}
           />
         )}
 

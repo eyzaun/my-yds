@@ -8,373 +8,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { FlashcardData } from '@/types/flashcard';
 import { parseExcelFile, convertExcelRowsToFlashcards } from '@/utils/excelParser';
 import { saveFlashcardSet, getUserFlashcardSets, getFlashcardsBySetId, deleteFlashcardSet } from '@/lib/firebase/flashcardStorage';
+import FlashcardDeck from '@/components/flashcards/FlashcardDeck';
 
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
-
-// Gelişmiş FlashcardViewer komponenti
-const FlashcardViewer = ({ 
-  flashcards, 
-  onClose,
-  colors,
-  isQuizMode = false,
-  isFullscreen = false,
-  onToggleFullscreen,
-  onToggleQuizMode
-}: { 
-  flashcards: FlashcardData[], 
-  onClose: () => void,
-  colors: any,
-  isQuizMode?: boolean,
-  isFullscreen?: boolean,
-  onToggleFullscreen?: () => void,
-  onToggleQuizMode?: () => void
-}) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [flipped, setFlipped] = useState(false);
-  const [userAnswer, setUserAnswer] = useState('');
-  const [showResult, setShowResult] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const currentCard = flashcards[currentIndex];
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Mobilde tam ekran + quiz modunda viewport'u kilitle
-  useEffect(() => {
-    if (isMobile && isQuizMode && isFullscreen) {
-      // Viewport meta tag'ini güncelle
-      const viewport = document.querySelector('meta[name="viewport"]');
-      if (viewport) {
-        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
-      }
-      
-      // Body scroll'u engelle
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.height = '100%';
-      document.body.style.touchAction = 'none';
-      
-      // iOS bounce effect'i engelle
-      document.documentElement.style.overflow = 'hidden';
-      document.documentElement.style.position = 'fixed';
-      document.documentElement.style.width = '100%';
-      document.documentElement.style.height = '100%';
-      
-      return () => {
-        if (viewport) {
-          viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-        }
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
-        document.body.style.height = '';
-        document.body.style.touchAction = '';
-        document.documentElement.style.overflow = '';
-        document.documentElement.style.position = '';
-        document.documentElement.style.width = '';
-        document.documentElement.style.height = '';
-      };
-    }
-  }, [isMobile, isQuizMode, isFullscreen]);
-
-  const handleNext = () => {
-    if (currentIndex < flashcards.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setFlipped(false);
-      setUserAnswer('');
-      setShowResult(false);
-      if (isQuizMode && inputRef.current) {
-        setTimeout(() => inputRef.current?.focus(), 100);
-      }
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-      setFlipped(false);
-      setUserAnswer('');
-      setShowResult(false);
-    }
-  };
-
-  const handleFlip = () => {
-    if (!isQuizMode || showResult) {
-      setFlipped(!flipped);
-    }
-  };
-
-  const handleQuizSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userAnswer.trim()) return;
-    
-    const correct = userAnswer.toLowerCase().trim() === currentCard.back.toLowerCase().trim();
-    setIsCorrect(correct);
-    setShowResult(true);
-    setFlipped(true);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (isQuizMode) {
-      // Quiz modunda sadece Enter tuşu çalışsın
-      if (e.key === 'Enter' && showResult) {
-        e.preventDefault();
-        handleNext();
-      }
-    } else {
-      // Normal modda ok tuşları ve space çalışsın
-      if (e.key === 'ArrowRight') handleNext();
-      if (e.key === 'ArrowLeft') handlePrevious();
-      if (e.key === ' ') {
-        e.preventDefault();
-        handleFlip();
-      }
-    }
-  };
-
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && showResult) {
-      e.preventDefault();
-      handleNext();
-    }
-  };
-
-  // Mobil için optimize edilmiş kart yüksekliği
-  const getCardHeight = () => {
-    if (isMobile) {
-      if (isFullscreen && isQuizMode) return '180px';
-      if (isFullscreen) return '250px';
-      return isQuizMode ? '200px' : '250px';
-    }
-    return isFullscreen ? '400px' : '300px';
-  };
-
-  const fullscreenContainerStyle = isFullscreen && isMobile && isQuizMode ? {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    height: '100vh',
-    maxHeight: '100vh',
-    overflow: 'hidden'
-  } : {};
-
-  return (
-    <div 
-      ref={containerRef}
-      className={`${isFullscreen ? 'fixed inset-0 z-50' : 'relative'} flex flex-col`}
-      style={{ 
-        backgroundColor: isFullscreen ? colors.background : 'transparent',
-        ...fullscreenContainerStyle
-      }}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-    >
-      {/* Header */}
-      <div className="flex justify-between items-center p-4 flex-shrink-0">
-        <h2 className="text-lg md:text-xl font-semibold" style={{ color: colors.text }}>
-          Kelime Kartları ({currentIndex + 1}/{flashcards.length})
-        </h2>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={onToggleQuizMode}
-            className="p-2 rounded-lg transition-all"
-            style={{ 
-              backgroundColor: isQuizMode ? colors.accent : `${colors.accent}20`,
-              color: isQuizMode ? 'white' : colors.text
-            }}
-            title="Quiz Modu"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-              <path fillRule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 00-2 2v6a2 2 0 002 2h2a1 1 0 100 2H6a4 4 0 01-4-4V5z" clipRule="evenodd" />
-            </svg>
-          </button>
-          
-          <button
-            onClick={onToggleFullscreen}
-            className="p-2 rounded-lg transition-all"
-            style={{ 
-              backgroundColor: `${colors.accent}20`,
-              color: colors.text
-            }}
-            title="Tam Ekran"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isFullscreen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-              )}
-            </svg>
-          </button>
-          
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg transition-all"
-            style={{ 
-              backgroundColor: `${colors.accent}20`,
-              color: colors.text
-            }}
-            title="Kapat"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Card Area */}
-      <div className={`${isFullscreen && isMobile && isQuizMode ? 'flex-1 overflow-hidden' : 'flex-1'} flex flex-col items-center justify-center px-4 pb-4`}>
-        <div className="w-full max-w-2xl">
-          {/* Flashcard */}
-          <div 
-            className="relative w-full cursor-pointer"
-            style={{ 
-              height: getCardHeight(),
-              perspective: '1000px'
-            }}
-            onClick={handleFlip}
-          >
-            <div 
-              className="absolute inset-0 w-full h-full transition-transform duration-500"
-              style={{
-                transformStyle: 'preserve-3d',
-                transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-              }}
-            >
-              {/* Front */}
-              <div 
-                className="absolute inset-0 w-full h-full rounded-xl flex flex-col items-center justify-center p-6"
-                style={{
-                  backgroundColor: colors.cardBackground,
-                  backfaceVisibility: 'hidden',
-                  boxShadow: `0 4px 20px rgba(0,0,0,0.1), 0 0 0 1px ${colors.accent}20`
-                }}
-              >
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-center" style={{ color: colors.text }}>
-                  {currentCard.front}
-                </h3>
-                {currentCard.notes && (
-                  <p className="text-xs md:text-sm text-center mt-3 opacity-60" style={{ color: colors.text }}>
-                    {currentCard.notes}
-                  </p>
-                )}
-              </div>
-
-              {/* Back */}
-              <div 
-                className="absolute inset-0 w-full h-full rounded-xl flex flex-col items-center justify-center p-6"
-                style={{
-                  backgroundColor: colors.cardBackground,
-                  backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)',
-                  boxShadow: `0 4px 20px rgba(0,0,0,0.1), 0 0 0 1px ${colors.accent}20`
-                }}
-              >
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-center" style={{ color: colors.accent }}>
-                  {currentCard.back}
-                </h3>
-                {showResult && (
-                  <div className={`mt-4 px-4 py-2 rounded-lg ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
-                    <p className="text-white font-medium">
-                      {isCorrect ? '✓ Doğru!' : '✗ Yanlış!'}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Quiz Mode Input */}
-          {isQuizMode && !flipped && (
-            <form onSubmit={handleQuizSubmit} className="mt-4">
-              <input
-                ref={inputRef}
-                type="text"
-                value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
-                onKeyDown={handleInputKeyDown}
-                placeholder="Cevabınızı yazın..."
-                className="w-full px-4 py-3 rounded-lg text-base md:text-lg"
-                style={{
-                  backgroundColor: colors.background,
-                  color: colors.text,
-                  border: `2px solid ${colors.accent}40`
-                }}
-                autoFocus
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-              />
-              <button
-                type="submit"
-                className="mt-3 w-full py-3 rounded-lg font-medium transition-all"
-                style={{
-                  backgroundColor: colors.accent,
-                  color: 'white'
-                }}
-              >
-                Kontrol Et
-              </button>
-            </form>
-          )}
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center mt-6">
-            <button
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className="p-3 rounded-lg transition-all disabled:opacity-30"
-              style={{ 
-                backgroundColor: `${colors.accent}20`,
-                color: colors.text
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            <div className="text-sm text-center px-4" style={{ color: colors.text }}>
-              {isQuizMode && showResult ? (
-                <span>Enter'a basarak devam edin</span>
-              ) : isQuizMode ? (
-                <span>Cevabı yazın</span>
-              ) : (
-                <span>Kartı çevirmek için tıklayın</span>
-              )}
-            </div>
-
-            <button
-              onClick={handleNext}
-              disabled={currentIndex === flashcards.length - 1 || (isQuizMode && !showResult)}
-              className="p-3 rounded-lg transition-all disabled:opacity-30"
-              style={{ 
-                backgroundColor: `${colors.accent}20`,
-                color: colors.text
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function UploadFlashcardsPage() {
   const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
@@ -387,8 +23,7 @@ export default function UploadFlashcardsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [showViewer, setShowViewer] = useState(false);
-  const [viewerQuizMode, setViewerQuizMode] = useState(false);
-  const [viewerFullscreen, setViewerFullscreen] = useState(false);
+  const [currentSetId, setCurrentSetId] = useState<string | null>(null);
   const { colors } = useTheme();
 
   useEffect(() => {
@@ -503,18 +138,21 @@ export default function UploadFlashcardsPage() {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const cards = await getFlashcardsBySetId(setId);
-      
+
       if (cards.length === 0) {
         setError('Bu set için kelime kartları bulunamadı.');
         return;
       }
-      
+
       setFlashcards(cards);
       const set = savedSets.find(s => s.id === setId);
-      if (set) setSetName(set.name);
-      
+      if (set) {
+        setSetName(set.name);
+        setCurrentSetId(setId);
+      }
+
       setShowViewer(true);
     } catch (err) {
       console.error('Error loading flashcard set:', err);
@@ -550,19 +188,43 @@ export default function UploadFlashcardsPage() {
 
   if (showViewer && flashcards.length > 0) {
     return (
-      <FlashcardViewer
-        flashcards={flashcards}
-        onClose={() => {
-          setShowViewer(false);
-          setFlashcards([]);
-          setSetName('');
-        }}
-        colors={colors}
-        isQuizMode={viewerQuizMode}
-        isFullscreen={viewerFullscreen}
-        onToggleQuizMode={() => setViewerQuizMode(!viewerQuizMode)}
-        onToggleFullscreen={() => setViewerFullscreen(!viewerFullscreen)}
-      />
+      <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          {/* Kapat Butonu */}
+          <div className="mb-4">
+            <button
+              onClick={() => {
+                setShowViewer(false);
+                setFlashcards([]);
+                setSetName('');
+                setCurrentSetId(null);
+              }}
+              className="px-4 py-2 rounded-lg transition-all"
+              style={{
+                backgroundColor: colors.cardBackground,
+                color: colors.text
+              }}
+            >
+              ← Geri Dön
+            </button>
+          </div>
+
+          {/* FlashcardDeck */}
+          <FlashcardDeck
+            flashcards={flashcards}
+            categoryId={currentSetId || 'custom'}
+            categoryName={setName}
+            cardType="custom"
+            quizMode={true}
+            onReset={() => {
+              setShowViewer(false);
+              setFlashcards([]);
+              setSetName('');
+              setCurrentSetId(null);
+            }}
+          />
+        </div>
+      </div>
     );
   }
 

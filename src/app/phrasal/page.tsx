@@ -20,6 +20,7 @@ export default function PhrasalPage() {
 
   // Kategori ID'si ve soruları
   const categoryId = 'phrasal';
+  const categoryName = 'Fiil Öbekleri';
   const questionCount = quizData.phrasal_verbs.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -120,14 +121,16 @@ export default function PhrasalPage() {
             <Quiz 
               questions={quizData.phrasal_verbs}
               categoryWords={vocabulary.phrasal_verbs}
-              categoryId={categoryId} // Kategori ID'sini ekleyin
+              categoryId={categoryId}
+              categoryName={categoryName}
               onQuizComplete={setScore}
             />
           </div>
         ) : (
           <WordList 
             words={vocabulary.phrasal_verbs} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+            categoryId={categoryId}
+              categoryName={categoryName}
           />
         )}
 

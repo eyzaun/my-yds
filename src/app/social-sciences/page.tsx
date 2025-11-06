@@ -20,6 +20,7 @@ export default function SocialSciencesPage() {
 
   // Kategori ID'si ve soruları
   const categoryId = 'social-sciences';
+  const categoryName = 'Sosyal Bilimler';
   const questionCount = quizData.social_sciences.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -121,14 +122,16 @@ export default function SocialSciencesPage() {
             <Quiz 
               questions={quizData.social_sciences}
               categoryWords={vocabulary.social_sciences}
-              categoryId={categoryId} // Kategori ID'sini ekleyin
+              categoryId={categoryId}
+              categoryName={categoryName}
               onQuizComplete={setScore}
             />
           </div>
         ) : (
           <WordList 
             words={vocabulary.social_sciences} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+            categoryId={categoryId}
+              categoryName={categoryName}
           />
         )}
 

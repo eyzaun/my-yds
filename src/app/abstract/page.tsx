@@ -20,6 +20,7 @@ export default function AbstractPage() {
 
   // Kategori ID'si ve soruları
   const categoryId = 'abstract';
+  const categoryName = 'Soyut Kavramlar';
   const questionCount = quizData.abstract_concepts.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -120,10 +121,11 @@ export default function AbstractPage() {
                 </p>
               </div>
               
-              <Quiz 
+              <Quiz
                 questions={quizData.abstract_concepts}
                 categoryWords={vocabulary.abstract_concepts}
-                categoryId={categoryId} // Kategori ID'sini ekleyin
+                categoryId={categoryId}
+                categoryName={categoryName}
                 onQuizComplete={setScore}
               />
             </div>

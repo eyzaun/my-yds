@@ -20,6 +20,7 @@ export default function PhrasalVerbs2() {
 
  // Kategori ID'si ve soruları
  const categoryId = 'phrasal2';
+  const categoryName = 'Fiil Öbekleri 2';
  const questionCount = quizData.phrasal_verbs2.length;
  
  // Sayfa için SEO ve yapısal veri ekleme
@@ -127,7 +128,8 @@ export default function PhrasalVerbs2() {
        ) : (
          <WordList 
            words={vocabulary.phrasal_verbs2} 
-           categoryId={categoryId} // Kategori ID'sini ekleyin
+           categoryId={categoryId}
+              categoryName={categoryName}
          />
        )}
 
