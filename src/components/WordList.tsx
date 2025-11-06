@@ -365,7 +365,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                 </div>
 
                 {quizResult === 'correct' && (
-                  <p className="text-green-500 mt-2 text-sm font-medium">✓ Doğru cevap! 👍</p>
+                  <p className="text-green-500 mt-2 text-sm font-medium">Doğru cevap!</p>
                 )}
 
                 {quizResult === 'incorrect' && flipped && (
