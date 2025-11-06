@@ -44,13 +44,13 @@ export default function SpacedRepetitionPage() {
   } | null>(null);
 
   useEffect(() => {
-    if (!user) {
-      router.push('/login?redirect=/spaced-repetition');
-      return;
+    if (user) {
+      loadData();
+    } else {
+      // Don't redirect, just show loading as false
+      setLoading(false);
     }
-
-    loadData();
-  }, [user, router]);
+  }, [user]);
 
   const loadData = async () => {
     if (!user) return;
@@ -96,22 +96,6 @@ export default function SpacedRepetitionPage() {
     loadData(); // Refresh data after quiz
   };
 
-  if (!user) {
-    return null; // Will redirect
-  }
-
-  if (quizMode && selectedGroup) {
-    return (
-      <SpacedRepetitionQuiz
-        userId={user.uid}
-        type={selectedGroup.type}
-        categoryId={selectedGroup.categoryId}
-        categoryName={selectedGroup.categoryName}
-        onExit={endQuiz}
-      />
-    );
-  }
-
   if (loading) {
     return (
       <div
@@ -124,6 +108,116 @@ export default function SpacedRepetitionPage() {
             style={{ borderColor: colors.accent }}
           />
           <p style={{ color: colors.text }}>Yükleniyor...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show quiz if in quiz mode
+  if (quizMode && selectedGroup && user) {
+    return (
+      <SpacedRepetitionQuiz
+        userId={user.uid}
+        type={selectedGroup.type}
+        categoryId={selectedGroup.categoryId}
+        categoryName={selectedGroup.categoryName}
+        onExit={endQuiz}
+      />
+    );
+  }
+
+  // Show login prompt if user is not authenticated
+  if (!user) {
+    return (
+      <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="mb-8">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.text }}>
+                📚 Aralıklı Tekrar Sistemi
+              </h1>
+              <p className="text-lg opacity-70 mb-6" style={{ color: colors.text }}>
+                Bilimsel SM-2 algoritması ile kelime öğrenin
+              </p>
+            </div>
+
+            <div
+              className="rounded-xl p-8 mb-8 max-w-2xl mx-auto"
+              style={{ backgroundColor: colors.cardBackground }}
+            >
+              <div className="text-6xl mb-4">🔒</div>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
+                Giriş Yapmanız Gerekiyor
+              </h2>
+              <p className="mb-6 opacity-80" style={{ color: colors.text }}>
+                Aralıklı tekrar sistemini kullanabilmek ve ilerlemenizi takip edebilmek için
+                giriş yapmanız gerekmektedir.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => router.push('/login?redirect=/spaced-repetition')}
+                  className="px-8 py-3 rounded-lg font-medium text-white transition-all hover:opacity-90"
+                  style={{ backgroundColor: colors.accent }}
+                >
+                  Giriş Yap
+                </button>
+                <button
+                  onClick={() => router.push('/register')}
+                  className="px-8 py-3 rounded-lg font-medium transition-all hover:opacity-80"
+                  style={{
+                    backgroundColor: colors.background,
+                    color: colors.text,
+                    border: `2px solid ${colors.accent}`,
+                  }}
+                >
+                  Kayıt Ol
+                </button>
+              </div>
+            </div>
+
+            {/* Feature cards */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div
+                className="rounded-xl p-6"
+                style={{ backgroundColor: colors.cardBackground }}
+              >
+                <div className="text-4xl mb-3">🔥</div>
+                <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text }}>
+                  Günlük Seri
+                </h3>
+                <p className="text-sm opacity-70" style={{ color: colors.text }}>
+                  Her gün çalışarak serinizi koruyun ve motivasyonunuzu artırın
+                </p>
+              </div>
+
+              <div
+                className="rounded-xl p-6"
+                style={{ backgroundColor: colors.cardBackground }}
+              >
+                <div className="text-4xl mb-3">📊</div>
+                <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text }}>
+                  İlerleme Takibi
+                </h3>
+                <p className="text-sm opacity-70" style={{ color: colors.text }}>
+                  Detaylı istatistikler ile öğrenme ilerlemenizi görselleştirin
+                </p>
+              </div>
+
+              <div
+                className="rounded-xl p-6"
+                style={{ backgroundColor: colors.cardBackground }}
+              >
+                <div className="text-4xl mb-3">🎯</div>
+                <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text }}>
+                  Akıllı Algoritma
+                </h3>
+                <p className="text-sm opacity-70" style={{ color: colors.text }}>
+                  SM-2 algoritması en uygun tekrar zamanlarını belirler
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
