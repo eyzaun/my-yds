@@ -3,16 +3,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // TEMPORARY: More permissive rules for debugging
-    // IMPORTANT: These rules allow authenticated users to access their own data
-    // After testing, you can make them more restrictive if needed
-
     // Users collection with subcollections
     match /users/{userId} {
       // Allow if authenticated user is accessing their own data
       allow read, write: if request.auth != null && request.auth.uid == userId;
 
-      // Flashcard sets and flashcards
+      // Flashcard sets and flashcards (nested structure)
       match /flashcard-sets/{setId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
 
@@ -49,6 +45,19 @@ service cloud.firestore {
     // Top-level userProgress collection
     match /userProgress/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // TOP-LEVEL FLASHCARD COLLECTIONS (for current code structure)
+    match /flashcardSets/{setId} {
+      allow read, write: if request.auth != null && 
+                          resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null;
+    }
+
+    match /flashcards/{cardId} {
+      allow read, write: if request.auth != null && 
+                          resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null;
     }
 
     // Categories - read-only for authenticated users

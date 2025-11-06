@@ -82,7 +82,7 @@ function firestoreToCard(data: FirestoreCardData): SpacedRepetitionCard {
  * Convert application card data to Firestore card data
  */
 function cardToFirestore(card: SpacedRepetitionCard): FirestoreCardData {
-  return {
+  const data: any = {
     word: card.word,
     translation: card.translation,
     easeFactor: card.easeFactor,
@@ -94,9 +94,18 @@ function cardToFirestore(card: SpacedRepetitionCard): FirestoreCardData {
     correctCount: card.correctCount,
     incorrectCount: card.incorrectCount,
     createdAt: dateToTimestamp(card.createdAt) as unknown as Timestamp,
-    categoryId: card.categoryId,
-    categoryName: card.categoryName,
-  } as FirestoreCardData;
+  };
+
+  // Only add categoryId and categoryName if they are defined (avoid Firestore undefined error)
+  if (card.categoryId !== undefined) {
+    data.categoryId = card.categoryId;
+  }
+  
+  if (card.categoryName !== undefined) {
+    data.categoryName = card.categoryName;
+  }
+
+  return data as FirestoreCardData;
 }
 
 /**

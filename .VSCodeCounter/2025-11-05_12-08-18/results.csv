@@ -1,0 +1,138 @@
+"filename", "language", "JavaScript", "JSON", "Batch", "JSON with Comments", "TypeScript", "Markdown", "XML", "HTML", "TypeScript JSX", "PostCSS", "log", "comment", "blank", "total"
+"e:\web_project2\my-yds\.eslintrc.js", "JavaScript", 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"e:\web_project2\my-yds\README.md", "Markdown", 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 14, 37
+"e:\web_project2\my-yds\eslint.config.mjs", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 17
+"e:\web_project2\my-yds\firebase-debug.log", "log", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 0, 1, 37
+"e:\web_project2\my-yds\firebase.json", "JSON", 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41
+"e:\web_project2\my-yds\install-deps.bat", "Batch", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5
+"e:\web_project2\my-yds\install-firebase-deps.md", "Markdown", 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 6, 16
+"e:\web_project2\my-yds\next-sitemap.config.js", "JavaScript", 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9
+"e:\web_project2\my-yds\next.config.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 2, 21
+"e:\web_project2\my-yds\package-lock.json", "JSON", 0, 8531, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8532
+"e:\web_project2\my-yds\package.json", "JSON", 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 40
+"e:\web_project2\my-yds\postcss.config.mjs", "JavaScript", 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 9
+"e:\web_project2\my-yds\public\file.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"e:\web_project2\my-yds\public\globe.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"e:\web_project2\my-yds\public\google68f644f5bf44f2a6.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"e:\web_project2\my-yds\public\next.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"e:\web_project2\my-yds\public\site.webmanifest", "JSON", 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20
+"e:\web_project2\my-yds\public\sitemap1.xml", "XML", 0, 0, 0, 0, 0, 0, 87, 0, 0, 0, 0, 0, 0, 87
+"e:\web_project2\my-yds\public\vercel.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"e:\web_project2\my-yds\public\window.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"e:\web_project2\my-yds\src\app\about\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 90, 0, 0, 1, 9, 100
+"e:\web_project2\my-yds\src\app\abstract\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 162, 0, 0, 11, 16, 189
+"e:\web_project2\my-yds\src\app\academic-terms\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 156, 0, 0, 10, 16, 182
+"e:\web_project2\my-yds\src\app\all-words\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 156, 0, 0, 15, 20, 191
+"e:\web_project2\my-yds\src\app\business\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 10, 16, 183
+"e:\web_project2\my-yds\src\app\category\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 2, 2, 13
+"e:\web_project2\my-yds\src\app\conjunctions\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 10, 16, 183
+"e:\web_project2\my-yds\src\app\contact\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 116, 0, 0, 1, 12, 129
+"e:\web_project2\my-yds\src\app\globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 33, 56, 344
+"e:\web_project2\my-yds\src\app\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 246, 0, 0, 15, 10, 271
+"e:\web_project2\my-yds\src\app\login\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 41, 0, 0, 2, 6, 49
+"e:\web_project2\my-yds\src\app\nature\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 156, 0, 0, 10, 16, 182
+"e:\web_project2\my-yds\src\app\not-found.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 3, 3, 17
+"e:\web_project2\my-yds\src\app\official\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 10, 16, 183
+"e:\web_project2\my-yds\src\app\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 104, 0, 0, 13, 15, 132
+"e:\web_project2\my-yds\src\app\phrasal2\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 155, 0, 0, 10, 16, 181
+"e:\web_project2\my-yds\src\app\phrasal\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 10, 16, 183
+"e:\web_project2\my-yds\src\app\privacy\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 213, 0, 0, 1, 15, 229
+"e:\web_project2\my-yds\src\app\profile\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 153, 0, 0, 5, 15, 173
+"e:\web_project2\my-yds\src\app\protected-page\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 31, 0, 0, 2, 4, 37
+"e:\web_project2\my-yds\src\app\register\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 35, 0, 0, 2, 6, 43
+"e:\web_project2\my-yds\src\app\sitemap.ts", "TypeScript", 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 5, 5, 33
+"e:\web_project2\my-yds\src\app\social-sciences\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 10, 16, 183
+"e:\web_project2\my-yds\src\app\upload-flashcards\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 2, 15
+"e:\web_project2\my-yds\src\app\upload-flashcards\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 712, 0, 0, 22, 64, 798
+"e:\web_project2\my-yds\src\components\AdBanner.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 1, 4, 34
+"e:\web_project2\my-yds\src\components\AdSenseInit.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 5, 5, 33
+"e:\web_project2\my-yds\src\components\AdSenseScript.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 1, 2, 19
+"e:\web_project2\my-yds\src\components\AdSenseScriptWrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 3, 7, 39
+"e:\web_project2\my-yds\src\components\AdUnit.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 0, 9, 12, 86
+"e:\web_project2\my-yds\src\components\CategoryStats.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 3, 19
+"e:\web_project2\my-yds\src\components\ClientAd.js", "JavaScript", 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 15, 79
+"e:\web_project2\my-yds\src\components\ClientLayout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 4, 7, 48
+"e:\web_project2\my-yds\src\components\ClientOnlyAd.js", "JavaScript", 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 11, 67
+"e:\web_project2\my-yds\src\components\ClientScript.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 3, 8
+"e:\web_project2\my-yds\src\components\ContinueStudying.js", "JavaScript", 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 16, 108
+"e:\web_project2\my-yds\src\components\FirebaseStatus.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 2, 5, 32
+"e:\web_project2\my-yds\src\components\FlashCard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 297, 0, 0, 34, 46, 377
+"e:\web_project2\my-yds\src\components\HydrationSafePage.js", "JavaScript", 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6, 31
+"e:\web_project2\my-yds\src\components\Layout.js", "JavaScript", 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 31
+"e:\web_project2\my-yds\src\components\Navbar.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 13
+"e:\web_project2\my-yds\src\components\NavigationBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 459, 0, 0, 23, 32, 514
+"e:\web_project2\my-yds\src\components\Quiz.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 183, 0, 0, 5, 18, 206
+"e:\web_project2\my-yds\src\components\SafeSVG.js", "JavaScript", 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 37
+"e:\web_project2\my-yds\src\components\SomeComponentWithSVG.js", "JavaScript", 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 25
+"e:\web_project2\my-yds\src\components\ThemeSelector.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 1, 3, 26
+"e:\web_project2\my-yds\src\components\VocabularyList2.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 482, 0, 0, 4, 12, 498
+"e:\web_project2\my-yds\src\components\WordCard.js", "JavaScript", 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 8, 45
+"e:\web_project2\my-yds\src\components\WordList.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 227, 0, 0, 24, 30, 281
+"e:\web_project2\my-yds\src\components\auth\LoginForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 115, 0, 0, 2, 14, 131
+"e:\web_project2\my-yds\src\components\auth\ProfileInfo.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 62, 0, 0, 1, 8, 71
+"e:\web_project2\my-yds\src\components\auth\RegisterForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 5, 15, 147
+"e:\web_project2\my-yds\src\components\flashcards\ExcelUploader.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 107, 0, 0, 2, 14, 123
+"e:\web_project2\my-yds\src\components\flashcards\FlashcardCard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 0, 2, 10, 178
+"e:\web_project2\my-yds\src\components\flashcards\FlashcardControl.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 144, 0, 0, 3, 12, 159
+"e:\web_project2\my-yds\src\components\flashcards\FlashcardDeck.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 248, 0, 0, 8, 25, 281
+"e:\web_project2\my-yds\src\components\flashcards\FlashcardMobileView.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 294, 0, 0, 6, 27, 327
+"e:\web_project2\my-yds\src\components\flashcards\FullscreenWrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 9, 16, 145
+"e:\web_project2\my-yds\src\components\flashcards\QuizMode.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0, 29, 41, 325
+"e:\web_project2\my-yds\src\components\home\CategoryGrid.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 35, 0, 0, 0, 4, 39
+"e:\web_project2\my-yds\src\components\home\ExcelUploadSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 73, 0, 0, 3, 5, 81
+"e:\web_project2\my-yds\src\components\home\FaqSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 5, 30
+"e:\web_project2\my-yds\src\components\home\FeatureSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 47, 0, 0, 0, 6, 53
+"e:\web_project2\my-yds\src\components\home\ProgressOverview.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 129, 0, 0, 0, 16, 145
+"e:\web_project2\my-yds\src\components\layout\Drawer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 177, 0, 0, 7, 11, 195
+"e:\web_project2\my-yds\src\components\layout\Header.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 1, 33
+"e:\web_project2\my-yds\src\components\ui\Button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 74, 0, 0, 0, 8, 82
+"e:\web_project2\my-yds\src\components\ui\Card.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 31, 0, 0, 0, 5, 36
+"e:\web_project2\my-yds\src\components\ui\SectionTitle.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 3, 16
+"e:\web_project2\my-yds\src\components\ui\StyledCard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 3, 20
+"e:\web_project2\my-yds\src\components\ui\Typography.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 58, 0, 0, 0, 8, 66
+"e:\web_project2\my-yds\src\contexts\AuthContext.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 34, 0, 0, 5, 8, 47
+"e:\web_project2\my-yds\src\contexts\ThemeContext.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 34, 0, 0, 4, 8, 46
+"e:\web_project2\my-yds\src\contexts\UserProgressContext.js", "JavaScript", 74, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 17, 100
+"e:\web_project2\my-yds\src\data\categories.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 214, 0, 0, 1, 3, 218
+"e:\web_project2\my-yds\src\data\faq.ts", "TypeScript", 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 1, 2, 13
+"e:\web_project2\my-yds\src\data\features.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 1, 3, 21
+"e:\web_project2\my-yds\src\data\flashcards\all-words.json", "JSON", 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 21
+"e:\web_project2\my-yds\src\data\flashcards\index.js", "JavaScript", 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 5
+"e:\web_project2\my-yds\src\data\flashcards\sample.json", "JSON", 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 15
+"e:\web_project2\my-yds\src\data\homeData.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 172, 0, 0, 0, 4, 176
+"e:\web_project2\my-yds\src\data\quizData.ts", "TypeScript", 0, 0, 0, 0, 2169, 0, 0, 0, 0, 0, 0, 2, 50, 2221
+"e:\web_project2\my-yds\src\data\vocabulary.ts", "TypeScript", 0, 0, 0, 0, 339, 0, 0, 0, 0, 0, 0, 1, 12, 352
+"e:\web_project2\my-yds\src\firebase\auth.ts", "TypeScript", 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 9, 14, 89
+"e:\web_project2\my-yds\src\firebase\firebase.ts", "TypeScript", 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 11, 11, 52
+"e:\web_project2\my-yds\src\firebase\firestore.ts", "TypeScript", 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 10, 22, 153
+"e:\web_project2\my-yds\src\firebase\index.ts", "TypeScript", 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 5
+"e:\web_project2\my-yds\src\firebase\types.ts", "TypeScript", 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 5, 4, 36
+"e:\web_project2\my-yds\src\hooks\useFlashcardState.ts", "TypeScript", 0, 0, 0, 0, 431, 0, 0, 0, 0, 0, 0, 22, 72, 525
+"e:\web_project2\my-yds\src\lib\adLoader.js", "JavaScript", 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 45
+"e:\web_project2\my-yds\src\lib\adsense.ts", "TypeScript", 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 9, 8, 40
+"e:\web_project2\my-yds\src\lib\firebase.ts", "TypeScript", 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 2, 4, 21
+"e:\web_project2\my-yds\src\lib\firebase\config.ts", "TypeScript", 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 5, 8, 38
+"e:\web_project2\my-yds\src\lib\firebase\dataAccess.ts", "TypeScript", 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 24, 13, 103
+"e:\web_project2\my-yds\src\lib\firebase\errorHandler.ts", "TypeScript", 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 14, 8, 62
+"e:\web_project2\my-yds\src\lib\firebase\errors.ts", "TypeScript", 0, 0, 0, 0, 35, 0, 0, 0, 0, 0, 0, 8, 7, 50
+"e:\web_project2\my-yds\src\lib\firebase\flashcardStorage.ts", "TypeScript", 0, 0, 0, 0, 146, 0, 0, 0, 0, 0, 0, 17, 38, 201
+"e:\web_project2\my-yds\src\lib\firebase\safeMode.ts", "TypeScript", 0, 0, 0, 0, 96, 0, 0, 0, 0, 0, 0, 22, 14, 132
+"e:\web_project2\my-yds\src\lib\firebase\utils.ts", "TypeScript", 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 29, 13, 99
+"e:\web_project2\my-yds\src\lib\utils\categoryUtils.ts", "TypeScript", 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 3, 1, 11
+"e:\web_project2\my-yds\src\lib\utils\excelParser.ts", "TypeScript", 0, 0, 0, 0, 52, 0, 0, 0, 0, 0, 0, 16, 14, 82
+"e:\web_project2\my-yds\src\services\wordService.js", "JavaScript", 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 22
+"e:\web_project2\my-yds\src\styles\config.ts", "TypeScript", 0, 0, 0, 0, 86, 0, 0, 0, 0, 0, 0, 6, 10, 102
+"e:\web_project2\my-yds\src\styles\globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 82, 0, 4, 15, 101
+"e:\web_project2\my-yds\src\types\data.ts", "TypeScript", 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 5, 26
+"e:\web_project2\my-yds\src\types\flashcard.ts", "TypeScript", 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 4, 1, 11
+"e:\web_project2\my-yds\src\types\global.d.ts", "TypeScript", 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4
+"e:\web_project2\my-yds\src\types\quiz.ts", "TypeScript", 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 1, 9
+"e:\web_project2\my-yds\src\utils\buildInfo.js", "JavaScript", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 13
+"e:\web_project2\my-yds\src\utils\debugHydration.js", "JavaScript", 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 39
+"e:\web_project2\my-yds\src\utils\excelParser.ts", "TypeScript", 0, 0, 0, 0, 45, 0, 0, 0, 0, 0, 0, 5, 12, 62
+"e:\web_project2\my-yds\src\utils\requireAuth.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 34, 0, 0, 1, 9, 44
+"e:\web_project2\my-yds\src\utils\version.js", "JavaScript", 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 4
+"e:\web_project2\my-yds\structure.md", "Markdown", 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 1, 79
+"e:\web_project2\my-yds\tailwind.config.ts", "TypeScript", 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 2, 19
+"e:\web_project2\my-yds\tsconfig.json", "JSON with Comments", 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33
+"Total", "-", 533, 8665, 4, 33, 3968, 111, 92, 1, 8113, 337, 36, 723, 1377, 23993

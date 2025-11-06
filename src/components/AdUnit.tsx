@@ -23,10 +23,10 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
       // Önceki içeriği temizleyin
       currentRef.innerHTML = '';
       
-      // AdSense scriptinin yüklenip yüklenmediğini kontrol edin
+      // AdSense scriptinin yüklenip yüklenilmediğini kontrol edin
       if (typeof window.adsbygoogle === 'undefined') {
-        console.log('AdSense script is not loaded yet. Waiting...');
-        setTimeout(checkAndInitAd, 200); // 200ms sonra tekrar dene
+        // Sessizce bekle, log spam'i önle
+        setTimeout(checkAndInitAd, 500); // 500ms sonra tekrar dene
         return;
       }
       
@@ -48,9 +48,15 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
         // AdSense'i yükleyin
         try {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
-          console.log(`Ad pushed to queue: ${slot}`);
+          // Sessiz log - sadece development'ta
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`Ad initialized: ${slot}`);
+          }
         } catch (pushError) {
-          console.error('Error pushing ad to queue:', pushError);
+          // Hata logunu sadeleştir
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('AdSense push error:', pushError);
+          }
         }
       } catch (error) {
         console.error('Error creating ad:', error);
