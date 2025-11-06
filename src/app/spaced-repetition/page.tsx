@@ -145,7 +145,11 @@ export default function SpacedRepetitionPage() {
               className="rounded-xl p-8 mb-8 max-w-2xl mx-auto"
               style={{ backgroundColor: colors.cardBackground }}
             >
-              <div className="text-6xl mb-4">🔒</div>
+              <div className="mb-4">
+                <svg className="w-16 h-16" style={{ color: colors.text, margin: '0 auto', opacity: 0.3 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
               <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
                 Giriş Yapmanız Gerekiyor
               </h2>
@@ -182,7 +186,12 @@ export default function SpacedRepetitionPage() {
                 className="rounded-xl p-6"
                 style={{ backgroundColor: colors.cardBackground }}
               >
-                <div className="text-4xl mb-3">🔥</div>
+                <div className="text-4xl mb-3">
+                <svg className="w-10 h-10" style={{ color: colors.accent, margin: '0 auto' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                </svg>
+              </div>
                 <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text }}>
                   Günlük Seri
                 </h3>
@@ -195,7 +204,11 @@ export default function SpacedRepetitionPage() {
                 className="rounded-xl p-6"
                 style={{ backgroundColor: colors.cardBackground }}
               >
-                <div className="text-4xl mb-3">📊</div>
+                <div className="text-4xl mb-3">
+                <svg className="w-10 h-10" style={{ color: colors.accent, margin: '0 auto' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
                 <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text }}>
                   İlerleme Takibi
                 </h3>
@@ -208,7 +221,11 @@ export default function SpacedRepetitionPage() {
                 className="rounded-xl p-6"
                 style={{ backgroundColor: colors.cardBackground }}
               >
-                <div className="text-4xl mb-3">🎯</div>
+                <div className="text-4xl mb-3">
+                <svg className="w-10 h-10" style={{ color: colors.accent, margin: '0 auto' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
                 <h3 className="text-lg font-semibold mb-2" style={{ color: colors.text }}>
                   Akıllı Algoritma
                 </h3>
@@ -229,7 +246,7 @@ export default function SpacedRepetitionPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: colors.text }}>
-            📚 Aralıklı Tekrar Sistemi
+            Aralıklı Tekrar Sistemi
           </h1>
           <p className="opacity-70" style={{ color: colors.text }}>
             Bilimsel yöntemlerle kelime öğrenin
@@ -283,8 +300,11 @@ export default function SpacedRepetitionPage() {
               className="rounded-xl p-6 text-center"
               style={{ backgroundColor: colors.cardBackground }}
             >
-              <div className="text-4xl font-bold mb-2" style={{ color: colors.accent }}>
-                🔥 {streaks.currentStreak}
+              <div className="text-4xl font-bold mb-2 flex items-center justify-center gap-2" style={{ color: colors.accent }}>
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                </svg>
+                {streaks.currentStreak}
               </div>
               <div className="text-sm opacity-70" style={{ color: colors.text }}>
                 Günlük Seri
@@ -300,7 +320,7 @@ export default function SpacedRepetitionPage() {
             style={{ backgroundColor: colors.cardBackground }}
           >
             <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
-              📊 İlerleme Durumu
+              İlerleme Durumu
             </h2>
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
@@ -339,7 +359,7 @@ export default function SpacedRepetitionPage() {
             onClick={() => startQuiz('all')}
           >
             <h2 className="text-2xl font-bold mb-2 text-white">
-              🎯 Tüm Kartları Tekrar Et
+              Tüm Kartları Tekrar Et
             </h2>
             <p className="text-white opacity-90">
               {statistics.dueToday} kart bugün için hazır
@@ -350,7 +370,7 @@ export default function SpacedRepetitionPage() {
         {/* Category Groups */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4" style={{ color: colors.text }}>
-            📂 Kategoriler
+            Kategoriler
           </h2>
 
           {groupSummaries.length === 0 ? (
@@ -358,7 +378,11 @@ export default function SpacedRepetitionPage() {
               className="rounded-xl p-8 text-center"
               style={{ backgroundColor: colors.cardBackground }}
             >
-              <div className="text-6xl mb-4">📝</div>
+              <div className="mb-4">
+                <svg className="w-16 h-16" style={{ color: colors.text, margin: '0 auto', opacity: 0.3 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
               <h3 className="text-xl font-semibold mb-2" style={{ color: colors.text }}>
                 Henüz kelime kartınız yok
               </h3>
@@ -447,7 +471,7 @@ export default function SpacedRepetitionPage() {
             style={{ backgroundColor: colors.cardBackground }}
           >
             <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
-              📈 Son 7 Günlük Aktivite
+              Son 7 Günlük Aktivite
             </h2>
             <div className="space-y-2">
               {recentStats.map((stat) => (
