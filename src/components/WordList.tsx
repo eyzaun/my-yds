@@ -23,10 +23,11 @@ interface Word {
 
 interface WordListProps {
   words: Word[];
-  categoryId: string; // Kategori kimliği ekleyin
+  categoryId: string; // Kategori kimliği
+  isCustomCard?: boolean; // Kendi kartları mı? (upload-flashcards'dan geliyorsa true)
 }
 
-const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
+const WordList: React.FC<WordListProps> = ({ words, categoryId, isCustomCard = false }) => {
   const { colors } = useTheme();
   const { user } = useAuth();
 
@@ -146,9 +147,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
       // Save quiz result to Firebase for spaced repetition
       if (user) {
         try {
-          const cardType: CardType = categoryId.startsWith('custom') || categoryId === 'custom-flashcards'
-            ? 'custom'
-            : 'category';
+          // Determine card type based on isCustomCard prop
+          const cardType: CardType = isCustomCard ? 'custom' : 'category';
 
           await saveQuizResult(
             user.uid,
@@ -177,9 +177,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
       // Save incorrect quiz result to Firebase
       if (user) {
         try {
-          const cardType: CardType = categoryId.startsWith('custom') || categoryId === 'custom-flashcards'
-            ? 'custom'
-            : 'category';
+          // Determine card type based on isCustomCard prop
+          const cardType: CardType = isCustomCard ? 'custom' : 'category';
 
           await saveQuizResult(
             user.uid,
@@ -195,7 +194,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
         }
       }
     }
-  }, [quizAnswer, currentIndex, words, handleNext, quizResult, flipped, user, categoryId]);
+  }, [quizAnswer, currentIndex, words, handleNext, quizResult, flipped, user, categoryId, isCustomCard]);
 
   // Liste görünümünde kelimeye tıklama
   const handleWordClick = useCallback((index: number) => {

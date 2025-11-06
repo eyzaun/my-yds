@@ -228,7 +228,7 @@ export default function UploadFlashcardsPage() {
           </div>
 
           {/* WordList Component */}
-          <WordList words={words} categoryId={currentSetId || 'custom-flashcards'} />
+          <WordList words={words} categoryId={currentSetId || 'custom-flashcards'} isCustomCard={true} />
         </div>
       </div>
     );
