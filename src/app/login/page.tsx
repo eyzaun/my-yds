@@ -1,43 +1,64 @@
 // src/app/login/page.tsx
 'use client';
-import { useTheme } from '@/contexts/ThemeContext';
 import LoginForm from '@/components/auth/LoginForm';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import AdBanner from '../../components/AdBanner';
+import { Heading1 } from '@/components/design-system/Typography';
+import { Container } from '@/components/design-system/Container';
+import { designTokens } from '@/styles/design-tokens';
 
-// Replace the import using path alias with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const LoginPage = () => {
-  const { colors } = useTheme();
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center" style={{ color: colors.text }}>
-          Giriş Yap
-        </h1>
-        
-        <div className="max-w-md mx-auto">
-          <LoginForm />
-          
-          <div className="mt-6 text-center" style={{ color: colors.text }}>
-            <p>
-              Hesabınız yok mu?{' '}
-              <Link href="/register" className="underline" style={{ color: colors.accent }}>
-                Kayıt Ol
-              </Link>
-            </p>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: designTokens.colors.background.primary,
+      paddingBottom: designTokens.spacing[16]
+    }}>
+      <Container maxWidth="md">
+        <div style={{
+          paddingTop: designTokens.spacing[8],
+          paddingBottom: designTokens.spacing[8]
+        }}>
+          <Heading1 style={{
+            marginBottom: designTokens.spacing[8],
+            textAlign: 'center',
+            color: designTokens.colors.text.primary
+          }}>
+            Giriş Yap
+          </Heading1>
+
+          <div style={{ maxWidth: '28rem', margin: '0 auto' }}>
+            <LoginForm />
+
+            <div style={{
+              marginTop: designTokens.spacing[6],
+              textAlign: 'center',
+              color: designTokens.colors.text.secondary
+            }}>
+              <p>
+                Hesabınız yok mu?{' '}
+                <Link href="/register" style={{
+                  textDecoration: 'underline',
+                  color: designTokens.colors.primary[600],
+                  fontWeight: designTokens.typography.fontWeight.semibold
+                }}>
+                  Kayıt Ol
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <AdBanner 
-        slot="login-footer" 
-        format="horizontal" 
+      </Container>
+
+      <AdBanner
+        slot="login-footer"
+        format="horizontal"
         className="my-4 mx-auto max-w-6xl px-4"
       />
-      <ClientOnlyAd 
+      <ClientOnlyAd
         slot="login-banner"
         format="auto"
         className="my-4 mx-auto"

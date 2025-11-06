@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '@/firebase/auth';
-import { useTheme } from '@/contexts/ThemeContext';
 import { FirebaseError } from 'firebase/app';
+import { Button } from '@/components/design-system/Button';
+import { Card } from '@/components/design-system/Card';
+import { Input } from '@/components/design-system/Input';
+import { Heading2 } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 const RegisterForm = () => {
-  const { colors } = useTheme();
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -19,24 +22,24 @@ const RegisterForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     // Şifre kontrolü
     if (password !== confirmPassword) {
       setError('Şifreler eşleşmiyor.');
       return;
     }
-    
+
     // Şifre uzunluğu kontrolü
     if (password.length < 6) {
       setError('Şifre en az 6 karakter olmalıdır.');
       return;
     }
-    
+
     setLoading(true);
 
     try {
       const result = await registerUser(email, password, displayName);
-      
+
       if (result.error) {
         // Firebase hata kodlarına göre özelleştirilmiş mesajlar
         const errorCode = (result.error as FirebaseError).code;
@@ -49,7 +52,6 @@ const RegisterForm = () => {
         }
         console.error(result.error);
       } else {
-        // Başarılı kayıt
         router.push('/');
       }
     } catch (err) {
@@ -61,86 +63,86 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-lg shadow-lg" style={{ backgroundColor: colors.cardBackground }}>
-      <h2 className="text-2xl font-bold mb-6 text-center" style={{ color: colors.text }}>
+    <Card variant="elevated">
+      <Heading2 style={{
+        marginBottom: designTokens.spacing[6],
+        textAlign: 'center',
+        color: designTokens.colors.text.primary
+      }}>
         Hesap Oluştur
-      </h2>
-      
+      </Heading2>
+
       {error && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: colors.text }}>
+        <div style={{
+          padding: designTokens.spacing[4],
+          marginBottom: designTokens.spacing[4],
+          borderRadius: designTokens.borderRadius.md,
+          backgroundColor: designTokens.colors.accent.error.light,
+          color: designTokens.colors.text.primary,
+          fontSize: designTokens.typography.fontSize.sm
+        }}>
           {error}
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
-            Ad Soyad
-          </label>
-          <input
+        <div style={{ marginBottom: designTokens.spacing[4] }}>
+          <Input
             type="text"
+            label="Ad Soyad"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
+            fullWidth
           />
         </div>
-        
-        <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
-            Email
-          </label>
-          <input
+
+        <div style={{ marginBottom: designTokens.spacing[4] }}>
+          <Input
             type="email"
+            label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
+            fullWidth
           />
         </div>
-        
-        <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
-            Şifre
-          </label>
-          <input
+
+        <div style={{ marginBottom: designTokens.spacing[4] }}>
+          <Input
             type="password"
+            label="Şifre"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
+            fullWidth
             minLength={6}
           />
         </div>
-        
-        <div className="mb-6">
-          <label className="block mb-2" style={{ color: colors.text }}>
-            Şifre Tekrar
-          </label>
-          <input
+
+        <div style={{ marginBottom: designTokens.spacing[6] }}>
+          <Input
             type="password"
+            label="Şifre Tekrar"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
+            fullWidth
             minLength={6}
           />
         </div>
-        
-        <button
+
+        <Button
           type="submit"
-          className="w-full py-2 px-4 rounded-md font-medium"
-          style={{ backgroundColor: colors.accent, color: colors.text }}
-          disabled={loading}
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={loading}
         >
           {loading ? 'Kayıt Yapılıyor...' : 'Kayıt Ol'}
-        </button>
+        </Button>
       </form>
-    </div>
+    </Card>
   );
 };
 

@@ -3,10 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginUser, sendPasswordReset } from '@/firebase/auth';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Button } from '@/components/design-system/Button';
+import { Card } from '@/components/design-system/Card';
+import { Input } from '@/components/design-system/Input';
+import { Heading2 } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 const LoginForm = () => {
-  const { colors } = useTheme();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,12 +24,11 @@ const LoginForm = () => {
 
     try {
       const result = await loginUser(email, password);
-      
+
       if (result.error) {
         setError('Giriş başarısız. Lütfen email ve şifrenizi kontrol edin.');
         console.error(result.error);
       } else {
-        // Başarılı giriş
         router.push('/');
       }
     } catch (err) {
@@ -58,73 +60,98 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-lg shadow-lg" style={{ backgroundColor: colors.cardBackground }}>
-      <h2 className="text-2xl font-bold mb-6 text-center" style={{ color: colors.text }}>
+    <Card variant="elevated">
+      <Heading2 style={{
+        marginBottom: designTokens.spacing[6],
+        textAlign: 'center',
+        color: designTokens.colors.text.primary
+      }}>
         Giriş Yap
-      </h2>
-      
+      </Heading2>
+
       {error && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: colors.text }}>
+        <div style={{
+          padding: designTokens.spacing[4],
+          marginBottom: designTokens.spacing[4],
+          borderRadius: designTokens.borderRadius.md,
+          backgroundColor: designTokens.colors.accent.error.light,
+          color: designTokens.colors.text.primary,
+          fontSize: designTokens.typography.fontSize.sm
+        }}>
           {error}
         </div>
       )}
-      
+
       {resetSent && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(34, 197, 94, 0.2)', color: colors.text }}>
+        <div style={{
+          padding: designTokens.spacing[4],
+          marginBottom: designTokens.spacing[4],
+          borderRadius: designTokens.borderRadius.md,
+          backgroundColor: designTokens.colors.accent.success.light,
+          color: designTokens.colors.text.primary,
+          fontSize: designTokens.typography.fontSize.sm
+        }}>
           Şifre sıfırlama bağlantısı email adresinize gönderildi.
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
-            Email
-          </label>
-          <input
+        <div style={{ marginBottom: designTokens.spacing[4] }}>
+          <Input
             type="email"
+            label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
+            fullWidth
           />
         </div>
-        
-        <div className="mb-6">
-          <label className="block mb-2" style={{ color: colors.text }}>
-            Şifre
-          </label>
-          <input
+
+        <div style={{ marginBottom: designTokens.spacing[6] }}>
+          <Input
             type="password"
+            label="Şifre"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
+            fullWidth
           />
         </div>
-        
-        <div className="flex flex-col space-y-3">
-          <button
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: designTokens.spacing[3]
+        }}>
+          <Button
             type="submit"
-            className="w-full py-2 px-4 rounded-md font-medium"
-            style={{ backgroundColor: colors.accent, color: colors.text }}
-            disabled={loading}
+            variant="primary"
+            size="lg"
+            fullWidth
+            loading={loading}
           >
             {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
-          </button>
-          
+          </Button>
+
           <button
             type="button"
             onClick={handlePasswordReset}
-            className="text-sm text-center"
-            style={{ color: colors.accent }}
+            style={{
+              fontSize: designTokens.typography.fontSize.sm,
+              textAlign: 'center',
+              color: designTokens.colors.primary[600],
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: designTokens.spacing[2],
+              textDecoration: 'underline'
+            }}
           >
             Şifremi Unuttum
           </button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 };
 
