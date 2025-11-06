@@ -1,3 +1,21 @@
+# YDS Kelime Listesi
+
+YDS sınavı için kategorilere ayrılmış İngilizce kelime listesi ve test platformu.
+
+**Live Site:** https://my-yds.web.app  
+**Last Updated:** November 7, 2025
+
+## Features
+
+- 📚 8+ kategoride kelime listeleri
+- 🎯 İnteraktif testler ve quiz'ler
+- 📖 Flashcard sistemi
+- 🔄 Spaced Repetition (Aralıklı Tekrar) sistemi
+- 👤 Kullanıcı ilerleme takibi
+- 🎨 Modern ve responsive tasarım
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
