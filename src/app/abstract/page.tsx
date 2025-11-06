@@ -18,8 +18,9 @@ export default function AbstractPage() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'abstract';
+  const categoryName = 'Soyut Kavramlar';
   const questionCount = quizData.abstract_concepts.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -128,9 +129,10 @@ export default function AbstractPage() {
               />
             </div>
           ) : (
-            <WordList 
+            <WordList
               words={vocabulary.abstract_concepts}
-              categoryId={categoryId} // Kategori ID'sini ekleyin
+              categoryId={categoryId}
+              categoryName={categoryName}
             />
           )}
 

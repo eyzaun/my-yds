@@ -120,7 +120,12 @@ export default function SpacedRepetitionQuiz({
 
   const startNewSession = async () => {
     try {
-      const reviewCards = await getReviewCards(userId, type as CardType, 50);
+      // Get review cards based on type (handles 'all', 'custom', 'category')
+      const reviewCards = await getReviewCards(
+        userId,
+        type === 'all' ? 'all' : type,
+        50
+      );
 
       if (reviewCards.length === 0) {
         setFinished(true);
@@ -161,7 +166,11 @@ export default function SpacedRepetitionQuiz({
       }
 
       // Load cards from session
-      const allCards = await getReviewCards(userId, type as CardType, 100);
+      const allCards = await getReviewCards(
+        userId,
+        type === 'all' ? 'all' : type,
+        100
+      );
       const sessionCards = allCards.filter((card) =>
         activeSession.cardIds.includes(
           `${userId}_${card.categoryId ? 'category' : 'custom'}_${card.word.toLowerCase().replace(/\s+/g, '_')}`

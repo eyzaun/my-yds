@@ -18,8 +18,9 @@ export default function SocialSciencesPage() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'social-sciences';
+  const categoryName = 'Sosyal Bilimler';
   const questionCount = quizData.social_sciences.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -126,9 +127,10 @@ export default function SocialSciencesPage() {
             />
           </div>
         ) : (
-          <WordList 
-            words={vocabulary.social_sciences} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+          <WordList
+            words={vocabulary.social_sciences}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

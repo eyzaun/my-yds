@@ -18,8 +18,9 @@ export default function AcademicTermsPage() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'academic-terms';
+  const categoryName = 'Akademik Terimler';
   const questionCount = quizData.academic_terms.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -125,9 +126,10 @@ export default function AcademicTermsPage() {
             />
           </div>
         ) : (
-          <WordList 
-            words={vocabulary.academic_terms} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+          <WordList
+            words={vocabulary.academic_terms}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

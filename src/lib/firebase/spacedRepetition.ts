@@ -152,6 +152,12 @@ export async function saveQuizResult(
     throw new Error('User not authenticated');
   }
 
+  // Validate that categoryId is provided when type is 'category'
+  if (type === 'category' && !categoryId) {
+    console.error('categoryId is required when type is "category"');
+    throw new Error('categoryId is required when type is "category"');
+  }
+
   try {
     const cardId = generateCardId(userId, type, word, categoryId);
     // Firebase requires even number of segments: users/{userId}/spaced-repetition-{type}/{cardId}

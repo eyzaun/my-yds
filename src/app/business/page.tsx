@@ -18,8 +18,9 @@ export default function Business() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'business';
+  const categoryName = 'İşletme ve Ekonomi';
   const questionCount = quizData.business_and_economy.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -126,9 +127,10 @@ export default function Business() {
             />
           </div>
         ) : (
-          <WordList 
+          <WordList
             words={vocabulary.business_and_economy}
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

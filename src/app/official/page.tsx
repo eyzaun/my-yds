@@ -18,8 +18,9 @@ export default function OfficialPage() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'official';
+  const categoryName = 'Resmi Dil';
   const questionCount = quizData.official_language.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -126,9 +127,10 @@ export default function OfficialPage() {
             />
           </div>
         ) : (
-          <WordList 
-            words={vocabulary.official_language} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+          <WordList
+            words={vocabulary.official_language}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

@@ -18,8 +18,9 @@ export default function Conjunctions() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'conjunctions';
+  const categoryName = 'Bağlaçlar';
   const questionCount = quizData.conjunctions_and_transitions.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -126,9 +127,10 @@ export default function Conjunctions() {
             />
           </div>
         ) : (
-          <WordList 
-            words={vocabulary.conjunctions_and_transitions} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+          <WordList
+            words={vocabulary.conjunctions_and_transitions}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

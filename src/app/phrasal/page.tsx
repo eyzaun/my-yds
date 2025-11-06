@@ -18,8 +18,9 @@ export default function PhrasalPage() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'phrasal';
+  const categoryName = 'Fiil Öbekleri';
   const questionCount = quizData.phrasal_verbs.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -125,9 +126,10 @@ export default function PhrasalPage() {
             />
           </div>
         ) : (
-          <WordList 
-            words={vocabulary.phrasal_verbs} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+          <WordList
+            words={vocabulary.phrasal_verbs}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

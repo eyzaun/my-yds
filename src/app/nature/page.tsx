@@ -18,8 +18,9 @@ export default function NaturePage() {
   const { colors } = useTheme();
   const { user } = useAuth(); // Kullanıcı durumunu al
 
-  // Kategori ID'si ve soruları
+  // Kategori ID'si, ismi ve soruları
   const categoryId = 'nature';
+  const categoryName = 'Doğa ve Çevre';
   const questionCount = quizData.nature_and_environment.length;
   
   // Sayfa için SEO ve yapısal veri ekleme
@@ -126,9 +127,10 @@ export default function NaturePage() {
             />
           </div>
         ) : (
-          <WordList 
-            words={vocabulary.nature_and_environment} 
-            categoryId={categoryId} // Kategori ID'sini ekleyin
+          <WordList
+            words={vocabulary.nature_and_environment}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         )}
 

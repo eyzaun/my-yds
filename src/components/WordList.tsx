@@ -24,10 +24,11 @@ interface Word {
 interface WordListProps {
   words: Word[];
   categoryId: string; // Kategori kimliği
+  categoryName?: string; // Kategori ismi (ör: "İşletme ve Ekonomi")
   isCustomCard?: boolean; // Kendi kartları mı? (upload-flashcards'dan geliyorsa true)
 }
 
-const WordList: React.FC<WordListProps> = ({ words, categoryId, isCustomCard = false }) => {
+const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, isCustomCard = false }) => {
   const { colors } = useTheme();
   const { user } = useAuth();
 
@@ -157,7 +158,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, isCustomCard = f
             currentWord.tr,
             true, // correct answer
             cardType === 'category' ? categoryId : undefined,
-            cardType === 'category' ? categoryId : undefined
+            cardType === 'category' ? (categoryName || categoryId) : undefined
           );
         } catch (error) {
           console.error('Error saving quiz result:', error);
@@ -187,7 +188,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, isCustomCard = f
             currentWord.tr,
             false, // incorrect answer
             cardType === 'category' ? categoryId : undefined,
-            cardType === 'category' ? categoryId : undefined
+            cardType === 'category' ? (categoryName || categoryId) : undefined
           );
         } catch (error) {
           console.error('Error saving quiz result:', error);
