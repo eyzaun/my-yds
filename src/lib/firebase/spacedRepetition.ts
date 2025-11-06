@@ -139,7 +139,9 @@ export async function saveQuizResult(
 
   try {
     const cardId = generateCardId(userId, type, word, categoryId);
-    const cardRef = doc(db, 'users', userId, 'spaced-repetition', type, cardId);
+    // Firebase requires even number of segments: users/{userId}/spaced-repetition-{type}/{cardId}
+    const collectionName = `spaced-repetition-${type}`;
+    const cardRef = doc(db, 'users', userId, collectionName, cardId);
 
     // Get existing card or create new one
     const cardDoc = await getDoc(cardRef);
@@ -199,7 +201,9 @@ export async function getUserCards(
     const collections: CardType[] = type === 'all' ? ['custom', 'category'] : [type];
 
     for (const collectionType of collections) {
-      const collectionRef = collection(db, 'users', userId, 'spaced-repetition', collectionType);
+      // Firebase requires even number of segments
+      const collectionName = `spaced-repetition-${collectionType}`;
+      const collectionRef = collection(db, 'users', userId, collectionName);
       let q = query(collectionRef);
 
       // Filter by category if specified
@@ -297,7 +301,8 @@ async function updateDailyStatistics(
   const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD
 
   try {
-    const statsRef = doc(db, 'users', userId, 'statistics', 'daily', dateString);
+    // Firebase requires even number of segments
+    const statsRef = doc(db, 'users', userId, 'statistics-daily', dateString);
     const statsDoc = await getDoc(statsRef);
 
     if (statsDoc.exists()) {
@@ -352,7 +357,8 @@ export async function getDailyStatistics(
   }
 
   try {
-    const statsCollection = collection(db, 'users', userId, 'statistics', 'daily');
+    // Firebase requires even number of segments
+    const statsCollection = collection(db, 'users', userId, 'statistics-daily');
     const q = query(
       statsCollection,
       where('date', '>=', startDate),
@@ -496,7 +502,8 @@ export async function deleteCard(
 
   try {
     const cardId = generateCardId(userId, type, word, categoryId);
-    const cardRef = doc(db, 'users', userId, 'spaced-repetition', type, cardId);
+    const collectionName = `spaced-repetition-${type}`;
+    const cardRef = doc(db, 'users', userId, collectionName, cardId);
 
     await setDoc(cardRef, { deleted: true }, { merge: true });
   } catch (error) {
@@ -543,7 +550,8 @@ export async function bulkCreateCards(
         wordData.word,
         wordData.categoryId
       );
-      const cardRef = doc(db, 'users', userId, 'spaced-repetition', type, cardId);
+      const collectionName = `spaced-repetition-${type}`;
+      const cardRef = doc(db, 'users', userId, collectionName, cardId);
 
       // Check if card already exists
       const cardDoc = await getDoc(cardRef);
