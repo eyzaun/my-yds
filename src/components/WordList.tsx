@@ -3,6 +3,9 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { saveQuizResult } from '@/lib/firebase/spacedRepetition';
+import { CardType } from '@/types/spacedRepetition';
 
 // FlashCard dinamik olarak import ediliyor
 const FlashCard = dynamic(() => import('./FlashCard'), {
@@ -25,6 +28,7 @@ interface WordListProps {
 
 const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
   const { colors } = useTheme();
+  const { user } = useAuth();
 
   // Ana state'ler
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -106,7 +110,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
     }
   }, [isQuizMode]);
 
-  const handleQuizSubmit = useCallback((e: React.FormEvent) => {
+  const handleQuizSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!quizAnswer.trim()) return;
 
@@ -133,10 +137,32 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
     // İlk deneme - kullanıcının cevabını kontrol et
     const isExactMatch = userAnswer === correctAnswer;
     const isCloseMatch = correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2;
+    const isCorrect = isExactMatch || isCloseMatch;
 
-    if (isExactMatch || isCloseMatch) {
+    if (isCorrect) {
       setQuizResult('correct');
       setFlipped(true);
+
+      // Save quiz result to Firebase for spaced repetition
+      if (user) {
+        try {
+          const cardType: CardType = categoryId.startsWith('custom') || categoryId === 'custom-flashcards'
+            ? 'custom'
+            : 'category';
+
+          await saveQuizResult(
+            user.uid,
+            cardType,
+            currentWord.en,
+            currentWord.tr,
+            true, // correct answer
+            cardType === 'category' ? categoryId : undefined,
+            cardType === 'category' ? categoryId : undefined
+          );
+        } catch (error) {
+          console.error('Error saving quiz result:', error);
+        }
+      }
 
       // Doğru cevap - 1 saniye sonra sonraki kelimeye geç
       setTimeout(() => {
@@ -147,8 +173,29 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId }) => {
       setQuizResult('incorrect');
       setFlipped(true);
       setQuizAnswer('');
+
+      // Save incorrect quiz result to Firebase
+      if (user) {
+        try {
+          const cardType: CardType = categoryId.startsWith('custom') || categoryId === 'custom-flashcards'
+            ? 'custom'
+            : 'category';
+
+          await saveQuizResult(
+            user.uid,
+            cardType,
+            currentWord.en,
+            currentWord.tr,
+            false, // incorrect answer
+            cardType === 'category' ? categoryId : undefined,
+            cardType === 'category' ? categoryId : undefined
+          );
+        } catch (error) {
+          console.error('Error saving quiz result:', error);
+        }
+      }
     }
-  }, [quizAnswer, currentIndex, words, handleNext, quizResult, flipped]);
+  }, [quizAnswer, currentIndex, words, handleNext, quizResult, flipped, user, categoryId]);
 
   // Liste görünümünde kelimeye tıklama
   const handleWordClick = useCallback((index: number) => {
