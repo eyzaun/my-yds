@@ -1,0 +1,14 @@
+rules_version = '2';
+
+// ⚠️ EMERGENCY TESTING RULES - USE ONLY FOR DEBUGGING ⚠️
+// These rules allow all authenticated users to read/write
+// ONLY USE THIS TEMPORARILY TO TEST IF RULES ARE THE PROBLEM
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow all authenticated users (TEMPORARY)
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

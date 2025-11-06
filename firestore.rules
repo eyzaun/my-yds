@@ -2,74 +2,67 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper function to check if user is authenticated
-    function isAuthenticated() {
-      return request.auth != null;
-    }
 
-    // Helper function to check if user owns the resource
-    function isOwner(userId) {
-      return isAuthenticated() && request.auth.uid == userId;
-    }
+    // TEMPORARY: More permissive rules for debugging
+    // IMPORTANT: These rules allow authenticated users to access their own data
+    // After testing, you can make them more restrictive if needed
 
-    // Users collection - base level
+    // Users collection with subcollections
     match /users/{userId} {
-      // Allow users to read/write their own user document
-      allow read, write: if isOwner(userId);
+      // Allow if authenticated user is accessing their own data
+      allow read, write: if request.auth != null && request.auth.uid == userId;
 
-      // Flashcard sets subcollection
+      // Flashcard sets and flashcards
       match /flashcard-sets/{setId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if request.auth != null && request.auth.uid == userId;
 
-        // Flashcards subcollection within sets
         match /flashcards/{cardId} {
-          allow read, write: if isOwner(userId);
+          allow read, write: if request.auth != null && request.auth.uid == userId;
         }
       }
 
-      // Spaced repetition - custom cards
+      // Spaced repetition cards
       match /spaced-repetition-custom/{cardId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
-      // Spaced repetition - category cards
       match /spaced-repetition-category/{cardId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Quiz sessions
+      match /quiz-sessions/{sessionId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
       // Daily statistics
       match /statistics-daily/{dateId} {
-        allow read, write: if isOwner(userId);
-      }
-
-      // Quiz sessions (for saving progress)
-      match /quiz-sessions/{sessionId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
       // User settings
       match /settings/{settingId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
     }
 
-    // User progress tracking (top-level collection)
+    // Top-level userProgress collection
     match /userProgress/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Categories collection (read-only for all authenticated users)
+    // Categories - read-only for authenticated users
     match /categories/{categoryId} {
-      allow read: if isAuthenticated();
-      allow write: if false; // Only admins can write (handle via Firebase Admin SDK)
+      allow read: if request.auth != null;
+      allow write: if false;
 
       match /words/{wordId} {
-        allow read: if isAuthenticated();
+        allow read: if request.auth != null;
         allow write: if false;
       }
     }
 
-    // Deny all other access
+    // Block all other access
     match /{document=**} {
       allow read, write: if false;
     }
