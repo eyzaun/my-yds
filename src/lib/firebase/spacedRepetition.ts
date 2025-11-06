@@ -24,10 +24,14 @@ import {
   FirestoreDailyStats,
   UserStatistics,
   CardGroupSummary,
+  QuizSession,
+  FirestoreQuizSession,
+  Quality,
 } from '@/types/spacedRepetition';
 import {
   createNewCard,
   updateCardAfterReview,
+  updateCardAfterReviewWithQuality,
   getCardsForReview,
   calculateUserStatistics,
   groupCardsByCategory,
@@ -116,6 +120,7 @@ function generateCardId(userId: string, type: CardType, word: string, categoryId
  * @param isCorrect - Whether the answer was correct
  * @param categoryId - Category ID (required for category type)
  * @param categoryName - Category name (optional)
+ * @param quality - Optional quality rating (0-5) for more precise SM-2 algorithm
  */
 export async function saveQuizResult(
   userId: string,
@@ -124,7 +129,8 @@ export async function saveQuizResult(
   translation: string,
   isCorrect: boolean,
   categoryId?: string,
-  categoryName?: string
+  categoryName?: string,
+  quality?: Quality
 ): Promise<void> {
   if (!isClient) {
     throw new Error('This function can only run on client-side');
@@ -156,7 +162,14 @@ export async function saveQuizResult(
     }
 
     // Update card based on quiz result
-    const updatedCard = updateCardAfterReview(card, isCorrect);
+    let updatedCard: SpacedRepetitionCard;
+    if (quality !== undefined) {
+      // Use detailed quality rating if provided
+      updatedCard = updateCardAfterReviewWithQuality(card, quality);
+    } else {
+      // Fall back to simple correct/incorrect
+      updatedCard = updateCardAfterReview(card, isCorrect);
+    }
 
     // Save to Firestore
     await setDoc(cardRef, cardToFirestore(updatedCard));
@@ -570,5 +583,286 @@ export async function bulkCreateCards(
   } catch (error) {
     console.error('Error bulk creating cards:', error);
     throw error;
+  }
+}
+
+/**
+ * Quiz Session Management
+ */
+
+/**
+ * Convert Firestore quiz session to application quiz session
+ */
+function firestoreToQuizSession(data: FirestoreQuizSession): QuizSession {
+  return {
+    sessionId: data.sessionId,
+    userId: data.userId,
+    type: data.type,
+    categoryId: data.categoryId,
+    categoryName: data.categoryName,
+    currentIndex: data.currentIndex,
+    totalCards: data.totalCards,
+    cardIds: data.cardIds,
+    answeredCards: data.answeredCards.map(card => ({
+      ...card,
+      timestamp: timestampToDate(card.timestamp as unknown as Timestamp)!,
+    })),
+    correctCount: data.correctCount,
+    incorrectCount: data.incorrectCount,
+    startedAt: timestampToDate(data.startedAt as unknown as Timestamp)!,
+    lastUpdatedAt: timestampToDate(data.lastUpdatedAt as unknown as Timestamp)!,
+    completedAt: data.completedAt ? timestampToDate(data.completedAt as unknown as Timestamp) : undefined,
+    isCompleted: data.isCompleted,
+  };
+}
+
+/**
+ * Convert application quiz session to Firestore quiz session
+ */
+function quizSessionToFirestore(session: QuizSession): FirestoreQuizSession {
+  return {
+    sessionId: session.sessionId,
+    userId: session.userId,
+    type: session.type,
+    categoryId: session.categoryId,
+    categoryName: session.categoryName,
+    currentIndex: session.currentIndex,
+    totalCards: session.totalCards,
+    cardIds: session.cardIds,
+    answeredCards: session.answeredCards.map(card => ({
+      ...card,
+      timestamp: dateToTimestamp(card.timestamp) as unknown as Timestamp,
+    })),
+    correctCount: session.correctCount,
+    incorrectCount: session.incorrectCount,
+    startedAt: dateToTimestamp(session.startedAt) as unknown as Timestamp,
+    lastUpdatedAt: dateToTimestamp(session.lastUpdatedAt) as unknown as Timestamp,
+    completedAt: session.completedAt ? (dateToTimestamp(session.completedAt) as unknown as Timestamp) : undefined,
+    isCompleted: session.isCompleted,
+  } as FirestoreQuizSession;
+}
+
+/**
+ * Create a new quiz session
+ *
+ * @param userId - User ID
+ * @param type - Card type
+ * @param cards - Cards for this session
+ * @param categoryId - Category ID (optional)
+ * @param categoryName - Category name (optional)
+ * @returns Created quiz session
+ */
+export async function createQuizSession(
+  userId: string,
+  type: CardType | 'all',
+  cards: SpacedRepetitionCard[],
+  categoryId?: string,
+  categoryName?: string
+): Promise<QuizSession> {
+  if (!isClient) {
+    throw new Error('This function can only run on client-side');
+  }
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  if (!auth.currentUser || auth.currentUser.uid !== userId) {
+    throw new Error('User not authenticated');
+  }
+
+  try {
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+    const now = new Date();
+
+    const session: QuizSession = {
+      sessionId,
+      userId,
+      type,
+      categoryId,
+      categoryName,
+      currentIndex: 0,
+      totalCards: cards.length,
+      cardIds: cards.map(c => generateCardId(userId, c.categoryId ? 'category' : 'custom', c.word, c.categoryId)),
+      answeredCards: [],
+      correctCount: 0,
+      incorrectCount: 0,
+      startedAt: now,
+      lastUpdatedAt: now,
+      isCompleted: false,
+    };
+
+    const sessionRef = doc(db, 'users', userId, 'quiz-sessions', sessionId);
+    await setDoc(sessionRef, quizSessionToFirestore(session));
+
+    return session;
+  } catch (error) {
+    console.error('Error creating quiz session:', error);
+    throw error;
+  }
+}
+
+/**
+ * Update quiz session progress
+ *
+ * @param userId - User ID
+ * @param session - Updated session data
+ */
+export async function updateQuizSession(
+  userId: string,
+  session: QuizSession
+): Promise<void> {
+  if (!isClient) {
+    throw new Error('This function can only run on client-side');
+  }
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  if (!auth.currentUser || auth.currentUser.uid !== userId) {
+    throw new Error('User not authenticated');
+  }
+
+  try {
+    session.lastUpdatedAt = new Date();
+    const sessionRef = doc(db, 'users', userId, 'quiz-sessions', session.sessionId);
+    await setDoc(sessionRef, quizSessionToFirestore(session));
+  } catch (error) {
+    console.error('Error updating quiz session:', error);
+    throw error;
+  }
+}
+
+/**
+ * Get active quiz session (incomplete session)
+ *
+ * @param userId - User ID
+ * @param type - Card type filter
+ * @param categoryId - Category ID filter (optional)
+ * @returns Active quiz session or null
+ */
+export async function getActiveQuizSession(
+  userId: string,
+  type: CardType | 'all',
+  categoryId?: string
+): Promise<QuizSession | null> {
+  if (!isClient) {
+    throw new Error('This function can only run on client-side');
+  }
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  if (!auth.currentUser || auth.currentUser.uid !== userId) {
+    throw new Error('User not authenticated');
+  }
+
+  try {
+    const sessionsRef = collection(db, 'users', userId, 'quiz-sessions');
+    let q = query(
+      sessionsRef,
+      where('isCompleted', '==', false),
+      where('type', '==', type),
+      orderBy('lastUpdatedAt', 'desc'),
+      firestoreLimit(1)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      return null;
+    }
+
+    const sessionDoc = querySnapshot.docs[0];
+    const sessionData = sessionDoc.data() as FirestoreQuizSession;
+
+    // If categoryId is specified, check if it matches
+    if (categoryId && sessionData.categoryId !== categoryId) {
+      return null;
+    }
+
+    return firestoreToQuizSession(sessionData);
+  } catch (error) {
+    console.error('Error getting active quiz session:', error);
+    return null;
+  }
+}
+
+/**
+ * Complete a quiz session
+ *
+ * @param userId - User ID
+ * @param sessionId - Session ID
+ */
+export async function completeQuizSession(
+  userId: string,
+  sessionId: string
+): Promise<void> {
+  if (!isClient) {
+    throw new Error('This function can only run on client-side');
+  }
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  if (!auth.currentUser || auth.currentUser.uid !== userId) {
+    throw new Error('User not authenticated');
+  }
+
+  try {
+    const sessionRef = doc(db, 'users', userId, 'quiz-sessions', sessionId);
+    await updateDoc(sessionRef, {
+      isCompleted: true,
+      completedAt: Timestamp.now(),
+      lastUpdatedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error('Error completing quiz session:', error);
+    throw error;
+  }
+}
+
+/**
+ * Delete old completed quiz sessions (cleanup)
+ *
+ * @param userId - User ID
+ * @param daysOld - Delete sessions older than this many days (default: 7)
+ */
+export async function deleteOldQuizSessions(
+  userId: string,
+  daysOld: number = 7
+): Promise<void> {
+  if (!isClient) {
+    throw new Error('This function can only run on client-side');
+  }
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  if (!auth.currentUser || auth.currentUser.uid !== userId) {
+    throw new Error('User not authenticated');
+  }
+
+  try {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+
+    const sessionsRef = collection(db, 'users', userId, 'quiz-sessions');
+    const q = query(
+      sessionsRef,
+      where('isCompleted', '==', true),
+      where('completedAt', '<', Timestamp.fromDate(cutoffDate))
+    );
+
+    const querySnapshot = await getDocs(q);
+    const batch = writeBatch(db);
+
+    querySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+  } catch (error) {
+    console.error('Error deleting old quiz sessions:', error);
+    // Don't throw - cleanup failure shouldn't block main operation
   }
 }

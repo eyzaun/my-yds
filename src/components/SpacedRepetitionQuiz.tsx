@@ -2,8 +2,16 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
-import { getReviewCards, saveQuizResult } from '@/lib/firebase/spacedRepetition';
-import { SpacedRepetitionCard, CardType } from '@/types/spacedRepetition';
+import {
+  getReviewCards,
+  saveQuizResult,
+  createQuizSession,
+  updateQuizSession,
+  getActiveQuizSession,
+  completeQuizSession,
+} from '@/lib/firebase/spacedRepetition';
+import { SpacedRepetitionCard, CardType, QuizSession } from '@/types/spacedRepetition';
+import { calculateQualityRating } from '@/lib/spacedRepetition';
 
 interface SpacedRepetitionQuizProps {
   userId: string;
@@ -28,14 +36,19 @@ export default function SpacedRepetitionQuiz({
   const [answer, setAnswer] = useState('');
   const [result, setResult] = useState<'correct' | 'incorrect' | null>(null);
   const [flipped, setFlipped] = useState(false);
+  const [attempts, setAttempts] = useState(1);
   const [sessionStats, setSessionStats] = useState({
     total: 0,
     correct: 0,
     incorrect: 0,
   });
   const [finished, setFinished] = useState(false);
+  const [quizSession, setQuizSession] = useState<QuizSession | null>(null);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [savingProgress, setSavingProgress] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasUnsavedChanges = useRef(false);
 
   useEffect(() => {
     loadCards();
@@ -43,28 +56,133 @@ export default function SpacedRepetitionQuiz({
 
   useEffect(() => {
     // Auto-focus input when card changes
-    if (!finished && !loading) {
+    if (!finished && !loading && !showResumeDialog) {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
     }
-  }, [currentIndex, finished, loading]);
+  }, [currentIndex, finished, loading, showResumeDialog]);
+
+  // Auto-save on page unload
+  useEffect(() => {
+    const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges.current && quizSession) {
+        // Save progress before leaving
+        await saveProgress();
+
+        // Show browser confirmation dialog
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [quizSession]);
+
+  // Periodic auto-save (every 30 seconds)
+  useEffect(() => {
+    if (!quizSession || finished) return;
+
+    const interval = setInterval(() => {
+      if (hasUnsavedChanges.current) {
+        saveProgress();
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [quizSession, finished]);
 
   const loadCards = async () => {
     try {
       setLoading(true);
+
+      // Check for active quiz session
+      const activeSession = await getActiveQuizSession(userId, type, categoryId);
+
+      if (activeSession && activeSession.totalCards > 0) {
+        // Found an active session - ask user if they want to resume
+        setShowResumeDialog(true);
+        setLoading(false);
+        return;
+      }
+
+      // Load new cards for review
+      await startNewSession();
+    } catch (error) {
+      console.error('Error loading review cards:', error);
+      setLoading(false);
+    }
+  };
+
+  const startNewSession = async () => {
+    try {
       const reviewCards = await getReviewCards(userId, type as CardType, 50);
 
       if (reviewCards.length === 0) {
         setFinished(true);
-      } else {
-        setCards(reviewCards);
-        setSessionStats({ total: reviewCards.length, correct: 0, incorrect: 0 });
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error('Error loading review cards:', error);
-    } finally {
+
+      setCards(reviewCards);
+      setSessionStats({ total: reviewCards.length, correct: 0, incorrect: 0 });
+
+      // Create quiz session
+      const session = await createQuizSession(
+        userId,
+        type,
+        reviewCards,
+        categoryId,
+        categoryName
+      );
+      setQuizSession(session);
+      hasUnsavedChanges.current = false;
       setLoading(false);
+    } catch (error) {
+      console.error('Error starting new session:', error);
+      setLoading(false);
+    }
+  };
+
+  const resumeSession = async () => {
+    try {
+      setLoading(true);
+      const activeSession = await getActiveQuizSession(userId, type, categoryId);
+
+      if (!activeSession) {
+        // Session not found, start new one
+        await startNewSession();
+        setShowResumeDialog(false);
+        return;
+      }
+
+      // Load cards from session
+      const allCards = await getReviewCards(userId, type as CardType, 100);
+      const sessionCards = allCards.filter((card) =>
+        activeSession.cardIds.includes(
+          `${userId}_${card.categoryId ? 'category' : 'custom'}_${card.word.toLowerCase().replace(/\s+/g, '_')}`
+        )
+      );
+
+      setCards(sessionCards);
+      setCurrentIndex(activeSession.currentIndex);
+      setSessionStats({
+        total: activeSession.totalCards,
+        correct: activeSession.correctCount,
+        incorrect: activeSession.incorrectCount,
+      });
+      setQuizSession(activeSession);
+      hasUnsavedChanges.current = false;
+      setShowResumeDialog(false);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error resuming session:', error);
+      await startNewSession();
+      setShowResumeDialog(false);
     }
   };
 
@@ -86,21 +204,23 @@ export default function SpacedRepetitionQuiz({
         handleNext();
       } else {
         setAnswer('');
+        setAttempts(prev => prev + 1);
       }
       return;
     }
 
-    // First attempt - check answer
+    // Check answer
     const isCorrect =
       userAnswer === correctAnswer ||
       (correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2);
 
     setResult(isCorrect ? 'correct' : 'incorrect');
-    setFlipped(true);
 
-    // Save result to Firebase
+    // Save result to Firebase with quality rating
     try {
       const cardType: CardType = currentCard.categoryId ? 'category' : 'custom';
+      const quality = calculateQualityRating(attempts, false, isCorrect);
+
       await saveQuizResult(
         userId,
         cardType,
@@ -108,8 +228,31 @@ export default function SpacedRepetitionQuiz({
         currentCard.translation,
         isCorrect,
         currentCard.categoryId,
-        currentCard.categoryName
+        currentCard.categoryName,
+        quality
       );
+
+      // Update quiz session
+      if (quizSession) {
+        const updatedSession: QuizSession = {
+          ...quizSession,
+          answeredCards: [
+            ...quizSession.answeredCards,
+            {
+              cardId: `${userId}_${cardType}_${currentCard.word.toLowerCase().replace(/\s+/g, '_')}`,
+              word: currentCard.word,
+              translation: currentCard.translation,
+              isCorrect,
+              attempts,
+              timestamp: new Date(),
+            },
+          ],
+          correctCount: isCorrect ? quizSession.correctCount + 1 : quizSession.correctCount,
+          incorrectCount: !isCorrect ? quizSession.incorrectCount + 1 : quizSession.incorrectCount,
+        };
+        setQuizSession(updatedSession);
+        hasUnsavedChanges.current = true;
+      }
     } catch (error) {
       console.error('Error saving quiz result:', error);
     }
@@ -123,28 +266,134 @@ export default function SpacedRepetitionQuiz({
 
     // Auto-advance if correct
     if (isCorrect) {
+      setFlipped(true);
       setTimeout(() => {
         handleNext();
       }, 1000);
     } else {
+      // Show answer on incorrect
+      setFlipped(true);
       setAnswer('');
+      setAttempts(prev => prev + 1);
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentIndex < cards.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
       setAnswer('');
       setResult(null);
       setFlipped(false);
+      setAttempts(1);
+
+      // Update session progress
+      if (quizSession) {
+        const updatedSession: QuizSession = {
+          ...quizSession,
+          currentIndex: nextIndex,
+        };
+        setQuizSession(updatedSession);
+
+        // Auto-save progress every 3 cards
+        if (nextIndex % 3 === 0) {
+          await saveProgress(updatedSession);
+        }
+      }
     } else {
-      setFinished(true);
+      // Quiz completed
+      await handleQuizComplete();
     }
   };
 
   const handleSkip = () => {
     handleNext();
   };
+
+  const handleQuizComplete = async () => {
+    setFinished(true);
+
+    if (quizSession) {
+      try {
+        await completeQuizSession(userId, quizSession.sessionId);
+        hasUnsavedChanges.current = false;
+      } catch (error) {
+        console.error('Error completing quiz session:', error);
+      }
+    }
+  };
+
+  const saveProgress = async (session?: QuizSession) => {
+    if (savingProgress) return;
+
+    try {
+      setSavingProgress(true);
+      const sessionToSave = session || quizSession;
+
+      if (sessionToSave) {
+        await updateQuizSession(userId, sessionToSave);
+        hasUnsavedChanges.current = false;
+      }
+    } catch (error) {
+      console.error('Error saving progress:', error);
+    } finally {
+      setSavingProgress(false);
+    }
+  };
+
+  const handleExit = async () => {
+    if (hasUnsavedChanges.current && quizSession) {
+      await saveProgress();
+    }
+    onExit();
+  };
+
+  // Resume dialog
+  if (showResumeDialog) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center px-4"
+        style={{ backgroundColor: colors.background }}
+      >
+        <div
+          className="max-w-md w-full rounded-2xl p-8 text-center"
+          style={{ backgroundColor: colors.cardBackground }}
+        >
+          <div className="text-5xl mb-4">📚</div>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
+            Devam Eden Quiz Bulundu!
+          </h2>
+          <p className="mb-6 opacity-70" style={{ color: colors.text }}>
+            Daha önce başladığınız quiz'e kaldığınız yerden devam etmek ister misiniz?
+          </p>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={resumeSession}
+              className="w-full py-3 rounded-lg font-medium text-white transition-all hover:opacity-90"
+              style={{ backgroundColor: colors.accent }}
+            >
+              Devam Et
+            </button>
+            <button
+              onClick={async () => {
+                setShowResumeDialog(false);
+                await startNewSession();
+              }}
+              className="w-full py-3 rounded-lg font-medium transition-all hover:opacity-80"
+              style={{
+                backgroundColor: colors.background,
+                color: colors.text,
+                border: `2px solid ${colors.accent}`,
+              }}
+            >
+              Yeni Quiz Başlat
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -158,6 +407,11 @@ export default function SpacedRepetitionQuiz({
             style={{ borderColor: colors.accent }}
           />
           <p style={{ color: colors.text }}>Kartlar yükleniyor...</p>
+          {savingProgress && (
+            <p className="text-sm mt-2 opacity-70" style={{ color: colors.text }}>
+              Kaydediliyor...
+            </p>
+          )}
         </div>
       </div>
     );
@@ -256,7 +510,7 @@ export default function SpacedRepetitionQuiz({
               {categoryName || 'Tüm Kartlar'}
             </h1>
             <button
-              onClick={onExit}
+              onClick={handleExit}
               className="p-2 rounded-lg hover:bg-opacity-80 transition-all"
               style={{ backgroundColor: colors.background, color: colors.text }}
             >

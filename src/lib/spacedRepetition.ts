@@ -104,6 +104,58 @@ export function updateCardAfterReview(
 }
 
 /**
+ * Update card after quiz result with detailed quality rating
+ *
+ * @param card - Current card
+ * @param quality - Quality rating (0-5) based on performance
+ * @returns Updated card
+ */
+export function updateCardAfterReviewWithQuality(
+  card: SpacedRepetitionCard,
+  quality: Quality
+): SpacedRepetitionCard {
+  return calculateNextReview(quality, card);
+}
+
+/**
+ * Calculate quality rating based on quiz performance
+ *
+ * @param attempts - Number of attempts to get correct answer
+ * @param usedHint - Whether user used a hint
+ * @param isCorrect - Whether final answer was correct
+ * @returns Quality rating (0-5)
+ */
+export function calculateQualityRating(
+  attempts: number,
+  usedHint: boolean,
+  isCorrect: boolean
+): Quality {
+  if (!isCorrect) {
+    // Incorrect answer
+    if (usedHint) {
+      return 1; // Incorrect with hint
+    }
+    return 0; // Complete failure
+  }
+
+  // Correct answer - rate based on attempts
+  if (attempts === 1) {
+    return 5; // Perfect recall on first try
+  } else if (attempts === 2) {
+    if (usedHint) {
+      return 3; // Correct on second try with hint
+    }
+    return 4; // Correct on second try without hint
+  } else {
+    // 3+ attempts
+    if (usedHint) {
+      return 2; // Multiple attempts with hint
+    }
+    return 3; // Multiple attempts without hint
+  }
+}
+
+/**
  * Get cards that are due for review
  *
  * @param cards - Array of all cards

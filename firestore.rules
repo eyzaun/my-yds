@@ -1,0 +1,72 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection - base level
+    match /users/{userId} {
+      // Allow users to read/write their own user document
+      allow read, write: if isOwner(userId);
+
+      // Flashcard sets subcollection
+      match /flashcard-sets/{setId} {
+        allow read, write: if isOwner(userId);
+
+        // Flashcards subcollection within sets
+        match /flashcards/{cardId} {
+          allow read, write: if isOwner(userId);
+        }
+      }
+
+      // Spaced repetition - custom cards
+      match /spaced-repetition-custom/{cardId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Spaced repetition - category cards
+      match /spaced-repetition-category/{cardId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Daily statistics
+      match /statistics-daily/{dateId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Quiz sessions (for saving progress)
+      match /quiz-sessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // User settings
+      match /settings/{settingId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Categories collection (read-only for all authenticated users)
+    match /categories/{categoryId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admins can write (handle via Firebase Admin SDK)
+
+      match /words/{wordId} {
+        allow read: if isAuthenticated();
+        allow write: if false;
+      }
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

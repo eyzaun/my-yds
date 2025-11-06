@@ -125,6 +125,77 @@ export interface ReviewSession {
 }
 
 /**
+ * Quiz Session State (for auto-save and resume)
+ */
+export interface QuizSession {
+  sessionId: string;
+  userId: string;
+  type: CardType | 'all';
+  categoryId?: string;
+  categoryName?: string;
+
+  // Session state
+  currentIndex: number;
+  totalCards: number;
+  cardIds: string[]; // IDs of cards in this session
+
+  // Progress tracking
+  answeredCards: {
+    cardId: string;
+    word: string;
+    translation: string;
+    isCorrect: boolean;
+    attempts: number;
+    timestamp: Date;
+  }[];
+
+  // Statistics
+  correctCount: number;
+  incorrectCount: number;
+
+  // Timestamps
+  startedAt: Date;
+  lastUpdatedAt: Date;
+  completedAt?: Date;
+
+  // Status
+  isCompleted: boolean;
+}
+
+/**
+ * Firestore Quiz Session Data
+ */
+export interface FirestoreQuizSession {
+  sessionId: string;
+  userId: string;
+  type: CardType | 'all';
+  categoryId?: string;
+  categoryName?: string;
+
+  currentIndex: number;
+  totalCards: number;
+  cardIds: string[];
+
+  answeredCards: {
+    cardId: string;
+    word: string;
+    translation: string;
+    isCorrect: boolean;
+    attempts: number;
+    timestamp: FirestoreTimestamp;
+  }[];
+
+  correctCount: number;
+  incorrectCount: number;
+
+  startedAt: FirestoreTimestamp;
+  lastUpdatedAt: FirestoreTimestamp;
+  completedAt?: FirestoreTimestamp;
+
+  isCompleted: boolean;
+}
+
+/**
  * Firestore Document Types
  */
 
