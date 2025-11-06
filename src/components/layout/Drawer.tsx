@@ -14,10 +14,10 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   
   // Main navigation links
   const mainLinks = [
-    { path: '/', label: 'Ana Sayfa', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-    { path: '/spaced-repetition', label: 'Aralıklı Tekrar', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-    { path: '/all-words', label: 'Tüm Kelimeler', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16' },
-    { path: '/upload-flashcards', label: 'Kendi Kartlarım', icon: 'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12' },
+    { path: '/', label: 'Ana Sayfa', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', highlight: false },
+    { path: '/spaced-repetition', label: '📚 Aralıklı Tekrar', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', highlight: true },
+    { path: '/all-words', label: 'Tüm Kelimeler', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16', highlight: false },
+    { path: '/upload-flashcards', label: 'Kendi Kartlarım', icon: 'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12', highlight: false },
   ];
 
   // Category links
@@ -92,10 +92,17 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
               <Link
                 key={link.path}
                 href={link.path}
-                className="flex items-center space-x-3 px-4 py-3 rounded-lg my-1 transition-colors duration-200"
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg my-1 transition-colors duration-200 ${
+                  link.highlight ? 'font-bold shadow-md' : ''
+                }`}
                 style={{
-                  backgroundColor: pathname === link.path ? colors.accent : 'transparent',
+                  backgroundColor: pathname === link.path
+                    ? colors.accent
+                    : link.highlight
+                    ? `${colors.accent}20`
+                    : 'transparent',
                   color: colors.text,
+                  border: link.highlight ? `2px solid ${colors.accent}` : 'none',
                 }}
                 onClick={onClose}
               >
