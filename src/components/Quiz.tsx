@@ -1,11 +1,14 @@
 // src/components/Quiz.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizScore } from '@/firebase/firestore';
 import AdBanner from './AdBanner';
 import Link from 'next/link';
+import { Button } from '@/components/design-system/Button';
+import { Card } from '@/components/design-system/Card';
+import { Heading2, Heading3, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 interface QuizQuestion {
   id: number;
@@ -23,12 +26,11 @@ interface Word {
 interface QuizProps {
   questions: QuizQuestion[];
   categoryWords: Word[];
-  categoryId: string; // Kategori ID'si ekleyin
+  categoryId: string;
   onQuizComplete?: (score: number) => void;
 }
 
 const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQuizComplete }) => {
-  const { colors } = useTheme();
   const { user } = useAuth();
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
   const [showResults, setShowResults] = useState(false);
@@ -36,34 +38,32 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
   const [savingScore, setSavingScore] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  
+
   const handleAnswerSelect = (questionId: number, answer: string) => {
     setUserAnswers(prev => ({
       ...prev,
       [questionId]: answer
     }));
   };
-  
+
   const handleSubmit = async () => {
     const totalScore = questions.reduce((acc, question) => {
       return acc + (userAnswers[question.id] === question.correctAnswer ? 1 : 0);
     }, 0);
-    
+
     setScore(totalScore);
     setShowResults(true);
-    
-    // onQuizComplete prop'u varsa çağır
+
     if (onQuizComplete) {
       onQuizComplete(totalScore);
     }
-    
-    // Kullanıcı giriş yapmışsa sonucu kaydet
+
     if (user && categoryId) {
       setSavingScore(true);
-      
+
       try {
         const result = await saveQuizScore(user.uid, categoryId, totalScore, questions.length);
-        
+
         if (result.success) {
           setScoreSaved(true);
         }
@@ -93,51 +93,76 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
     }
   }, [isFullscreen]);
 
+  const fullscreenIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      {isFullscreen ? (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+      )}
+    </svg>
+  );
+
   return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'max-w-4xl mx-auto'} p-4`}
-         style={isFullscreen ? { backgroundColor: colors.background } : {}}>
+    <div
+      className={isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'max-w-4xl mx-auto'}
+      style={{
+        backgroundColor: isFullscreen ? designTokens.colors.background.primary : 'transparent',
+        padding: designTokens.spacing[4]
+      }}
+    >
       {/* Tam ekran toggle butonu */}
-      <div className="flex justify-end mb-4">
-        <button
+      <div style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginBottom: designTokens.spacing[4]
+      }}>
+        <Button
+          variant={isFullscreen ? 'primary' : 'secondary'}
+          size="md"
+          leftIcon={fullscreenIcon}
           onClick={() => setIsFullscreen(!isFullscreen)}
-          className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
-          style={{
-            backgroundColor: isFullscreen ? colors.accent : colors.cardBackground,
-            color: colors.text
-          }}
-          title="Tam Ekran"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {isFullscreen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-            )}
-          </svg>
           {isFullscreen ? 'Normal Ekran' : 'Tam Ekran'}
-        </button>
+        </Button>
       </div>
 
       {!showResults ? (
         <>
           {questions.map((question) => (
-            <div 
-              key={question.id} 
-              className="mb-8 p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: colors.cardBackground }}
+            <Card
+              key={question.id}
+              variant="elevated"
+              style={{ marginBottom: designTokens.spacing[6] }}
             >
-              <p style={{ color: colors.text }} className="mb-4">
+              <Text style={{
+                marginBottom: designTokens.spacing[4],
+                color: designTokens.colors.text.primary
+              }}>
                 {question.id}. {question.sentence}
-              </p>
-              <div className="space-y-2">
+              </Text>
+
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: designTokens.spacing[2]
+              }}>
                 {question.options.map((option) => (
                   <label
                     key={option}
-                    className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-opacity-80 transition-colors duration-200"
-                    style={{ 
-                      backgroundColor: userAnswers[question.id] === option ? 
-                        colors.accent : 'transparent',
-                      color: colors.text
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: designTokens.spacing[2],
+                      cursor: 'pointer',
+                      padding: designTokens.spacing[3],
+                      borderRadius: designTokens.borderRadius.md,
+                      backgroundColor: userAnswers[question.id] === option ?
+                        designTokens.colors.primary[100] : 'transparent',
+                      border: `2px solid ${userAnswers[question.id] === option ?
+                        designTokens.colors.primary[500] : 'transparent'}`,
+                      transition: 'all 0.2s',
+                      color: designTokens.colors.text.primary
                     }}
                   >
                     <input
@@ -146,96 +171,141 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                       value={option}
                       checked={userAnswers[question.id] === option}
                       onChange={() => handleAnswerSelect(question.id, option)}
-                      className="text-[#14FFEC]"
+                      style={{
+                        accentColor: designTokens.colors.primary[600],
+                        width: '18px',
+                        height: '18px',
+                        cursor: 'pointer'
+                      }}
                     />
                     <span>{option}</span>
                   </label>
                 ))}
               </div>
-            </div>
+            </Card>
           ))}
-          
+
           {/* Kullanıcı giriş yapmamışsa uyarı mesajı */}
           {!user && (
-            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${colors.accent}30`, color: colors.text }}>
-              <p className="text-sm">
-                Test sonuçlarınızı kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
-              </p>
-            </div>
+            <Card
+              variant="flat"
+              style={{
+                marginTop: designTokens.spacing[4],
+                marginBottom: designTokens.spacing[4],
+                backgroundColor: designTokens.colors.accent.warning.light,
+                textAlign: 'center'
+              }}
+            >
+              <Text style={{
+                fontSize: designTokens.typography.fontSize.sm,
+                color: designTokens.colors.text.primary
+              }}>
+                Test sonuçlarınızı kaydetmek için <Link href="/login" style={{
+                  textDecoration: 'underline',
+                  color: designTokens.colors.primary[700]
+                }}>giriş yapın</Link> veya <Link href="/register" style={{
+                  textDecoration: 'underline',
+                  color: designTokens.colors.primary[700]
+                }}>kayıt olun</Link>.
+              </Text>
+            </Card>
           )}
-          
-          <button
+
+          <Button
+            variant="primary"
+            size="lg"
+            fullWidth
             onClick={handleSubmit}
-            className="w-full p-3 rounded-lg transition-colors duration-200"
-            style={{
-              backgroundColor: colors.accent,
-              color: colors.text
-            }}
+            loading={savingScore}
           >
             {savingScore ? 'Sınav Sonuçları Kaydediliyor...' : 'Sınavı Bitir'}
-          </button>
+          </Button>
         </>
       ) : (
-        <div className="space-y-6">
-          <div 
-            className="p-4 rounded-lg shadow-md"
-            style={{ backgroundColor: colors.cardBackground }}
-          >
-            <h2 
-              className="text-xl mb-4"
-              style={{ color: colors.text }}
-            >
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: designTokens.spacing[6]
+        }}>
+          <Card variant="elevated">
+            <Heading2 style={{
+              marginBottom: designTokens.spacing[4],
+              color: designTokens.colors.text.primary
+            }}>
               Sonuçlar: {score} / {questions.length}
-            </h2>
-            
+            </Heading2>
+
             {user && (
-              <div className="mt-2">
+              <div style={{ marginTop: designTokens.spacing[3] }}>
                 {scoreSaved ? (
-                  <p className="text-sm" style={{ color: colors.text }}>
+                  <Text style={{
+                    fontSize: designTokens.typography.fontSize.sm,
+                    color: designTokens.colors.accent.success.dark
+                  }}>
                     Sınav sonucunuz kaydedildi!
-                  </p>
+                  </Text>
                 ) : savingScore ? (
-                  <p className="text-sm" style={{ color: colors.text }}>
+                  <Text style={{
+                    fontSize: designTokens.typography.fontSize.sm,
+                    color: designTokens.colors.text.secondary
+                  }}>
                     Sınav sonucunuz kaydediliyor...
-                  </p>
+                  </Text>
                 ) : null}
               </div>
             )}
-          </div>
-          
+          </Card>
+
           {questions.map((question) => (
-            <div 
-              key={question.id} 
-              className="p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: colors.cardBackground }}
+            <Card
+              key={question.id}
+              variant="elevated"
             >
-              <p className="mb-2" style={{ color: colors.text }}>
+              <Text style={{
+                marginBottom: designTokens.spacing[3],
+                color: designTokens.colors.text.primary
+              }}>
                 {question.sentence}
-              </p>
-              <p className="mb-2" style={{ color: colors.text }}>
-                Kullanılan kelime: <span className="font-bold">{question.word}</span> 
-                ({categoryWords.find(w => w.en === question.word)?.tr})
-              </p>
-              <p className="mb-2">
-                Sizin cevabınız: <span style={{ 
-                  color: userAnswers[question.id] === question.correctAnswer ? 
-                    'rgb(74, 222, 128)' : 'rgb(248, 113, 113)'
+              </Text>
+
+              <Text style={{
+                marginBottom: designTokens.spacing[3],
+                color: designTokens.colors.text.secondary
+              }}>
+                Kullanılan kelime: <span style={{
+                  fontWeight: designTokens.typography.fontWeight.bold,
+                  color: designTokens.colors.text.primary
+                }}>
+                  {question.word}
+                </span> ({categoryWords.find(w => w.en === question.word)?.tr})
+              </Text>
+
+              <Text style={{ marginBottom: designTokens.spacing[3] }}>
+                Sizin cevabınız: <span style={{
+                  color: userAnswers[question.id] === question.correctAnswer ?
+                    designTokens.colors.accent.success.dark :
+                    designTokens.colors.accent.error.main,
+                  fontWeight: designTokens.typography.fontWeight.semibold
                 }}>
                   {userAnswers[question.id]}
                 </span>
-              </p>
+              </Text>
+
               {userAnswers[question.id] !== question.correctAnswer && (
-                <p style={{ color: 'rgb(74, 222, 128)' }}>
+                <Text style={{
+                  color: designTokens.colors.accent.success.dark,
+                  fontWeight: designTokens.typography.fontWeight.semibold
+                }}>
                   Doğru cevap: {question.correctAnswer}
-                </p>
+                </Text>
               )}
-            </div>
+            </Card>
           ))}
-          
+
           {/* Test sonuçları altına reklam */}
-          <div className="my-6">
-            <AdBanner 
-              slot="566170600" 
+          <div style={{ marginTop: designTokens.spacing[6] }}>
+            <AdBanner
+              slot="566170600"
               format="horizontal"
             />
           </div>
