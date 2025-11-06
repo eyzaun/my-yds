@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { saveQuizResult } from '@/lib/firebase/spacedRepetition';
 
 interface QuizModeProps {
   flashcards: FlashcardData[];
@@ -13,24 +15,34 @@ interface QuizModeProps {
   isFlipped?: boolean;
   alwaysKeepKeyboardOpen?: boolean;
   isMobileMode?: boolean;
+  // Spaced Repetition için yeni props
+  enableTracking?: boolean; // Quiz tracking aktif mi?
+  cardType?: 'custom' | 'category'; // Kart tipi
+  categoryId?: string; // Kategori ID (category tipinde)
+  categoryName?: string; // Kategori adı (category tipinde)
 }
 
-export default function QuizMode({ 
-  flashcards, 
+export default function QuizMode({
+  flashcards,
   onCorrectAnswer,
   onIncorrectAnswer,
   onMoveNext,
   currentIndex,
   isFlipped = false,
   alwaysKeepKeyboardOpen = false,
-  isMobileMode = false
+  isMobileMode = false,
+  enableTracking = true,
+  cardType = 'custom',
+  categoryId,
+  categoryName,
 }: QuizModeProps) {
   const [answer, setAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [waitingForEnter, setWaitingForEnter] = useState(false);
   const { colors } = useTheme();
-  
+  const { user } = useAuth();
+
   const inputRef = useRef<HTMLInputElement>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   
@@ -150,17 +162,32 @@ export default function QuizMode({
       
     if (isExactMatch || isCloseMatch) {
       setIsCorrect(true);
-      
+
+      // Spaced Repetition: Doğru cevabı kaydet
+      if (enableTracking && user) {
+        saveQuizResult(
+          user.uid,
+          cardType,
+          currentCard.front, // word
+          currentCard.back, // translation
+          true, // isCorrect
+          categoryId,
+          categoryName
+        ).catch(err => {
+          console.error('Quiz result save error:', err);
+        });
+      }
+
       // Doğru cevap bildirimi
       setTimeout(() => {
         onCorrectAnswer();
-        
+
         // Sonraki kelimeye geçiş
         setTimeout(() => {
           onMoveNext();
           setAnswer('');
           setIsCorrect(null);
-          
+
           // Otomatik focus
           setTimeout(() => {
             if (inputRef.current) {
@@ -171,9 +198,25 @@ export default function QuizMode({
       }, 700);
     } else {
       setIsCorrect(false);
+
+      // Spaced Repetition: Yanlış cevabı kaydet
+      if (enableTracking && user) {
+        saveQuizResult(
+          user.uid,
+          cardType,
+          currentCard.front, // word
+          currentCard.back, // translation
+          false, // isCorrect
+          categoryId,
+          categoryName
+        ).catch(err => {
+          console.error('Quiz result save error:', err);
+        });
+      }
+
       // Yanlış cevap - kartı çevir
       onIncorrectAnswer();
-      
+
       // Input'a focus
       setTimeout(() => {
         if (inputRef.current) {

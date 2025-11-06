@@ -54,6 +54,10 @@ interface FlashcardMobileViewProps {
   dimensions: FlashcardDimensions;
   cardStyles: CardStyles;
   colors: ThemeColors;
+  // Spaced Repetition için yeni props
+  categoryId?: string;
+  categoryName?: string;
+  cardType?: 'custom' | 'category';
 }
 
 const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
@@ -62,7 +66,10 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
   handlers,
   dimensions,
   cardStyles,
-  colors
+  colors,
+  categoryId,
+  categoryName,
+  cardType = 'custom',
 }) => {
   const { 
     currentIndex, flipped, completed, viewedCount, progressPercentage, isAnimating
@@ -274,7 +281,7 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
       
       {/* Quiz giriş alanı */}
       <div className="py-2 px-3" style={{ backgroundColor: colors.background, borderTop: '1px solid rgba(100, 100, 100, 0.3)' }}>
-        <QuizMode 
+        <QuizMode
           flashcards={flashcards}
           currentIndex={currentIndex}
           onCorrectAnswer={handleCorrectAnswer}
@@ -283,6 +290,10 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
           isFlipped={flipped}
           alwaysKeepKeyboardOpen={true}
           isMobileMode={true}
+          enableTracking={true}
+          cardType={cardType}
+          categoryId={categoryId}
+          categoryName={categoryName}
         />
       </div>
       

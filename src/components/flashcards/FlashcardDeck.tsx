@@ -14,16 +14,20 @@ interface FlashcardDeckProps {
   flashcards: FlashcardData[];
   onReset?: () => void;
   categoryId?: string;
+  categoryName?: string; // Kategori adı
   initialIndex?: number;
   quizMode?: boolean;
+  cardType?: 'custom' | 'category'; // Kart tipi
 }
 
-export default function FlashcardDeck({ 
+export default function FlashcardDeck({
   flashcards = [],
   onReset,
   categoryId = 'default',
+  categoryName,
   initialIndex = 0,
-  quizMode = false
+  quizMode = false,
+  cardType = 'custom',
 }: FlashcardDeckProps) {
   const { colors } = useTheme();
   const flashcardContainerRef = useRef<HTMLDivElement>(null);
@@ -122,6 +126,9 @@ export default function FlashcardDeck({
         dimensions={dimensions}
         cardStyles={cardStyles}
         colors={colors}
+        categoryId={categoryId}
+        categoryName={categoryName}
+        cardType={cardType}
       />
     );
   }
@@ -153,13 +160,17 @@ export default function FlashcardDeck({
       {/* Quiz modu */}
       {quizMode && (
         <div className="mt-5 mb-5">
-          <QuizMode 
+          <QuizMode
             flashcards={flashcards}
             currentIndex={currentIndex}
             onCorrectAnswer={handleCorrectAnswer}
             onIncorrectAnswer={handleIncorrectAnswer}
             onMoveNext={resetCardAndMoveNext}
             isFlipped={flipped}
+            enableTracking={true}
+            cardType={cardType}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         </div>
       )}
@@ -207,7 +218,7 @@ export default function FlashcardDeck({
 
       {quizMode && (
         <div className="fullscreen-quiz-form">
-          <QuizMode 
+          <QuizMode
             flashcards={flashcards}
             currentIndex={currentIndex}
             onCorrectAnswer={handleCorrectAnswer}
@@ -216,6 +227,10 @@ export default function FlashcardDeck({
             isFlipped={flipped}
             alwaysKeepKeyboardOpen={true}
             isMobileMode={true}
+            enableTracking={true}
+            cardType={cardType}
+            categoryId={categoryId}
+            categoryName={categoryName}
           />
         </div>
       )}
