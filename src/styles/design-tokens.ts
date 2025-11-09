@@ -1,122 +1,125 @@
 /**
- * Design Tokens with Professional Light & Dark Mode
- * Based on modern design systems (Figma, Tailwind, Vercel, GitHub)
+ * Design Tokens - Based on Figma's Professional Color System
+ * Light Mode: Black (#000000) on White (#FFFFFF)
+ * Dark Mode: White (#FFFFFF) on Near-Black (#111111)
+ *
+ * Inspired by: Figma, Notion, Vercel - minimalist professional design
  */
 
 // ============================================================
-// LIGHT THEME - Professional & Accessible
+// LIGHT THEME - Figma Style (Black & White)
 // ============================================================
 const lightTheme = {
   background: {
-    primary: '#FFFFFF',      // Pure white
-    secondary: '#F8FAFC',    // Slate-50
-    tertiary: '#F1F5F9',     // Slate-100
+    primary: '#FFFFFF',      // Pure white - main background
+    secondary: '#F8F8F8',    // Almost white - alt backgrounds
+    tertiary: '#EFEFEF',     // Light gray - section backgrounds
     card: '#FFFFFF',         // White cards
   },
   surface: {
-    primary: '#FFFFFF',
-    elevated: '#FFFFFF',
+    primary: '#FFFFFF',      // Navbar, main surfaces
+    elevated: '#FFFFFF',     // Elevated surfaces
   },
   text: {
-    primary: '#0F172A',      // Slate-900 (14:1 contrast)
-    secondary: '#475569',    // Slate-600 (7:1 contrast)
-    tertiary: '#64748B',     // Slate-500 (4.5:1 contrast)
-    disabled: '#94A3B8',     // Slate-400
-    inverse: '#FFFFFF',
-    link: '#2563EB',         // Blue-600
-    linkHover: '#1D4ED8',    // Blue-700
+    primary: '#000000',      // Pure black - main text (WCAG AAA ✓)
+    secondary: '#666666',    // Medium gray - secondary text
+    tertiary: '#999999',     // Light gray - tertiary text
+    disabled: '#CCCCCC',     // Light gray - disabled state
+    inverse: '#FFFFFF',      // White text on dark backgrounds
+    link: '#0066CC',         // Blue - links
+    linkHover: '#0052A3',    // Dark blue - links hover
   },
   border: {
-    light: '#F1F5F9',        // Slate-100
-    medium: '#E2E8F0',       // Slate-200
-    strong: '#CBD5E1',       // Slate-300
-    focus: '#3B82F6',        // Blue-500
+    light: 'rgba(0, 0, 0, 0.06)',      // Very subtle borders
+    medium: 'rgba(0, 0, 0, 0.12)',     // Standard borders
+    strong: 'rgba(0, 0, 0, 0.18)',     // Strong borders
+    focus: '#0066CC',        // Blue - focus states
   },
   status: {
-    success: '#10B981',      // Green-500
-    successBg: '#D1FAE5',    // Green-100
-    error: '#EF4444',        // Red-500
-    errorBg: '#FEE2E2',      // Red-100
-    warning: '#F59E0B',      // Amber-500
-    warningBg: '#FEF3C7',    // Amber-100
-    info: '#3B82F6',         // Blue-500
-    infoBg: '#DBEAFE',       // Blue-100
+    success: '#27AE60',      // Green
+    successBg: '#E8F5E9',    // Light green
+    error: '#E74C3C',        // Red
+    errorBg: '#FADBD8',      // Light red
+    warning: '#F39C12',      // Orange
+    warningBg: '#FEF5E7',    // Light orange
+    info: '#0066CC',         // Blue
+    infoBg: '#EBF2FA',       // Light blue
   },
   accent: {
-    primary: '#3B82F6',      // Blue-500
+    primary: '#0066CC',      // Blue
     success: {
-      main: '#10B981',       // Green-500
-      light: '#D1FAE5',      // Green-100
-      dark: '#059669',       // Green-600
+      main: '#27AE60',
+      light: '#E8F5E9',
+      dark: '#1E8449',
     },
     error: {
-      main: '#EF4444',       // Red-500
-      light: '#FEE2E2',      // Red-100
-      dark: '#DC2626',       // Red-600
+      main: '#E74C3C',
+      light: '#FADBD8',
+      dark: '#C0392B',
     },
     warning: {
-      main: '#F59E0B',       // Amber-500
-      light: '#FEF3C7',      // Amber-100
-      dark: '#D97706',       // Amber-600
+      main: '#F39C12',
+      light: '#FEF5E7',
+      dark: '#BA4A00',
     },
   },
 };
 
 // ============================================================
-// DARK THEME - Professional & Accessible
+// DARK THEME - Figma Dark Style (White & Near-Black)
 // ============================================================
 const darkTheme = {
   background: {
-    primary: '#0F172A',      // Slate-900 - main dark background
-    secondary: '#1E293B',    // Slate-800 - secondary backgrounds
-    tertiary: '#334155',     // Slate-700 - tertiary/section backgrounds
-    card: '#1E293B',         // Slate-800 - dark cards
+    primary: '#111111',      // Near-black - main dark background
+    secondary: '#1A1A1A',    // Dark gray - secondary backgrounds
+    tertiary: '#242424',     // Lighter dark gray - section backgrounds
+    card: '#1A1A1A',         // Dark cards
   },
   surface: {
-    primary: '#1E293B',      // Navbar, main surfaces
-    elevated: '#334155',     // Elevated surfaces (dropdowns, menus)
+    primary: '#1A1A1A',      // Navbar, main surfaces
+    elevated: '#242424',     // Elevated surfaces (dropdowns, menus)
   },
   text: {
-    primary: '#F8FAFC',      // Slate-50 - main text (13:1 contrast) ✓
-    secondary: '#CBD5E1',    // Slate-300 - secondary text (7.5:1 contrast) ✓
-    tertiary: '#94A3B8',     // Slate-400 - tertiary text (4.6:1 contrast) ✓
-    disabled: '#64748B',     // Slate-500 - disabled state
-    inverse: '#0F172A',      // Dark text on light backgrounds
-    link: '#60A5FA',         // Blue-400 - links in dark mode
-    linkHover: '#93C5FD',    // Blue-300 - links hover in dark mode
+    primary: '#FFFFFF',      // Pure white - main text (WCAG AAA ✓)
+    secondary: '#CCCCCC',    // Light gray - secondary text
+    tertiary: '#999999',     // Medium gray - tertiary text
+    disabled: '#666666',     // Medium gray - disabled state
+    inverse: '#111111',      // Dark text on light backgrounds
+    link: '#66B2FF',         // Light blue - links in dark mode
+    linkHover: '#99CCFF',    // Lighter blue - links hover in dark mode
   },
   border: {
     light: 'rgba(255, 255, 255, 0.08)',   // Very subtle borders
     medium: 'rgba(255, 255, 255, 0.15)',  // Standard borders
     strong: 'rgba(255, 255, 255, 0.25)',  // Strong borders
-    focus: '#60A5FA',        // Blue-400 - focus states
+    focus: '#66B2FF',        // Light blue - focus states
   },
   status: {
-    success: '#10B981',      // Green-500
-    successBg: 'rgba(16, 185, 129, 0.15)',
-    error: '#EF4444',        // Red-500
-    errorBg: 'rgba(239, 68, 68, 0.15)',
-    warning: '#F59E0B',      // Amber-500
-    warningBg: 'rgba(245, 158, 11, 0.15)',
-    info: '#60A5FA',         // Blue-400 (lighter blue for dark mode)
-    infoBg: 'rgba(96, 165, 250, 0.15)',
+    success: '#27AE60',      // Green (same as light mode)
+    successBg: 'rgba(39, 174, 96, 0.2)',
+    error: '#E74C3C',        // Red (same as light mode)
+    errorBg: 'rgba(231, 76, 60, 0.2)',
+    warning: '#F39C12',      // Orange (same as light mode)
+    warningBg: 'rgba(243, 156, 18, 0.2)',
+    info: '#66B2FF',         // Light blue
+    infoBg: 'rgba(102, 178, 255, 0.2)',
   },
   accent: {
-    primary: '#60A5FA',      // Blue-400 (lighter for dark mode)
+    primary: '#66B2FF',      // Light blue
     success: {
-      main: '#10B981',       // Green-500
-      light: 'rgba(16, 185, 129, 0.2)',
-      dark: '#059669',       // Green-600
+      main: '#27AE60',
+      light: 'rgba(39, 174, 96, 0.2)',
+      dark: '#1E8449',
     },
     error: {
-      main: '#EF4444',       // Red-500
-      light: 'rgba(239, 68, 68, 0.2)',
-      dark: '#DC2626',       // Red-600
+      main: '#E74C3C',
+      light: 'rgba(231, 76, 60, 0.2)',
+      dark: '#C0392B',
     },
     warning: {
-      main: '#F59E0B',       // Amber-500
-      light: 'rgba(245, 158, 11, 0.2)',
-      dark: '#D97706',       // Amber-600
+      main: '#F39C12',
+      light: 'rgba(243, 156, 18, 0.2)',
+      dark: '#BA4A00',
     },
   },
 };
@@ -125,46 +128,46 @@ const darkTheme = {
 // SHARED TOKENS (Both Themes)
 // ============================================================
 
-// Brand Primary Colors
+// Primary Brand Colors (Blue palette)
 const primaryColors = {
-  50: '#EFF6FF',
-  100: '#DBEAFE',
-  200: '#BFDBFE',
-  300: '#93C5FD',
-  400: '#60A5FA',
-  500: '#3B82F6',
-  600: '#2563EB',
-  700: '#1D4ED8',
-  800: '#1E40AF',
-  900: '#1E3A8A',
+  50: '#EBF2FA',
+  100: '#D6E4F5',
+  200: '#B3CEEC',
+  300: '#80B3E0',
+  400: '#4D97D4',
+  500: '#0066CC',
+  600: '#0052A3',
+  700: '#004080',
+  800: '#002E59',
+  900: '#001A33',
 };
 
 // Component Backgrounds & Interactive States
 const components = {
   button: {
-    primary: '#3B82F6',
-    primaryHover: '#2563EB',
-    primaryActive: '#1D4ED8',
-    secondary: '#F1F5F9', // Light
-    secondaryHover: '#E2E8F0',
-    secondaryDark: '#334155', // Dark
-    secondaryDarkHover: '#475569',
+    primary: '#0066CC',      // Blue button
+    primaryHover: '#0052A3', // Darker blue on hover
+    primaryActive: '#004080', // Even darker on active
+    secondary: '#F0F0F0',    // Light gray secondary
+    secondaryHover: '#E0E0E0',
+    secondaryDark: '#2A2A2A', // Dark gray for dark mode
+    secondaryDarkHover: '#3A3A3A',
     ghost: 'transparent',
   },
   input: {
     backgroundLight: '#FFFFFF',
-    backgroundDark: '#1E293B',
-    borderLight: '#E2E8F0',
-    borderDark: 'rgba(255, 255, 255, 0.1)',
-    focusBorder: '#3B82F6',
+    backgroundDark: '#1A1A1A',
+    borderLight: 'rgba(0, 0, 0, 0.12)',
+    borderDark: 'rgba(255, 255, 255, 0.15)',
+    focusBorder: '#0066CC',
   },
   card: {
     backgroundLight: '#FFFFFF',
-    backgroundDark: '#1E293B',
-    borderLight: '#E2E8F0',
-    borderDark: 'rgba(255, 255, 255, 0.1)',
-    hoverLight: '#FAFBFC',
-    hoverDark: '#334155',
+    backgroundDark: '#1A1A1A',
+    borderLight: 'rgba(0, 0, 0, 0.12)',
+    borderDark: 'rgba(255, 255, 255, 0.15)',
+    hoverLight: '#F8F8F8',
+    hoverDark: '#242424',
   },
 };
 
@@ -222,21 +225,21 @@ const sharedTokens = {
 
   borderRadius: {
     none: '0',
-    sm: '0.25rem',
-    base: '0.5rem',
-    md: '0.75rem',
-    lg: '1rem',
-    xl: '1.5rem',
+    sm: '4px',
+    base: '6px',
+    md: '8px',
+    lg: '12px',
+    xl: '16px',
     full: '9999px',
   },
 
   shadows: {
     none: 'none',
-    sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-    base: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-    md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-    lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-    xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    base: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
   },
 
   transitions: {
