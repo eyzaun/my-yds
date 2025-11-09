@@ -10,13 +10,19 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --accent-color: #0066CC;
+  --accent-rgb: 0, 102, 204;
+  --background-color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #111111;
+    --foreground: #ffffff;
+    --accent-color: #66B2FF;
+    --accent-rgb: 102, 178, 255;
+    --background-color: #111111;
   }
 }
 
@@ -157,13 +163,13 @@ body {
 /* Add animation for hover effect on cards */
 @keyframes pulse-glow {
   0% {
-    box-shadow: 0 0 5px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
+    box-shadow: 0 0 5px rgba(var(--accent-rgb), 0.3), 0 0 10px rgba(var(--accent-rgb), 0.2);
   }
   50% {
-    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4), 0 0 20px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.4), 0 0 20px rgba(var(--accent-rgb), 0.3);
   }
   100% {
-    box-shadow: 0 0 5px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
+    box-shadow: 0 0 5px rgba(var(--accent-rgb), 0.3), 0 0 10px rgba(var(--accent-rgb), 0.2);
   }
 }
 

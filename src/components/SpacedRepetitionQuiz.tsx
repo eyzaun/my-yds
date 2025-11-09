@@ -621,11 +621,11 @@ export default function SpacedRepetitionQuiz({
                 style={{
                   backgroundColor:
                     result === 'correct'
-                      ? designTokens.colors.success
+                      ? designTokens.colors.status.success
                       : result === 'incorrect' && flipped
-                      ? 'orange'
-                      : designTokens.colors.primary,
-                  color: 'white',
+                      ? designTokens.colors.status.warning
+                      : designTokens.colors.primary[600],
+                  color: designTokens.colors.text.inverse,
                   fontSize: '16px',
                   height: '48px',
                 }}
@@ -637,14 +637,14 @@ export default function SpacedRepetitionQuiz({
 
             {/* Feedback */}
             {result === 'correct' && (
-              <p className="text-green-500 text-center font-medium" style={{ marginBottom: designTokens.spacing[1] }}>
+              <p className="text-center font-medium" style={{ marginBottom: designTokens.spacing[1], color: designTokens.colors.status.success }}>
                 ✓ Doğru cevap! 👍
               </p>
             )}
 
             {result === 'incorrect' && flipped && (
               <div className="text-center" style={{ marginBottom: designTokens.spacing[6] }}>
-                <p className="text-red-500 font-medium mb-1">✗ Yanlış cevap!</p>
+                <p className="font-medium mb-1" style={{ color: designTokens.colors.status.error }}>✗ Yanlış cevap!</p>
                 <p className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
                   Kartın arkasına bak ve doğru cevabı yazıp devam et.
                 </p>

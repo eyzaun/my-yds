@@ -335,9 +335,9 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     style={{
                       backgroundColor: designTokens.colors.background.primary,
                       color: designTokens.colors.text.primary,
-                      borderColor: quizResult === 'correct' ? 'green' :
-                                   quizResult === 'incorrect' ? 'red' :
-                                   designTokens.colors.accent,
+                      borderColor: quizResult === 'correct' ? designTokens.colors.status.success :
+                                   quizResult === 'incorrect' ? designTokens.colors.status.error :
+                                   designTokens.colors.border.medium,
                       fontSize: '16px',
                       height: '44px'
                     }}
@@ -350,10 +350,10 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     type="submit"
                     className="px-4 py-2 rounded-r-lg transition-colors font-medium"
                     style={{
-                      backgroundColor: quizResult === 'correct' ? 'green' :
-                                      quizResult === 'incorrect' && flipped ? 'orange' :
-                                      designTokens.colors.accent,
-                      color: 'white',
+                      backgroundColor: quizResult === 'correct' ? designTokens.colors.status.success :
+                                      quizResult === 'incorrect' && flipped ? designTokens.colors.status.warning :
+                                      designTokens.colors.primary[600],
+                      color: designTokens.colors.text.inverse,
                       fontSize: '16px',
                       height: '44px'
                     }}
@@ -364,12 +364,12 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                 </div>
 
                 {quizResult === 'correct' && (
-                  <p className="text-green-500 mt-2 text-sm font-medium">Doğru cevap!</p>
+                  <p className="mt-2 text-sm font-medium" style={{ color: designTokens.colors.status.success }}>Doğru cevap!</p>
                 )}
 
                 {quizResult === 'incorrect' && flipped && (
                   <div className="mt-2">
-                    <p className="text-red-500 text-sm font-medium">
+                    <p className="text-sm font-medium" style={{ color: designTokens.colors.status.error }}>
                       Yanlış cevap!
                     </p>
                     <p className="text-sm mt-1" style={{ color: designTokens.colors.text.primary }}>

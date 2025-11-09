@@ -1,40 +1,43 @@
 // styles/config.ts
+import { designTokens, getDesignTokensByTheme } from './design-tokens';
+
+// Legacy theme structure - now uses design tokens
 export const themes = {
   blue: {
-    background: '#212121',
-    cardBackground: '#323232',
-    accent: '#0D7377',
-    text: '#14FFEC',
-    textSecondary: '#14FFEC80',
-    disabled: '#32323280'
+    background: designTokens.colors.background.primary,
+    cardBackground: designTokens.colors.background.secondary,
+    accent: designTokens.colors.primary[600],
+    text: designTokens.colors.text.primary,
+    textSecondary: designTokens.colors.text.secondary,
+    disabled: designTokens.colors.text.disabled
   },
   purple: {
-    background: '#212121',
-    cardBackground: '#323232',
-    accent: '#8A2BE2', // Mor
-    text: '#E6E6FA', // Lavanta
-    textSecondary: '#E6E6FA80',
-    disabled: '#32323280'
+    background: designTokens.colors.background.primary,
+    cardBackground: designTokens.colors.background.secondary,
+    accent: designTokens.colors.primary[600],
+    text: designTokens.colors.text.primary,
+    textSecondary: designTokens.colors.text.secondary,
+    disabled: designTokens.colors.text.disabled
   },
   green: {
-    background: '#212121',
-    cardBackground: '#323232',
-    accent: '#2E8B57', // Deniz yeşili
-    text: '#98FB98', // Açık yeşil
-    textSecondary: '#98FB9880',
-    disabled: '#32323280'
+    background: designTokens.colors.background.primary,
+    cardBackground: designTokens.colors.background.secondary,
+    accent: designTokens.colors.accent.success.main,
+    text: designTokens.colors.text.primary,
+    textSecondary: designTokens.colors.text.secondary,
+    disabled: designTokens.colors.text.disabled
   },
   orange: {
-    background: '#212121',
-    cardBackground: '#323232',
-    accent: '#FF8C00', // Koyu turuncu
-    text: '#FFD700', // Altın sarısı
-    textSecondary: '#FFD70080',
-    disabled: '#32323280'
+    background: designTokens.colors.background.primary,
+    cardBackground: designTokens.colors.background.secondary,
+    accent: designTokens.colors.status.warning,
+    text: designTokens.colors.text.primary,
+    textSecondary: designTokens.colors.text.secondary,
+    disabled: designTokens.colors.text.disabled
   }
 };
 
-// Geçerli temayı almak için
+// Get theme colors - now uses design tokens
 export const getThemeColors = (themeName: keyof typeof themes = 'blue') => {
   return themes[themeName];
 };

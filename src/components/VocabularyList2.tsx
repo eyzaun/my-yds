@@ -1,7 +1,11 @@
 'use client';
 import React, { useState } from 'react';
+import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const VocabularyList = () => {
+  const { theme } = useTheme();
+  const tokens = theme === 'light' ? designTokens.colors : designTokens.colors;
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<keyof typeof vocabulary | 'all'>('all');
 
@@ -435,18 +439,18 @@ const VocabularyList = () => {
   };
 
   return (
-    <div className="p-4 max-w-6xl mx-auto" style={{ backgroundColor: '#212121' }}>
-      <h1 className="text-3xl font-bold text-center mb-6" style={{ color: '#14FFEC' }}>
+    <div className="p-4 max-w-6xl mx-auto" style={{ backgroundColor: tokens.background.primary }}>
+      <h1 className="text-3xl font-bold text-center mb-6" style={{ color: tokens.text.primary }}>
         YDS Kelime Listesi
       </h1>
-      
+
       <div className="mb-6 flex flex-wrap gap-2 justify-center">
         <button
           onClick={() => setSelectedCategory('all')}
           className={`px-4 py-2 rounded transition-colors duration-300`}
           style={{
-            backgroundColor: selectedCategory === 'all' ? '#0D7377' : '#323232',
-            color: selectedCategory === 'all' ? '#14FFEC' : '#14FFEC',
+            backgroundColor: selectedCategory === 'all' ? designTokens.colors.primary[600] : tokens.background.secondary,
+            color: tokens.text.primary,
           }}
         >
           Tümü
@@ -457,8 +461,8 @@ const VocabularyList = () => {
             onClick={() => setSelectedCategory(key as keyof typeof vocabulary | 'all')}
             className={`px-4 py-2 rounded transition-colors duration-300`}
             style={{
-              backgroundColor: selectedCategory === key ? '#0D7377' : '#323232',
-              color: selectedCategory === key ? '#14FFEC' : '#14FFEC',
+              backgroundColor: selectedCategory === key ? designTokens.colors.primary[600] : tokens.background.secondary,
+              color: tokens.text.primary,
             }}
           >
             {value}
@@ -476,15 +480,15 @@ const VocabularyList = () => {
             onClick={() => setSelectedWord(selectedWord === word.en ? null : word.en)}
             className="p-4 rounded-lg cursor-pointer transition-colors duration-300"
             style={{
-              backgroundColor: '#323232',
-              borderLeft: selectedWord === word.en ? '4px solid #14FFEC' : '4px solid transparent',
+              backgroundColor: tokens.background.secondary,
+              borderLeft: selectedWord === word.en ? `4px solid ${designTokens.colors.primary[600]}` : `4px solid ${tokens.border.light}`,
             }}
           >
-            <div style={{ color: '#14FFEC' }} className="font-semibold">
+            <div style={{ color: tokens.text.primary }} className="font-semibold">
               {word.en}
             </div>
             {selectedWord === word.en && (
-              <div style={{ color: '#0D7377' }} className="mt-2">
+              <div style={{ color: tokens.text.secondary }} className="mt-2">
                 {word.tr}
               </div>
             )}

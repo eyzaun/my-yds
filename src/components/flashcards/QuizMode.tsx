@@ -261,9 +261,9 @@ export default function QuizMode({
             style={{
               backgroundColor: designTokens.colors.background.primary,
               color: designTokens.colors.text.primary,
-              borderColor: isCorrect === true ? 'green' :
-                           isCorrect === false ? 'red' :
-                           designTokens.colors.accent,
+              borderColor: isCorrect === true ? designTokens.colors.status.success :
+                           isCorrect === false ? designTokens.colors.status.error :
+                           designTokens.colors.border.medium,
               fontSize: '16px',
               height: isMobileMode ? '44px' : '40px'
             }}
@@ -278,10 +278,10 @@ export default function QuizMode({
             variant="primary"
             className="rounded-r-lg"
             style={{
-              backgroundColor: isCorrect === true ? 'green' :
-                              waitingForEnter || (isFlipped && isCorrect === false) ? 'orange' :
-                              designTokens.colors.accent,
-              color: 'white',
+              backgroundColor: isCorrect === true ? designTokens.colors.status.success :
+                              waitingForEnter || (isFlipped && isCorrect === false) ? designTokens.colors.status.warning :
+                              designTokens.colors.primary[600],
+              color: designTokens.colors.text.inverse,
               fontSize: '16px',
               height: isMobileMode ? '44px' : '40px',
               borderRadius: '0 0.5rem 0.5rem 0'
@@ -293,12 +293,12 @@ export default function QuizMode({
         </div>
         
         {isCorrect === true && (
-          <p className="text-green-500 mt-2 text-sm">Doğru cevap!</p>
+          <p className="mt-2 text-sm" style={{ color: designTokens.colors.status.success }}>Doğru cevap!</p>
         )}
-        
+
         {isCorrect === false && (
           <div className="mt-2">
-            <p className="text-red-500 text-sm">
+            <p className="text-sm" style={{ color: designTokens.colors.status.error }}>
               {isFlipped 
                 ? `Doğru cevap: ${currentCard.back}` 
                 : 'Yanlış cevap, tekrar deneyin.'}

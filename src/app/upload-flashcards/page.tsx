@@ -414,10 +414,10 @@ export default function UploadFlashcardsPage() {
                     <button
                       onClick={() => handleDeleteFlashcardSet(set.id, set.name)}
                       disabled={isDeleting === set.id}
-                      className="p-2 rounded-lg transition-all hover:bg-red-50"
+                      className="p-2 rounded-lg transition-all"
                       style={{
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                        color: '#ef4444',
+                        backgroundColor: designTokens.colors.status.errorBg,
+                        color: designTokens.colors.status.error,
                         opacity: isDeleting === set.id ? 0.5 : 1
                       }}
                     >

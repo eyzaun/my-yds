@@ -67,13 +67,13 @@ const LoginForm = () => {
       </Heading2>
 
       {error && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: designTokens.colors.text.primary }}>
+        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: designTokens.colors.status.errorBg, color: designTokens.colors.status.error }}>
           {error}
         </div>
       )}
 
       {resetSent && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(34, 197, 94, 0.2)', color: designTokens.colors.text.primary }}>
+        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: designTokens.colors.status.successBg, color: designTokens.colors.status.success }}>
           Şifre sıfırlama bağlantısı email adresinize gönderildi.
         </div>
       )}
