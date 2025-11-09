@@ -8,14 +8,15 @@ export const designTokens = {
   colors: {
     // Background colors
     background: {
-      primary: '#FFFFFF',
-      secondary: '#F9FAFB',
+      primary: '#F3F4F6',      // Light gray for main background - improved contrast
+      secondary: '#E5E7EB',     // Slightly darker for sections
+      card: '#FFFFFF',          // White for cards to stand out from background
     },
 
     // Surface colors (for cards, elevated elements)
     surface: {
-      primary: '#FFFFFF',
-      elevated: '#FFFFFF', // Used with shadow for elevation
+      primary: '#FFFFFF',       // White for elevated surfaces
+      elevated: '#FFFFFF',      // Used with shadow for elevation
     },
 
     // Text colors

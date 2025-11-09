@@ -62,7 +62,7 @@ export function ProgressOverview() {
           İlerlemeniz Yükleniyor...
         </Heading2>
         <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: designTokens.colors.accent }}></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: designTokens.colors.primary[600] }}></div>
         </div>
       </Card>
     );
@@ -108,8 +108,8 @@ export function ProgressOverview() {
             style={{
               padding: designTokens.spacing.md,
               borderRadius: designTokens.borderRadius.md,
-              backgroundColor: `${designTokens.colors.accent}10`,
-              border: `1px solid ${designTokens.colors.accent}30`
+              backgroundColor: `${designTokens.colors.primary[600]}10`,
+              border: `1px solid ${designTokens.colors.primary[600]}30`
             }}
             onClick={() => {
               window.location.href = `/${categoryId}?index=${data.index}`;
@@ -119,19 +119,19 @@ export function ProgressOverview() {
               <h3 className="font-medium" style={{ color: designTokens.colors.text }}>
                 {categories.find((c) => c.path === `/${categoryId}`)?.name || categoryId}
               </h3>
-              <span style={{ color: designTokens.colors.accent }}>Kart {data.index + 1} / {data.totalCards}</span>
+              <span style={{ color: designTokens.colors.primary[600] }}>Kart {data.index + 1} / {data.totalCards}</span>
             </div>
 
             <div className="w-full rounded-full overflow-hidden" style={{
               height: '8px',
-              backgroundColor: designTokens.colors.surface,
+              backgroundColor: designTokens.colors.background.secondary,
               marginBottom: designTokens.spacing.sm
             }}>
               <div
                 className="h-full rounded-full"
                 style={{
                   width: `${Math.round((data.viewedCount / data.totalCards) * 100)}%`,
-                  backgroundColor: designTokens.colors.accent
+                  backgroundColor: designTokens.colors.primary[600]
                 }}
               />
             </div>

@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({
   onClick,
 }) => {
   const baseStyles: React.CSSProperties = {
-    backgroundColor: designTokens.colors.surface.primary,
+    backgroundColor: designTokens.colors.background.card,
     borderRadius: designTokens.borderRadius.lg,
     padding: designTokens.spacing[padding],
     transition: designTokens.transitions.base,

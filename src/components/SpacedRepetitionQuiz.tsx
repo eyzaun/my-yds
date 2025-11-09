@@ -406,7 +406,7 @@ export default function SpacedRepetitionQuiz({
         <div className="text-center">
           <div
             className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 mx-auto mb-4"
-            style={{ borderColor: designTokens.colors.primary }}
+            style={{ borderColor: designTokens.colors.primary[600] }}
           />
           <p style={{ color: designTokens.colors.text }}>Kartlar yükleniyor...</p>
           {savingProgress && (
@@ -471,7 +471,7 @@ export default function SpacedRepetitionQuiz({
               </div>
 
               <div className="mb-6">
-                <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.primary }}>
+                <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.primary[600] }}>
                   {accuracy}%
                 </div>
                 <div className="text-sm opacity-70" style={{ color: designTokens.colors.text }}>
@@ -542,7 +542,7 @@ export default function SpacedRepetitionQuiz({
               className="h-2 rounded-full transition-all"
               style={{
                 width: `${progress}%`,
-                backgroundColor: designTokens.colors.primary,
+                backgroundColor: designTokens.colors.primary[600],
                 borderRadius: designTokens.borderRadius.full
               }}
             />

@@ -67,7 +67,7 @@ const ProfilePage = () => {
 
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background }}>
+      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
         <Container maxWidth="4xl">
           <Heading1 className="mb-8 text-center">
             Profil
@@ -94,13 +94,13 @@ const ProfilePage = () => {
                       const studiedCount = category.studiedWords?.length || 0;
 
                       return (
-                        <div key={categoryId} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.accent}40` }}>
+                        <div key={categoryId} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.primary[600]}40` }}>
                           <div className="flex justify-between mb-1">
                             <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
-                            <span style={{ color: designTokens.colors.accent }}>{studiedCount} kelime</span>
+                            <span style={{ color: designTokens.colors.primary[600] }}>{studiedCount} kelime</span>
                           </div>
                           <Link href={`/${categoryId}`}>
-                            <span className="text-sm" style={{ color: designTokens.colors.accent }}>Çalışmaya Devam Et</span>
+                            <span className="text-sm" style={{ color: designTokens.colors.primary[600] }}>Çalışmaya Devam Et</span>
                           </Link>
                         </div>
                       );
@@ -110,7 +110,7 @@ const ProfilePage = () => {
                   <div style={{ color: designTokens.colors.text.primary }}>
                     Henüz kelime çalışmadınız.
                     <Link href="/all-words">
-                      <span className="ml-2" style={{ color: designTokens.colors.accent }}>Kelimeleri Keşfedin</span>
+                      <span className="ml-2" style={{ color: designTokens.colors.primary[600] }}>Kelimeleri Keşfedin</span>
                     </Link>
                   </div>
                 )}
@@ -132,10 +132,10 @@ const ProfilePage = () => {
                       const formattedDate = date.toLocaleDateString('tr-TR');
 
                       return (
-                        <div key={index} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.accent}40` }}>
+                        <div key={index} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.primary[600]}40` }}>
                           <div className="flex justify-between mb-1">
                             <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
-                            <span style={{ color: Number(scorePercentage) >= 70 ? designTokens.colors.success : Number(scorePercentage) >= 50 ? designTokens.colors.warning : designTokens.colors.error }}>
+                            <span style={{ color: Number(scorePercentage) >= 70 ? designTokens.colors.accent.success.main : Number(scorePercentage) >= 50 ? designTokens.colors.accent.warning.main : designTokens.colors.accent.error.main }}>
                               %{scorePercentage} ({score.score}/{score.totalQuestions})
                             </span>
                           </div>
@@ -150,7 +150,7 @@ const ProfilePage = () => {
                   <div style={{ color: designTokens.colors.text.primary }}>
                     Henüz test çözmediniz.
                     <Link href="/all-words">
-                      <span className="ml-2" style={{ color: designTokens.colors.accent }}>Testleri Keşfedin</span>
+                      <span className="ml-2" style={{ color: designTokens.colors.primary[600] }}>Testleri Keşfedin</span>
                     </Link>
                   </div>
                 )}

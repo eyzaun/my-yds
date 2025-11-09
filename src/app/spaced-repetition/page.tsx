@@ -119,12 +119,12 @@ export default function SpacedRepetitionPage() {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: designTokens.colors.background }}
+        style={{ backgroundColor: designTokens.colors.background.primary }}
       >
         <div className="text-center">
           <div
             className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 mx-auto mb-4"
-            style={{ borderColor: designTokens.colors.accent }}
+            style={{ borderColor: designTokens.colors.primary[600] }}
           />
           <Text>Yükleniyor...</Text>
         </div>
@@ -133,7 +133,7 @@ export default function SpacedRepetitionPage() {
   }
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
       <Container>
         {/* Header */}
         <div className="mb-8">
@@ -148,7 +148,7 @@ export default function SpacedRepetitionPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {/* Due Today */}
             <Card className="p-6 text-center">
-              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.accent }}>
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.primary[600] }}>
                 {statistics.dueToday}
               </div>
               <Text className="text-sm opacity-70">
@@ -168,7 +168,7 @@ export default function SpacedRepetitionPage() {
 
             {/* Accuracy */}
             <Card className="p-6 text-center">
-              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.accent }}>
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.primary[600] }}>
                 {statistics.overallAccuracy}%
               </div>
               <Text className="text-sm opacity-70">
@@ -178,7 +178,7 @@ export default function SpacedRepetitionPage() {
 
             {/* Current Streak */}
             <Card className="p-6 text-center">
-              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.accent }}>
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.primary[600] }}>
                 🔥 {streaks.currentStreak}
               </div>
               <Text className="text-sm opacity-70">
@@ -202,7 +202,7 @@ export default function SpacedRepetitionPage() {
                 </Text>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.accent }}>
+                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.primary[600] }}>
                   {statistics.learningCards}
                 </div>
                 <Text className="text-sm opacity-70">
@@ -225,7 +225,7 @@ export default function SpacedRepetitionPage() {
         {statistics && statistics.dueToday > 0 && (
           <Card
             className="p-8 mb-8 text-center cursor-pointer hover:opacity-90 transition-all"
-            style={{ backgroundColor: designTokens.colors.accent }}
+            style={{ backgroundColor: designTokens.colors.primary[600] }}
             onClick={() => startQuiz('all')}
           >
             <Heading2 className="text-white">
@@ -275,7 +275,7 @@ export default function SpacedRepetitionPage() {
                     {group.dueToday > 0 && (
                       <div
                         className="px-3 py-1 rounded-full text-sm font-medium text-white"
-                        style={{ backgroundColor: designTokens.colors.accent }}
+                        style={{ backgroundColor: designTokens.colors.primary[600] }}
                       >
                         {group.dueToday} hazır
                       </div>
@@ -292,7 +292,7 @@ export default function SpacedRepetitionPage() {
                       </Text>
                     </div>
                     <div>
-                      <div className="font-semibold" style={{ color: designTokens.colors.accent }}>
+                      <div className="font-semibold" style={{ color: designTokens.colors.primary[600] }}>
                         {group.learningCards}
                       </div>
                       <Text className="opacity-60 text-sm">

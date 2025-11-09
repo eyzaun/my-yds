@@ -12,7 +12,7 @@ const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ss
 
 const RegisterPage = () => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background }}>
+    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
       <Container maxWidth="md" className="py-8">
         <Heading1 className="mb-8 text-center">
           Hesap Oluştur
@@ -24,7 +24,7 @@ const RegisterPage = () => {
           <div className="mt-6 text-center">
             <Text>
               Zaten bir hesabınız var mı?{' '}
-              <Link href="/login" className="underline" style={{ color: designTokens.colors.accent }}>
+              <Link href="/login" className="underline" style={{ color: designTokens.colors.primary[600] }}>
                 Giriş Yap
               </Link>
             </Text>

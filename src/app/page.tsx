@@ -47,7 +47,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Kategori Kartları */}
         <Heading2>Kelime Kategorileri</Heading2>
@@ -98,7 +98,7 @@ export default function HomePage() {
         {/* Başlangıç CTA */}
         <div
           className="text-center p-8 rounded-lg shadow-lg mb-12 relative overflow-hidden"
-          style={{ backgroundColor: designTokens.colors.surface, border: `1px solid ${designTokens.colors.primary}30` }}
+          style={{ backgroundColor: designTokens.colors.background.card, border: `1px solid ${designTokens.colors.primary[600]}30` }}
         >
           <h2 className="text-xl md:text-2xl font-bold mb-6" style={{ color: designTokens.colors.text.primary }}>
             Kelime Öğrenmeye Hemen Başlayın!
@@ -107,9 +107,9 @@ export default function HomePage() {
             href="/all-words"
             className="px-6 py-3 rounded-lg inline-flex items-center transition-all duration-300 hover:scale-105"
             style={{
-              backgroundColor: designTokens.colors.primary,
-              color: "#000",
-              boxShadow: `0 0 15px ${designTokens.colors.primary}30`
+              backgroundColor: designTokens.colors.primary[600],
+              color: designTokens.colors.text.inverse,
+              boxShadow: `0 0 15px ${designTokens.colors.primary[600]}30`
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">

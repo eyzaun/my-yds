@@ -264,7 +264,7 @@ export default function UploadFlashcardsPage() {
               Excel Dosyanızı Yükleyin
             </Heading2>
 
-            <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary}10` }}>
+            <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary[600]}10` }}>
               <Text className="text-sm mb-2">
                 <strong>Excel Format:</strong>
               </Text>
@@ -287,11 +287,11 @@ export default function UploadFlashcardsPage() {
                 htmlFor="excel-file"
                 className="block w-full p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-all hover:bg-opacity-5"
                 style={{
-                  borderColor: designTokens.colors.primary,
-                  backgroundColor: `${designTokens.colors.primary}05`
+                  borderColor: designTokens.colors.primary[600],
+                  backgroundColor: `${designTokens.colors.primary[600]}05`
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.primary}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.primary[600]}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
                 <Text className="font-medium">
@@ -304,7 +304,7 @@ export default function UploadFlashcardsPage() {
             </div>
 
             {flashcards.length > 0 && (
-              <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary}10` }}>
+              <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary[600]}10` }}>
                 <Text className="font-medium">
                   {flashcards.length} kelime yüklendi
                 </Text>
@@ -337,7 +337,7 @@ export default function UploadFlashcardsPage() {
                     <div
                       key={card.id}
                       className="mb-2 p-3 rounded-lg"
-                      style={{ backgroundColor: `${designTokens.colors.primary}05` }}
+                      style={{ backgroundColor: `${designTokens.colors.primary[600]}05` }}
                     >
                       <Text className="text-sm">
                         <strong>{index + 1}.</strong> {card.front} → {card.back}
@@ -391,7 +391,7 @@ export default function UploadFlashcardsPage() {
 
           {isLoading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 mx-auto" style={{ borderColor: designTokens.colors.primary }}></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 mx-auto" style={{ borderColor: designTokens.colors.primary[600] }}></div>
             </div>
           ) : savedSets.length > 0 ? (
             <div className="grid gap-3">
