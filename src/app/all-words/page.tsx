@@ -12,7 +12,7 @@ import { Button } from '@/components/design-system/Button';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
 import { Container } from '@/components/design-system/Container';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 // Fix the import path
 const AdBanner = dynamic(() => import('../../components/AdBanner'), { ssr: false });
@@ -27,6 +27,7 @@ interface QuizQuestion {
 }
 
 export default function AllWords() {
+  const designTokens = useDesignTokens();
   const [showQuiz, setShowQuiz] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const { user } = useAuth(); // Kullanıcı durumunu al

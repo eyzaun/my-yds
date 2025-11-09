@@ -11,12 +11,13 @@ import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading1, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 // Replace the import using correct path similar to conjunctions page
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 export default function Business() {
+  const designTokens = useDesignTokens();
   const [showQuiz, setShowQuiz] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const { user } = useAuth(); // Kullanıcı durumunu al

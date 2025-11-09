@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { categories } from '@/data/categories';
 
 export default function CategoryPage() {
+  const designTokens = useDesignTokens();
   return (
     <div
       className="min-h-screen px-4 py-8"

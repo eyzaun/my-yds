@@ -9,7 +9,7 @@ import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { FlashcardData } from '@/types/flashcard';
 import { parseExcelFile, convertExcelRowsToFlashcards } from '@/utils/excelParser';
 import { saveFlashcardSet, getUserFlashcardSets, getFlashcardsBySetId, deleteFlashcardSet } from '@/lib/firebase/flashcardStorage';
@@ -31,6 +31,7 @@ const convertFlashcardsToWords = (flashcards: FlashcardData[]): Word[] => {
 };
 
 export default function UploadFlashcardsPage() {
+  const designTokens = useDesignTokens();
   const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
   const [savedSets, setSavedSets] = useState<{id: string, name: string, cardCount: number, createdAt: Date}[]>([]);
   const [setName, setSetName] = useState('');

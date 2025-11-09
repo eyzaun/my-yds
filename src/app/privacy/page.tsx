@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 export default function Privacy() {
+  const designTokens = useDesignTokens();
   
   // Sayfa için SEO ve yapısal veri ekleme
   useEffect(() => {

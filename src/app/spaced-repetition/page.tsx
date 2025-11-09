@@ -21,7 +21,7 @@ import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading1, Heading2, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 const SpacedRepetitionQuiz = dynamic(
   () => import('@/components/SpacedRepetitionQuiz'),
@@ -29,6 +29,7 @@ const SpacedRepetitionQuiz = dynamic(
 );
 
 export default function SpacedRepetitionPage() {
+  const designTokens = useDesignTokens();
   const { user } = useAuth();
   const router = useRouter();
 

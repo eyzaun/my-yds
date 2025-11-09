@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
