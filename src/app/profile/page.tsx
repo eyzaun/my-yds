@@ -12,12 +12,13 @@ import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading1, Heading2 } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProfilePage = () => {
+  const { tokens } = useTheme();
   const { user } = useAuth();
   const [progress, setProgress] = useState<Record<string, UserProgress>>({});
   const [scores, setScores] = useState<QuizScore[]>([]);
@@ -67,7 +68,7 @@ const ProfilePage = () => {
 
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+      <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background.primary }}>
         <Container maxWidth="4xl">
           <Heading1 className="mb-8 text-center">
             Profil
@@ -85,7 +86,7 @@ const ProfilePage = () => {
                 </Heading2>
 
                 {loading ? (
-                  <div style={{ color: designTokens.colors.text.primary }}>Yükleniyor...</div>
+                  <div style={{ color: tokens.colors.text.primary }}>Yükleniyor...</div>
                 ) : Object.keys(progress).length > 0 ? (
                   <div className="space-y-4">
                     {Object.keys(progress).map((categoryId) => {
@@ -94,23 +95,23 @@ const ProfilePage = () => {
                       const studiedCount = category.studiedWords?.length || 0;
 
                       return (
-                        <div key={categoryId} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.primary[600]}40` }}>
+                        <div key={categoryId} className="border-b pb-2" style={{ borderColor: `${tokens.colors.primary[600]}40` }}>
                           <div className="flex justify-between mb-1">
-                            <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
-                            <span style={{ color: designTokens.colors.primary[600] }}>{studiedCount} kelime</span>
+                            <span style={{ color: tokens.colors.text.primary }}>{categoryName}</span>
+                            <span style={{ color: tokens.colors.primary[600] }}>{studiedCount} kelime</span>
                           </div>
                           <Link href={`/${categoryId}`}>
-                            <span className="text-sm" style={{ color: designTokens.colors.primary[600] }}>Çalışmaya Devam Et</span>
+                            <span className="text-sm" style={{ color: tokens.colors.primary[600] }}>Çalışmaya Devam Et</span>
                           </Link>
                         </div>
                       );
                     })}
                   </div>
                 ) : (
-                  <div style={{ color: designTokens.colors.text.primary }}>
+                  <div style={{ color: tokens.colors.text.primary }}>
                     Henüz kelime çalışmadınız.
                     <Link href="/all-words">
-                      <span className="ml-2" style={{ color: designTokens.colors.primary[600] }}>Kelimeleri Keşfedin</span>
+                      <span className="ml-2" style={{ color: tokens.colors.primary[600] }}>Kelimeleri Keşfedin</span>
                     </Link>
                   </div>
                 )}
@@ -122,7 +123,7 @@ const ProfilePage = () => {
                 </Heading2>
 
                 {loading ? (
-                  <div style={{ color: designTokens.colors.text.primary }}>Yükleniyor...</div>
+                  <div style={{ color: tokens.colors.text.primary }}>Yükleniyor...</div>
                 ) : scores.length > 0 ? (
                   <div className="space-y-4">
                     {scores.slice(0, 5).map((score, index) => {
@@ -132,14 +133,14 @@ const ProfilePage = () => {
                       const formattedDate = date.toLocaleDateString('tr-TR');
 
                       return (
-                        <div key={index} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.primary[600]}40` }}>
+                        <div key={index} className="border-b pb-2" style={{ borderColor: `${tokens.colors.primary[600]}40` }}>
                           <div className="flex justify-between mb-1">
-                            <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
-                            <span style={{ color: Number(scorePercentage) >= 70 ? designTokens.colors.accent.success.main : Number(scorePercentage) >= 50 ? designTokens.colors.accent.warning.main : designTokens.colors.accent.error.main }}>
+                            <span style={{ color: tokens.colors.text.primary }}>{categoryName}</span>
+                            <span style={{ color: Number(scorePercentage) >= 70 ? tokens.colors.accent.success.main : Number(scorePercentage) >= 50 ? tokens.colors.accent.warning.main : tokens.colors.accent.error.main }}>
                               %{scorePercentage} ({score.score}/{score.totalQuestions})
                             </span>
                           </div>
-                          <div className="text-sm" style={{ color: designTokens.colors.text.secondary }}>
+                          <div className="text-sm" style={{ color: tokens.colors.text.secondary }}>
                             {formattedDate}
                           </div>
                         </div>
@@ -147,10 +148,10 @@ const ProfilePage = () => {
                     })}
                   </div>
                 ) : (
-                  <div style={{ color: designTokens.colors.text.primary }}>
+                  <div style={{ color: tokens.colors.text.primary }}>
                     Henüz test çözmediniz.
                     <Link href="/all-words">
-                      <span className="ml-2" style={{ color: designTokens.colors.primary[600] }}>Testleri Keşfedin</span>
+                      <span className="ml-2" style={{ color: tokens.colors.primary[600] }}>Testleri Keşfedin</span>
                     </Link>
                   </div>
                 )}

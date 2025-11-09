@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface QuizModeProps {
   flashcards: FlashcardData[];
@@ -17,8 +17,8 @@ interface QuizModeProps {
   isMobileMode?: boolean;
 }
 
-export default function QuizMode({ 
-  flashcards, 
+export default function QuizMode({
+  flashcards,
   onCorrectAnswer,
   onIncorrectAnswer,
   onMoveNext,
@@ -27,6 +27,7 @@ export default function QuizMode({
   alwaysKeepKeyboardOpen = false,
   isMobileMode = false
 }: QuizModeProps) {
+  const { tokens } = useTheme();
   const [answer, setAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showHint, setShowHint] = useState(false);
@@ -233,14 +234,14 @@ export default function QuizMode({
   
   // Form stilleri
   const formStyle = isMobileMode ? {
-    backgroundColor: designTokens.colors.background.primary,
+    backgroundColor: tokens.colors.background.primary,
   } : {};
 
   return (
     <div className={`w-full max-w-md mx-auto ${alwaysKeepKeyboardOpen ? 'always-focused' : ''}`}>
       <form onSubmit={handleSubmit} className="flex flex-col" style={formStyle}>
         <p className="text-sm mb-1" style={{
-          color: designTokens.colors.text.primary,
+          color: tokens.colors.text.primary,
           fontSize: isMobile ? '14px' : '15px'
         }}>
           {waitingForEnter || (isFlipped && isCorrect === false)
@@ -259,11 +260,11 @@ export default function QuizMode({
             className="flex-grow px-3 py-1 rounded-l-lg border focus:outline-none"
             placeholder={waitingForEnter || (isFlipped && isCorrect === false) ? 'Enter tuşuna basın...' : 'Cevabınızı buraya yazın...'}
             style={{
-              backgroundColor: designTokens.colors.background.primary,
-              color: designTokens.colors.text.primary,
-              borderColor: isCorrect === true ? designTokens.colors.status.success :
-                           isCorrect === false ? designTokens.colors.status.error :
-                           designTokens.colors.border.medium,
+              backgroundColor: tokens.colors.background.primary,
+              color: tokens.colors.text.primary,
+              borderColor: isCorrect === true ? tokens.colors.status.success :
+                           isCorrect === false ? tokens.colors.status.error :
+                           tokens.colors.border.medium,
               fontSize: '16px',
               height: isMobileMode ? '44px' : '40px'
             }}
@@ -278,10 +279,10 @@ export default function QuizMode({
             variant="primary"
             className="rounded-r-lg"
             style={{
-              backgroundColor: isCorrect === true ? designTokens.colors.status.success :
-                              waitingForEnter || (isFlipped && isCorrect === false) ? designTokens.colors.status.warning :
-                              designTokens.colors.primary[600],
-              color: designTokens.colors.text.inverse,
+              backgroundColor: isCorrect === true ? tokens.colors.status.success :
+                              waitingForEnter || (isFlipped && isCorrect === false) ? tokens.colors.status.warning :
+                              tokens.colors.primary[600],
+              color: tokens.colors.text.inverse,
               fontSize: '16px',
               height: isMobileMode ? '44px' : '40px',
               borderRadius: '0 0.5rem 0.5rem 0'
@@ -293,12 +294,12 @@ export default function QuizMode({
         </div>
         
         {isCorrect === true && (
-          <p className="mt-2 text-sm" style={{ color: designTokens.colors.status.success }}>Doğru cevap!</p>
+          <p className="mt-2 text-sm" style={{ color: tokens.colors.status.success }}>Doğru cevap!</p>
         )}
 
         {isCorrect === false && (
           <div className="mt-2">
-            <p className="text-sm" style={{ color: designTokens.colors.status.error }}>
+            <p className="text-sm" style={{ color: tokens.colors.status.error }}>
               {isFlipped 
                 ? `Doğru cevap: ${currentCard.back}` 
                 : 'Yanlış cevap, tekrar deneyin.'}
@@ -309,13 +310,13 @@ export default function QuizMode({
                 onClick={() => setShowHint(true)}
                 variant="ghost"
                 className="text-xs underline mt-1"
-                style={{ color: designTokens.colors.accent, padding: 0 }}
+                style={{ color: tokens.colors.accent, padding: 0 }}
               >
                 İpucu göster
               </Button>
             )}
             {showHint && !isFlipped && (
-              <p className="text-xs mt-1" style={{ color: designTokens.colors.text.primary }}>
+              <p className="text-xs mt-1" style={{ color: tokens.colors.text.primary }}>
                 İpucu: {currentCard.back.charAt(0)}
                 {currentCard.back.charAt(1)}
                 {currentCard.back.length > 2 ? '...' : ''}

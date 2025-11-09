@@ -1,10 +1,11 @@
 // components/ThemeSelector.tsx
 'use client';
-import { useTheme } from '@/contexts/ThemeContext';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme as useThemeContext } from '@/contexts/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 
 const ThemeSelector = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useThemeContext();
+  const { tokens } = useTheme();
 
   const handleToggle = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
@@ -21,19 +22,19 @@ const ThemeSelector = () => {
         justifyContent: 'center',
         width: '40px',
         height: '40px',
-        borderRadius: designTokens.borderRadius.md,
-        border: `1px solid ${designTokens.colors.border.medium}`,
-        backgroundColor: designTokens.colors.background.secondary,
-        color: designTokens.colors.text.primary,
+        borderRadius: tokens.borderRadius.md,
+        border: `1px solid ${tokens.colors.border.medium}`,
+        backgroundColor: tokens.colors.background.secondary,
+        color: tokens.colors.text.primary,
         cursor: 'pointer',
-        transition: designTokens.transitions.base,
+        transition: tokens.transitions.base,
         fontSize: '20px',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = designTokens.colors.border.light;
+        e.currentTarget.style.backgroundColor = tokens.colors.border.light;
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = designTokens.colors.background.secondary;
+        e.currentTarget.style.backgroundColor = tokens.colors.background.secondary;
       }}
     >
       {theme === 'light' ? '🌙' : '☀️'}

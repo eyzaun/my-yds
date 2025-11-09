@@ -8,9 +8,10 @@ import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
 import { Card } from '@/components/design-system/Card';
 import { Heading2 } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 const RegisterForm = () => {
+  const { tokens } = useTheme();
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -70,14 +71,14 @@ const RegisterForm = () => {
       </Heading2>
 
       {error && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: designTokens.colors.status.errorBg, color: designTokens.colors.status.error }}>
+        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: tokens.colors.status.errorBg, color: tokens.colors.status.error }}>
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
+          <label className="block mb-2" style={{ color: tokens.colors.text.primary }}>
             Ad Soyad
           </label>
           <Input
@@ -89,7 +90,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
+          <label className="block mb-2" style={{ color: tokens.colors.text.primary }}>
             Email
           </label>
           <Input
@@ -101,7 +102,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
+          <label className="block mb-2" style={{ color: tokens.colors.text.primary }}>
             Şifre
           </label>
           <Input
@@ -114,7 +115,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
+          <label className="block mb-2" style={{ color: tokens.colors.text.primary }}>
             Şifre Tekrar
           </label>
           <Input

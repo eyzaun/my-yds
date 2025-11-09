@@ -7,7 +7,7 @@ import Link from 'next/link'; // Make sure Link is imported
 import { Card } from '@/components/design-system/Card';
 import { Container } from '@/components/design-system/Container';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { FeatureSection } from '@/components/home/FeatureSection';
 import { ExcelUploadSection } from '@/components/home/ExcelUploadSection';
@@ -24,6 +24,7 @@ const ProgressOverview = dynamic(() => import('@/components/home/ProgressOvervie
 });
 
 export default function HomePage() {
+  const { tokens } = useTheme();
   // SEO için yapısal veri ekleme
   useEffect(() => {
     const script = document.createElement('script');
@@ -53,7 +54,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: tokens.colors.background.primary }}>
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Kategori Kartları */}
         <Heading2>Kelime Kategorileri</Heading2>
@@ -88,7 +89,7 @@ export default function HomePage() {
         {/* Çalışma İpuçları */}
         <Card variant="elevated" className="mb-12">
           <Heading2>Etkili Kelime Öğrenme İpuçları</Heading2>
-          <ul className="space-y-3 list-disc pl-5" style={{ color: designTokens.colors.text.primary }}>
+          <ul className="space-y-3 list-disc pl-5" style={{ color: tokens.colors.text.primary }}>
             <li>Düzenli ve sistemli çalışın. Her gün belirli sayıda yeni kelime öğrenin.</li>
             <li>Öğrendiğiniz kelimeleri cümle içinde kullanarak pekiştirin.</li>
             <li>Benzer kelimeleri gruplandırarak çalışın.</li>
@@ -104,18 +105,18 @@ export default function HomePage() {
         {/* Başlangıç CTA */}
         <div
           className="text-center p-8 rounded-lg shadow-lg mb-12 relative overflow-hidden"
-          style={{ backgroundColor: designTokens.colors.background.card, border: `1px solid ${designTokens.colors.primary[600]}30` }}
+          style={{ backgroundColor: tokens.colors.background.card, border: `1px solid ${tokens.colors.primary[600]}30` }}
         >
-          <h2 className="text-xl md:text-2xl font-bold mb-6" style={{ color: designTokens.colors.text.primary }}>
+          <h2 className="text-xl md:text-2xl font-bold mb-6" style={{ color: tokens.colors.text.primary }}>
             Kelime Öğrenmeye Hemen Başlayın!
           </h2>
           <Link
             href="/all-words"
             className="px-6 py-3 rounded-lg inline-flex items-center transition-all duration-300 hover:scale-105"
             style={{
-              backgroundColor: designTokens.colors.primary[600],
-              color: designTokens.colors.text.inverse,
-              boxShadow: `0 0 15px ${designTokens.colors.primary[600]}30`
+              backgroundColor: tokens.colors.primary[600],
+              color: tokens.colors.text.inverse,
+              boxShadow: `0 0 15px ${tokens.colors.primary[600]}30`
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -127,7 +128,7 @@ export default function HomePage() {
 
         {/* Footer */}
         <footer className="text-center pt-6 pb-10">
-          <p style={{ color: designTokens.colors.text.primary, opacity: 0.7 }}>
+          <p style={{ color: tokens.colors.text.primary, opacity: 0.7 }}>
             © {new Date().getFullYear()} YDS Kelime Listesi - YDS Sınavına Hazırlık Platformu
           </p>
         </footer>

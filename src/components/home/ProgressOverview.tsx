@@ -8,7 +8,7 @@ import { categories } from '@/data/categories';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface Timestamp {
   seconds: number;
@@ -27,6 +27,7 @@ interface UserProgress {
 }
 
 export function ProgressOverview() {
+  const { tokens } = useTheme();
   const [user] = useAuthState(auth);
   const [progress, setProgress] = useState<UserProgress>({});
   const [loading, setLoading] = useState(true);
@@ -58,11 +59,11 @@ export function ProgressOverview() {
   if (loading) {
     return (
       <Card>
-        <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
+        <Heading2 style={{ marginBottom: tokens.spacing[6] }}>
           İlerlemeniz Yükleniyor...
         </Heading2>
         <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: designTokens.colors.primary[600] }}></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: tokens.colors.primary[600] }}></div>
         </div>
       </Card>
     );
@@ -71,7 +72,7 @@ export function ProgressOverview() {
   if (!user) {
     return (
       <Card>
-        <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
+        <Heading2 style={{ marginBottom: tokens.spacing[6] }}>
           İlerlemenizi Görmek İçin Giriş Yapın
         </Heading2>
         <Text>
@@ -84,7 +85,7 @@ export function ProgressOverview() {
   if (Object.keys(progress).length === 0) {
     return (
       <Card>
-        <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
+        <Heading2 style={{ marginBottom: tokens.spacing[6] }}>
           Henüz İlerleme Kaydedilmedi
         </Heading2>
         <Text>
@@ -96,51 +97,51 @@ export function ProgressOverview() {
 
   return (
     <Card>
-      <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
+      <Heading2 style={{ marginBottom: tokens.spacing[6] }}>
         Çalışma İlerlemeniz
       </Heading2>
 
-      <div className="grid" style={{ gap: designTokens.spacing[6] }}>
+      <div className="grid" style={{ gap: tokens.spacing[6] }}>
         {Object.entries(progress).map(([categoryId, data]) => (
           <div
             key={categoryId}
             className="block cursor-pointer transition-all hover:scale-105"
             style={{
-              padding: designTokens.spacing[6],
-              borderRadius: designTokens.borderRadius.md,
-              backgroundColor: `${designTokens.colors.primary[600]}10`,
-              border: `1px solid ${designTokens.colors.primary[600]}30`
+              padding: tokens.spacing[6],
+              borderRadius: tokens.borderRadius.md,
+              backgroundColor: `${tokens.colors.primary[600]}10`,
+              border: `1px solid ${tokens.colors.primary[600]}30`
             }}
             onClick={() => {
               window.location.href = `/${categoryId}?index=${data.index}`;
             }}
           >
-            <div className="flex justify-between items-center" style={{ marginBottom: designTokens.spacing[2] }}>
-              <h3 className="font-medium" style={{ color: designTokens.colors.text.primary }}>
+            <div className="flex justify-between items-center" style={{ marginBottom: tokens.spacing[2] }}>
+              <h3 className="font-medium" style={{ color: tokens.colors.text.primary }}>
                 {categories.find((c) => c.path === `/${categoryId}`)?.name || categoryId}
               </h3>
-              <span style={{ color: designTokens.colors.primary[600] }}>Kart {data.index + 1} / {data.totalCards}</span>
+              <span style={{ color: tokens.colors.primary[600] }}>Kart {data.index + 1} / {data.totalCards}</span>
             </div>
 
             <div className="w-full rounded-full overflow-hidden" style={{
               height: '8px',
-              backgroundColor: designTokens.colors.background.secondary,
-              marginBottom: designTokens.spacing[2]
+              backgroundColor: tokens.colors.background.secondary,
+              marginBottom: tokens.spacing[2]
             }}>
               <div
                 className="h-full rounded-full"
                 style={{
                   width: `${Math.round((data.viewedCount / data.totalCards) * 100)}%`,
-                  backgroundColor: designTokens.colors.primary[600]
+                  backgroundColor: tokens.colors.primary[600]
                 }}
               />
             </div>
 
             <div className="flex justify-between text-sm">
-              <span style={{ color: designTokens.colors.text.secondary }}>
+              <span style={{ color: tokens.colors.text.secondary }}>
                 %{Math.round((data.viewedCount / data.totalCards) * 100)} tamamlandı
               </span>
-              <span style={{ color: designTokens.colors.text.secondary }}>
+              <span style={{ color: tokens.colors.text.secondary }}>
                 Son çalışma: {new Date(data.timestamp.seconds * 1000).toLocaleDateString('tr-TR')}
               </span>
             </div>

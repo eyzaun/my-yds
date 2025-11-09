@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 export default function About() {
+  const { tokens } = useTheme();
   // Sayfa için SEO ve yapısal veri ekleme
   useEffect(() => {
     const script = document.createElement('script');
@@ -25,7 +26,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: tokens.colors.background.primary }}>
 
       <Container maxWidth="md" className="py-8">
         <Heading1 className="text-2xl md:text-3xl mb-6 text-center">

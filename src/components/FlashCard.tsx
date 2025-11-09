@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface Word {
   en: string;
@@ -26,6 +26,7 @@ const MemoizedFlashCard = React.memo(function FlashCard({
   isQuizMode = false,
   forceFlipped
 }: FlashCardProps) {
+  const { tokens } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -240,16 +241,16 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             >
               {/* Front Side */}
               <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg"
-                  style={{ backgroundColor: designTokens.colors.surface.primary }}>
-                <h2 style={{ color: designTokens.colors.text.primary }} className="text-4xl sm:text-5xl font-bold text-center">
+                  style={{ backgroundColor: tokens.colors.surface.primary }}>
+                <h2 style={{ color: tokens.colors.text.primary }} className="text-4xl sm:text-5xl font-bold text-center">
                   {currentWord.en}
                 </h2>
               </div>
 
               {/* Back Side */}
               <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg rotate-y-180"
-                  style={{ backgroundColor: designTokens.colors.primary[600] }}>
-                <h2 style={{ color: designTokens.colors.text.inverse }} className="text-4xl sm:text-5xl font-bold text-center">
+                  style={{ backgroundColor: tokens.colors.primary[600] }}>
+                <h2 style={{ color: tokens.colors.text.inverse }} className="text-4xl sm:text-5xl font-bold text-center">
                   {currentWord.tr}
                 </h2>
               </div>
@@ -271,7 +272,7 @@ const MemoizedFlashCard = React.memo(function FlashCard({
               </svg>
             </Button>
 
-            <div className="px-4 py-2 rounded-lg" style={{ backgroundColor: designTokens.colors.surface.primary, color: designTokens.colors.text.primary }}>
+            <div className="px-4 py-2 rounded-lg" style={{ backgroundColor: tokens.colors.surface.primary, color: tokens.colors.text.primary }}>
               {currentIndex + 1} / {words.length}
             </div>
 
@@ -328,16 +329,16 @@ const MemoizedFlashCard = React.memo(function FlashCard({
               >
                 {/* Front Side */}
                 <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg"
-                    style={{ backgroundColor: designTokens.colors.surface.primary }}>
-                  <h2 style={{ color: designTokens.colors.text.primary }} className="text-4xl sm:text-5xl font-bold text-center">
+                    style={{ backgroundColor: tokens.colors.surface.primary }}>
+                  <h2 style={{ color: tokens.colors.text.primary }} className="text-4xl sm:text-5xl font-bold text-center">
                     {currentWord.en}
                   </h2>
                 </div>
 
                 {/* Back Side */}
                 <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg rotate-y-180"
-                    style={{ backgroundColor: designTokens.colors.primary[600] }}>
-                  <h2 style={{ color: designTokens.colors.text.inverse }} className="text-4xl sm:text-5xl font-bold text-center">
+                    style={{ backgroundColor: tokens.colors.primary[600] }}>
+                  <h2 style={{ color: tokens.colors.text.inverse }} className="text-4xl sm:text-5xl font-bold text-center">
                     {currentWord.tr}
                   </h2>
                 </div>
@@ -362,7 +363,7 @@ const MemoizedFlashCard = React.memo(function FlashCard({
       )}
 
       {/* Kelime çevirme ipucu */}
-      <div style={{ color: designTokens.colors.text.primary, opacity: 0.8 }} className="text-sm mb-2 text-center">
+      <div style={{ color: tokens.colors.text.primary, opacity: 0.8 }} className="text-sm mb-2 text-center">
         {isMobile ?
           "Kelime çevirmek için kartın üzerine dokunun veya yanlara kaydırın" :
           "Kelime çevirmek için kartın üzerine tıklayın"

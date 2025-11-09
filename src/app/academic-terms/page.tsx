@@ -11,12 +11,13 @@ import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading1, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 // Reklam bileşenini içe aktar
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 export default function AcademicTermsPage() {
+  const { tokens } = useTheme();
   const [showQuiz, setShowQuiz] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const { user } = useAuth(); // Kullanıcı durumunu al
@@ -45,7 +46,7 @@ export default function AcademicTermsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: tokens.colors.background.primary }}>
 
       <Container maxWidth="lg" className="py-8">
         {/* Sayfa Başlığı */}
@@ -59,14 +60,14 @@ export default function AcademicTermsPage() {
             Akademik terimler, YDS sınavında özellikle bilimsel metinlerde ve akademik çalışmalarda sıkça karşınıza çıkan kelimelerdir.
             Bu bölümde araştırma, metodoloji, analiz ve bilimsel süreçlerle ilgili önemli terimleri bulabilirsiniz.
           </Text>
-          <Text style={{ fontSize: designTokens.typography.fontSize.sm }}>
+          <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
             Bu kategoride toplam <strong>{vocabulary.academic_terms.length}</strong> kelime ve <strong>{questionCount}</strong> test sorusu bulunmaktadır.
           </Text>
 
           {/* Kullanıcı giriş yapmışsa bilgilendirme mesajı */}
           {user && (
-            <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary[600]}20` }}>
-              <Text style={{ fontSize: designTokens.typography.fontSize.sm }}>
+            <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: `${tokens.colors.primary[600]}20` }}>
+              <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
                 İlerlemeniz otomatik olarak kaydedilmektedir. Çalıştığınız kelimeler ve test sonuçlarınız profil sayfanızda görüntülenebilir.
               </Text>
             </div>
@@ -74,8 +75,8 @@ export default function AcademicTermsPage() {
 
           {/* Kullanıcı giriş yapmamışsa giriş yapma önerisi */}
           {!user && (
-            <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary[600]}20` }}>
-              <Text style={{ fontSize: designTokens.typography.fontSize.sm }}>
+            <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: `${tokens.colors.primary[600]}20` }}>
+              <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
                 İlerlemenizi kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
               </Text>
             </div>
@@ -110,7 +111,7 @@ export default function AcademicTermsPage() {
           <div>
             {/* Test açıklaması */}
             <Card variant="elevated" className="mb-6">
-              <Text style={{ fontSize: designTokens.typography.fontSize.sm }}>
+              <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
                 Bu test, Akademik Terimler kategorisinden {questionCount} soru içermektedir.
               </Text>
             </Card>
@@ -135,8 +136,8 @@ export default function AcademicTermsPage() {
             <Heading3 className="mb-4">
               Test Sonucu
             </Heading3>
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-4 mx-auto" style={{ backgroundColor: designTokens.colors.primary[600] }}>
-              <span className="text-2xl font-bold" style={{ color: designTokens.colors.text.inverse }}>%{Math.round((score / questionCount) * 100)}</span>
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-4 mx-auto" style={{ backgroundColor: tokens.colors.primary[600] }}>
+              <span className="text-2xl font-bold" style={{ color: tokens.colors.text.inverse }}>%{Math.round((score / questionCount) * 100)}</span>
             </div>
             <Text>
               Toplam Doğru: {score} / {questionCount}

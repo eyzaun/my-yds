@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 import QuizMode from '@/components/flashcards/QuizMode';
 import FullscreenWrapper from '@/components/flashcards/FullscreenWrapper';
 import useFlashcardState from '@/hooks/useFlashcardState';
@@ -28,6 +28,7 @@ export default function FlashcardDeck({
   initialIndex = 0,
   quizMode = false
 }: FlashcardDeckProps) {
+  const { tokens } = useTheme();
   const flashcardContainerRef = useRef<HTMLDivElement>(null);
   const { setIsFullscreen } = useFlashcardFullscreen();
 
@@ -117,7 +118,7 @@ export default function FlashcardDeck({
   
   // Kart bulunmaması durumu
   if (!flashcards.length) {
-    return <div className="text-center p-8" style={{ color: designTokens.colors.text.primary }}>Henüz kart bulunmuyor.</div>;
+    return <div className="text-center p-8" style={{ color: tokens.colors.text.primary }}>Henüz kart bulunmuyor.</div>;
   }
   
   // MOBİL QUIZ MODU ÖZEL GÖRÜNÜM
@@ -129,7 +130,7 @@ export default function FlashcardDeck({
         handlers={handlers}
         dimensions={dimensions}
         cardStyles={cardStyles}
-        colors={designTokens.colors}
+        colors={tokens.colors}
       />
     );
   }
@@ -140,7 +141,7 @@ export default function FlashcardDeck({
       <FlashcardControl
         state={state}
         handlers={handlers}
-        colors={designTokens.colors}
+        colors={tokens.colors}
         shouldRenderBottomButtons={isMobile}
         flashcards={flashcards}
       />
@@ -152,7 +153,7 @@ export default function FlashcardDeck({
         cardWidth={cardWidth}
         cardHeight={cardHeight}
         cardStyles={cardStyles}
-        colors={designTokens.colors}
+        colors={tokens.colors}
         handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
         dimensions={{isMobile, isLandscape}}
         completed={completed}
@@ -173,16 +174,16 @@ export default function FlashcardDeck({
       )}
 
       {/* Alt bilgiler */}
-      <div className="text-center text-sm" style={{ color: designTokens.colors.text.primary, marginTop: designTokens.spacing[4] }}>
+      <div className="text-center text-sm" style={{ color: tokens.colors.text.primary, marginTop: tokens.spacing[4] }}>
         <span className="inline-block rounded-full" style={{
-          backgroundColor: `${designTokens.colors.primary[500]}15`,
-          padding: `${designTokens.spacing[1]} ${designTokens.spacing[2]}`
+          backgroundColor: `${tokens.colors.primary[500]}15`,
+          padding: `${tokens.spacing[1]} ${tokens.spacing[2]}`
         }}>
           {quizMode ? 'Doğru cevabı görmek için kartın üzerine tıklayın' : 'Kelime çevirmek için kartın üzerine tıklayın'}
         </span>
       </div>
       
-      <div className="text-center" style={{ marginTop: designTokens.spacing[2] }}>
+      <div className="text-center" style={{ marginTop: tokens.spacing[2] }}>
         <Button
           variant="secondary"
           size="small"
@@ -205,7 +206,7 @@ export default function FlashcardDeck({
           cardWidth={fullscreenCardWidth}
           cardHeight={fullscreenCardHeight}
           cardStyles={cardStyles}
-          colors={designTokens.colors}
+          colors={tokens.colors}
           handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
           dimensions={{isMobile, isLandscape}}
           isFullscreen={true}
@@ -228,14 +229,14 @@ export default function FlashcardDeck({
         </div>
       )}
 
-      <div className="nav-buttons-wrapper flex items-center justify-center" style={{ gap: designTokens.spacing[6] }}>
+      <div className="nav-buttons-wrapper flex items-center justify-center" style={{ gap: tokens.spacing[6] }}>
         <Button
           variant="secondary"
           onClick={handlePrevious}
           disabled={currentIndex === 0 || state.isAnimating}
           style={{
             visibility: currentIndex === 0 ? 'hidden' : 'visible',
-            padding: designTokens.spacing[1],
+            padding: tokens.spacing[1],
             borderRadius: '50%',
             opacity: 0.75
           }}
@@ -246,9 +247,9 @@ export default function FlashcardDeck({
         </Button>
 
         <div className="text-center rounded-full text-sm" style={{
-          backgroundColor: `${designTokens.colors.primary[500]}15`,
-          color: designTokens.colors.text.primary,
-          padding: `${designTokens.spacing[1]} ${designTokens.spacing[2]}`
+          backgroundColor: `${tokens.colors.primary[500]}15`,
+          color: tokens.colors.text.primary,
+          padding: `${tokens.spacing[1]} ${tokens.spacing[2]}`
         }}>
           {currentIndex + 1} / {flashcards.length}
         </div>
@@ -259,7 +260,7 @@ export default function FlashcardDeck({
           disabled={currentIndex === flashcards.length - 1 || state.isAnimating || !canAdvance}
           style={{
             visibility: currentIndex === flashcards.length - 1 ? 'hidden' : 'visible',
-            padding: designTokens.spacing[1],
+            padding: tokens.spacing[1],
             borderRadius: '50%',
             opacity: canAdvance ? 0.75 : 0.3
           }}

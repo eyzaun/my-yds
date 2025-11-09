@@ -7,9 +7,10 @@ import { logoutUser } from '@/firebase/auth';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 const ProfileInfo = () => {
+  const { tokens } = useTheme();
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ const ProfileInfo = () => {
             <Text className="block text-sm font-medium mb-1">
               Ad Soyad
             </Text>
-            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background.primary, color: designTokens.colors.text.primary }}>
+            <div className="p-2 rounded-md" style={{ backgroundColor: tokens.colors.background.primary, color: tokens.colors.text.primary }}>
               {user.displayName || 'İsimsiz Kullanıcı'}
             </div>
           </div>
@@ -51,7 +52,7 @@ const ProfileInfo = () => {
             <Text className="block text-sm font-medium mb-1">
               Email
             </Text>
-            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background.primary, color: designTokens.colors.text.primary }}>
+            <div className="p-2 rounded-md" style={{ backgroundColor: tokens.colors.background.primary, color: tokens.colors.text.primary }}>
               {user.email}
             </div>
           </div>

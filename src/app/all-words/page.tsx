@@ -12,7 +12,7 @@ import { Button } from '@/components/design-system/Button';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
 import { Container } from '@/components/design-system/Container';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 // Fix the import path
 const AdBanner = dynamic(() => import('../../components/AdBanner'), { ssr: false });
@@ -27,6 +27,7 @@ interface QuizQuestion {
 }
 
 export default function AllWords() {
+  const { tokens } = useTheme();
   const [showQuiz, setShowQuiz] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const { user } = useAuth(); // Kullanıcı durumunu al
@@ -76,22 +77,22 @@ export default function AllWords() {
     <div
       style={{
         minHeight: '100vh',
-        paddingBottom: designTokens.spacing[16],
-        backgroundColor: designTokens.colors.background.primary
+        paddingBottom: tokens.spacing[16],
+        backgroundColor: tokens.colors.background.primary
       }}
     >
-      <Container maxWidth="lg" style={{ paddingTop: designTokens.spacing[8], paddingBottom: designTokens.spacing[8] }}>
+      <Container maxWidth="lg" style={{ paddingTop: tokens.spacing[8], paddingBottom: tokens.spacing[8] }}>
         {/* Sayfa Başlığı */}
-        <Heading1 style={{ marginBottom: designTokens.spacing[6], textAlign: 'center' }}>
+        <Heading1 style={{ marginBottom: tokens.spacing[6], textAlign: 'center' }}>
           Tüm YDS Kelimeleri
         </Heading1>
 
         {/* Sayfa Açıklaması */}
-        <Card variant="elevated" style={{ marginBottom: designTokens.spacing[6] }}>
-          <Text style={{ marginBottom: designTokens.spacing[2] }}>
+        <Card variant="elevated" style={{ marginBottom: tokens.spacing[6] }}>
+          <Text style={{ marginBottom: tokens.spacing[2] }}>
             Bu sayfada tüm kategorilerdeki YDS kelimelerini bir arada bulabilirsiniz. İstediğiniz kelimeyi çalışabilir veya tüm kelimelerden oluşan bir test çözebilirsiniz.
           </Text>
-          <Text variant="secondary" style={{ fontSize: designTokens.typography.fontSize.sm }}>
+          <Text variant="secondary" style={{ fontSize: tokens.typography.fontSize.sm }}>
             Toplam <strong>{allWords.length}</strong> kelime ve <strong>{allQuizzes.length}</strong> test sorusu bulunmaktadır.
           </Text>
 
@@ -99,13 +100,13 @@ export default function AllWords() {
           {user && (
             <div
               style={{
-                marginTop: designTokens.spacing[4],
-                padding: designTokens.spacing[3],
-                borderRadius: designTokens.borderRadius.md,
-                backgroundColor: designTokens.colors.primary[50],
+                marginTop: tokens.spacing[4],
+                padding: tokens.spacing[3],
+                borderRadius: tokens.borderRadius.md,
+                backgroundColor: tokens.colors.primary[50],
               }}
             >
-              <Text style={{ fontSize: designTokens.typography.fontSize.sm }}>
+              <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
                 İlerlemeniz otomatik olarak kaydedilmektedir. Çalıştığınız kelimeler ve test sonuçlarınız profil sayfanızda görüntülenebilir.
               </Text>
             </div>
@@ -115,13 +116,13 @@ export default function AllWords() {
           {!user && (
             <div
               style={{
-                marginTop: designTokens.spacing[4],
-                padding: designTokens.spacing[3],
-                borderRadius: designTokens.borderRadius.md,
-                backgroundColor: designTokens.colors.primary[50],
+                marginTop: tokens.spacing[4],
+                padding: tokens.spacing[3],
+                borderRadius: tokens.borderRadius.md,
+                backgroundColor: tokens.colors.primary[50],
               }}
             >
-              <Text style={{ fontSize: designTokens.typography.fontSize.sm }}>
+              <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
                 İlerlemenizi kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
               </Text>
             </div>
@@ -133,14 +134,14 @@ export default function AllWords() {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: designTokens.spacing[4],
-            marginBottom: designTokens.spacing[6]
+            gap: tokens.spacing[4],
+            marginBottom: tokens.spacing[6]
           }}
         >
           <Button
             variant={!showQuiz ? 'primary' : 'secondary'}
             onClick={() => setShowQuiz(false)}
-            style={{ display: 'flex', alignItems: 'center', gap: designTokens.spacing[1] }}
+            style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing[1] }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '1.25rem', width: '1.25rem' }} viewBox="0 0 20 20" fill="currentColor">
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29-3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
@@ -150,7 +151,7 @@ export default function AllWords() {
           <Button
             variant={showQuiz ? 'primary' : 'secondary'}
             onClick={() => setShowQuiz(true)}
-            style={{ display: 'flex', alignItems: 'center', gap: designTokens.spacing[1] }}
+            style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing[1] }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '1.25rem', width: '1.25rem' }} viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -162,8 +163,8 @@ export default function AllWords() {
         {showQuiz ? (
           <div>
             {/* Test açıklaması */}
-            <Card variant="elevated" style={{ marginBottom: designTokens.spacing[6] }}>
-              <Text variant="secondary" style={{ fontSize: designTokens.typography.fontSize.sm }}>
+            <Card variant="elevated" style={{ marginBottom: tokens.spacing[6] }}>
+              <Text variant="secondary" style={{ fontSize: tokens.typography.fontSize.sm }}>
                 Bu test, tüm kategorilerden rastgele seçilmiş 20 soru içermektedir.
               </Text>
             </Card>
@@ -183,8 +184,8 @@ export default function AllWords() {
         )}
 
         {score !== null && (
-          <Card variant="elevated" style={{ textAlign: 'center', marginTop: designTokens.spacing[8] }}>
-            <Heading2 style={{ marginBottom: designTokens.spacing[4] }}>
+          <Card variant="elevated" style={{ textAlign: 'center', marginTop: tokens.spacing[8] }}>
+            <Heading2 style={{ marginBottom: tokens.spacing[4] }}>
               Test Sonucu
             </Heading2>
             <div
@@ -194,16 +195,16 @@ export default function AllWords() {
                 justifyContent: 'center',
                 width: '6rem',
                 height: '6rem',
-                borderRadius: designTokens.borderRadius.full,
-                marginBottom: designTokens.spacing[4],
-                backgroundColor: designTokens.colors.primary[600],
+                borderRadius: tokens.borderRadius.full,
+                marginBottom: tokens.spacing[4],
+                backgroundColor: tokens.colors.primary[600],
               }}
             >
               <span
                 style={{
-                  fontSize: designTokens.typography.fontSize['2xl'],
-                  fontWeight: designTokens.typography.fontWeight.bold,
-                  color: designTokens.colors.text.inverse
+                  fontSize: tokens.typography.fontSize['2xl'],
+                  fontWeight: tokens.typography.fontWeight.bold,
+                  color: tokens.colors.text.inverse
                 }}
               >
                 %{Math.round((score / 20) * 100)}
@@ -215,7 +216,7 @@ export default function AllWords() {
             <Button
               variant="primary"
               onClick={() => setScore(null)}
-              style={{ marginTop: designTokens.spacing[4] }}
+              style={{ marginTop: tokens.spacing[4] }}
             >
               Tekrar Dene
             </Button>

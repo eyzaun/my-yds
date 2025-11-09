@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 export default function Privacy() {
-  
+  const { tokens } = useTheme();
+
   // Sayfa için SEO ve yapısal veri ekleme
   useEffect(() => {
     const script = document.createElement('script');
@@ -27,7 +28,7 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: tokens.colors.background.primary }}>
 
       <Container maxWidth="lg" className="py-8">
         <Heading1 className="text-2xl md:text-3xl mb-6 text-center">
@@ -106,7 +107,7 @@ export default function Privacy() {
               Google, bu bilgileri kullanarak reklam performansını değerlendirir, raporlar oluşturur ve reklam
               hizmetlerini iyileştirmek için kullanır. Google, bilgileri kendi gizlilik politikasına uygun olarak
               kullanır. Google&apos;ın veri toplama ve kullanma uygulamaları hakkında daha fazla bilgi edinmek için,
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: tokens.colors.accent }}>
                 Google Gizlilik Politikası
               </a>
               adresini ziyaret edebilirsiniz.
@@ -139,18 +140,18 @@ export default function Privacy() {
             </Text>
             <Text className="mb-3">
               Google&apos;ın sunduğu kişiselleştirilmiş reklamları devre dışı bırakmak için
-              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: tokens.colors.accent }}>
                 Google Reklam Ayarları
               </a>
               sayfasını ziyaret edebilirsiniz.
             </Text>
             <Text>
               Ayrıca,
-              <a href="http://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
+              <a href="http://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: tokens.colors.accent }}>
                 Digital Advertising Alliance
               </a>
               veya
-              <a href="http://www.youronlinechoices.eu/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
+              <a href="http://www.youronlinechoices.eu/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: tokens.colors.accent }}>
                 Your Online Choices
               </a>
               gibi platformlar aracılığıyla çeşitli reklam ağları için tercihlerinizi yönetebilirsiniz.
@@ -219,7 +220,7 @@ export default function Privacy() {
               Bu gizlilik politikası hakkında sorularınız veya endişeleriniz varsa, lütfen bizimle iletişime geçin:
             </Text>
             <Text>
-              <Link href="/contact" className="underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
+              <Link href="/contact" className="underline hover:text-opacity-80" style={{ color: tokens.colors.accent }}>
                 İletişim Sayfası
               </Link>
             </Text>

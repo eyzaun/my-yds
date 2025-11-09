@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
@@ -18,13 +20,15 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
+  const { tokens } = useTheme();
+
   const baseStyles: React.CSSProperties = {
-    fontFamily: designTokens.typography.fontFamily.base,
-    fontWeight: designTokens.typography.fontWeight.medium,
-    borderRadius: designTokens.borderRadius.md,
+    fontFamily: tokens.typography.fontFamily.base,
+    fontWeight: tokens.typography.fontWeight.medium,
+    borderRadius: tokens.borderRadius.md,
     border: 'none',
     cursor: disabled ? 'not-allowed' : 'pointer',
-    transition: designTokens.transitions.base,
+    transition: tokens.transitions.base,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -34,53 +38,53 @@ export const Button: React.FC<ButtonProps> = ({
 
   const sizeStyles: Record<string, React.CSSProperties> = {
     sm: {
-      padding: `${designTokens.spacing[2]} ${designTokens.spacing[3]}`,
-      fontSize: designTokens.typography.fontSize.sm,
+      padding: `${tokens.spacing[2]} ${tokens.spacing[3]}`,
+      fontSize: tokens.typography.fontSize.sm,
     },
     md: {
-      padding: `${designTokens.spacing[3]} ${designTokens.spacing[4]}`,
-      fontSize: designTokens.typography.fontSize.base,
+      padding: `${tokens.spacing[3]} ${tokens.spacing[4]}`,
+      fontSize: tokens.typography.fontSize.base,
     },
     lg: {
-      padding: `${designTokens.spacing[4]} ${designTokens.spacing[6]}`,
-      fontSize: designTokens.typography.fontSize.lg,
+      padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+      fontSize: tokens.typography.fontSize.lg,
     },
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {
     primary: {
-      backgroundColor: designTokens.colors.primary[600],
-      color: designTokens.colors.text.inverse,
-      border: `1px solid ${designTokens.colors.primary[600]}`,
+      backgroundColor: tokens.colors.primary[600],
+      color: tokens.colors.text.inverse,
+      border: `1px solid ${tokens.colors.primary[600]}`,
     },
     secondary: {
-      backgroundColor: designTokens.colors.background.secondary,
-      color: designTokens.colors.text.primary,
-      border: `1px solid ${designTokens.colors.border.medium}`,
+      backgroundColor: tokens.colors.background.secondary,
+      color: tokens.colors.text.primary,
+      border: `1px solid ${tokens.colors.border.medium}`,
     },
     outline: {
       backgroundColor: 'transparent',
-      color: designTokens.colors.primary[600],
-      border: `1px solid ${designTokens.colors.primary[600]}`,
+      color: tokens.colors.primary[600],
+      border: `1px solid ${tokens.colors.primary[600]}`,
     },
     ghost: {
       backgroundColor: 'transparent',
-      color: designTokens.colors.text.primary,
+      color: tokens.colors.text.primary,
       border: 'none',
     },
     danger: {
-      backgroundColor: designTokens.colors.accent.error.main,
-      color: designTokens.colors.text.inverse,
-      border: `1px solid ${designTokens.colors.accent.error.main}`,
+      backgroundColor: tokens.colors.accent.error.main,
+      color: tokens.colors.text.inverse,
+      border: `1px solid ${tokens.colors.accent.error.main}`,
     },
   };
 
   const hoverStyles: Record<string, string> = {
-    primary: designTokens.colors.primary[700],
-    secondary: designTokens.colors.border.light,
-    outline: designTokens.colors.primary[50],
-    ghost: designTokens.colors.background.secondary,
-    danger: designTokens.colors.accent.error.dark,
+    primary: tokens.colors.primary[700],
+    secondary: tokens.colors.border.light,
+    outline: tokens.colors.primary[50],
+    ghost: tokens.colors.background.secondary,
+    danger: tokens.colors.accent.error.dark,
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {

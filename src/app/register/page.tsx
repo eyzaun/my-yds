@@ -5,14 +5,15 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Container } from '@/components/design-system/Container';
 import { Heading1, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const RegisterPage = () => {
+  const { tokens } = useTheme();
   return (
-    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background.primary }}>
       <Container maxWidth="md" className="py-8">
         <Heading1 className="mb-8 text-center">
           Hesap Oluştur
@@ -24,7 +25,7 @@ const RegisterPage = () => {
           <div className="mt-6 text-center">
             <Text>
               Zaten bir hesabınız var mı?{' '}
-              <Link href="/login" className="underline" style={{ color: designTokens.colors.primary[600] }}>
+              <Link href="/login" className="underline" style={{ color: tokens.colors.primary[600] }}>
                 Giriş Yap
               </Link>
             </Text>

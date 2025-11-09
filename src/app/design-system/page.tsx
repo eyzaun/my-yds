@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { getDesignTokensByTheme, designTokens, Theme } from '@/styles/design-tokens';
+import { getDesignTokensByTheme, Theme } from '@/styles/design-tokens';
 
 export default function DesignSystemPage() {
   const [selectedTheme, setSelectedTheme] = useState<Theme>('light');
@@ -32,7 +32,7 @@ export default function DesignSystemPage() {
                 backgroundColor: selectedTheme === theme ? colors.accent.primary : colors.background.secondary,
                 color: selectedTheme === theme ? colors.background.primary : colors.text.primary,
                 border: `2px solid ${selectedTheme === theme ? colors.accent.primary : 'transparent'}`,
-                boxShadow: selectedTheme === theme ? designTokens.shadows.md : designTokens.shadows.sm,
+                boxShadow: selectedTheme === theme ? tokens.shadows.md : tokens.shadows.sm,
               }}
             >
               {theme === 'light' ? '☀️ Light Mode' : '🌙 Dark Mode'}
@@ -50,7 +50,7 @@ export default function DesignSystemPage() {
               style={{
                 backgroundColor: selectedSection === section ? colors.accent.primary : colors.background.secondary,
                 color: selectedSection === section ? colors.background.primary : colors.text.primary,
-                boxShadow: selectedSection === section ? designTokens.shadows.md : designTokens.shadows.sm,
+                boxShadow: selectedSection === section ? tokens.shadows.md : tokens.shadows.sm,
               }}
             >
               {section === 'colors' && 'Renk Paleti'}
@@ -312,7 +312,7 @@ function ComponentsSection({ tokens }: { tokens: any }) {
             style={{
               backgroundColor: colors.accent.primary,
               color: colors.background.primary,
-              boxShadow: designTokens.shadows.md,
+              boxShadow: tokens.shadows.md,
             }}
           >
             Primary Button
@@ -378,7 +378,7 @@ function ComponentsSection({ tokens }: { tokens: any }) {
             className="p-6 rounded-xl transition-all duration-300 transform hover:scale-105"
             style={{
               backgroundColor: colors.surface.elevated,
-              boxShadow: designTokens.shadows.md,
+              boxShadow: tokens.shadows.md,
               border: `1px solid ${colors.border.light}`,
             }}
           >
@@ -395,7 +395,7 @@ function ComponentsSection({ tokens }: { tokens: any }) {
             className="p-6 rounded-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
             style={{
               backgroundColor: colors.surface.elevated,
-              boxShadow: designTokens.shadows.md,
+              boxShadow: tokens.shadows.md,
               border: `2px solid ${colors.accent.primary}`,
             }}
           >
@@ -513,7 +513,7 @@ function TokensSection({ tokens }: { tokens: any }) {
           Gölgeler (Shadows)
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {Object.entries(designTokens.shadows).map(([name, value]: [string, any]) => (
+          {Object.entries(tokens.shadows).map(([name, value]: [string, any]) => (
             <div key={name} className="text-center">
               <div
                 className="h-24 rounded-lg mb-2 flex items-center justify-center"
@@ -541,7 +541,7 @@ function TokensSection({ tokens }: { tokens: any }) {
           Border Radius
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {Object.entries(designTokens.borderRadius).map(([name, value]: [string, any]) => (
+          {Object.entries(tokens.borderRadius).map(([name, value]: [string, any]) => (
             <div key={name} className="text-center">
               <div
                 className="h-20 mb-2"
@@ -567,7 +567,7 @@ function TokensSection({ tokens }: { tokens: any }) {
           Spacing Scale
         </h2>
         <div className="space-y-3">
-          {Object.entries(designTokens.spacing).map(([name, value]: [string, any]) => (
+          {Object.entries(tokens.spacing).map(([name, value]: [string, any]) => (
             <div key={name} className="flex items-center gap-4">
               <div className="w-16 font-semibold" style={{ color: colors.text.primary }}>
                 {name}
@@ -594,7 +594,7 @@ function TokensSection({ tokens }: { tokens: any }) {
           Typography Scale
         </h2>
         <div className="space-y-4">
-          {Object.entries(designTokens.typography.fontSize).map(([name, value]: [string, any]) => (
+          {Object.entries(tokens.typography.fontSize).map(([name, value]: [string, any]) => (
             <div key={name} className="flex items-baseline gap-4">
               <div className="w-16 text-sm font-semibold" style={{ color: colors.text.tertiary }}>
                 {name}
@@ -616,7 +616,7 @@ function TokensSection({ tokens }: { tokens: any }) {
           Transition Süreleri
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Object.entries(designTokens.transitions).map(([name, value]: [string, any]) => (
+          {Object.entries(tokens.transitions).map(([name, value]: [string, any]) => (
             <div key={name} className="text-center">
               <div
                 className="h-20 rounded-lg mb-2 flex items-center justify-center transition-all hover:scale-110 cursor-pointer"
@@ -646,7 +646,7 @@ function TokensSection({ tokens }: { tokens: any }) {
           Z-Index Katmanları
         </h2>
         <div className="space-y-2">
-          {Object.entries(designTokens.zIndex).map(([name, value]: [string, any]) => (
+          {Object.entries(tokens.zIndex).map(([name, value]: [string, any]) => (
             <div key={name} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: colors.background.tertiary }}>
               <div className="font-semibold" style={{ color: colors.text.primary }}>
                 {name}

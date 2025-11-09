@@ -6,15 +6,16 @@ import dynamic from 'next/dynamic';
 import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Heading1, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProtectedPage = () => {
+  const { tokens } = useTheme();
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+      <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background.primary }}>
         <Container maxWidth="lg" className="py-8">
           <Heading1 className="text-3xl mb-6 text-center">
             Korumalı Sayfa

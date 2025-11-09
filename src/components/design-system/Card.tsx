@@ -1,9 +1,11 @@
+'use client';
+
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface CardProps {
   variant?: 'default' | 'elevated' | 'outlined';
-  padding?: keyof typeof designTokens.spacing;
+  padding?: keyof typeof tokens.spacing;
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -18,23 +20,25 @@ export const Card: React.FC<CardProps> = ({
   style = {},
   onClick,
 }) => {
+  const { tokens } = useTheme();
+
   const baseStyles: React.CSSProperties = {
-    backgroundColor: designTokens.colors.background.card,
-    borderRadius: designTokens.borderRadius.lg,
-    padding: designTokens.spacing[padding],
-    transition: designTokens.transitions.base,
+    backgroundColor: tokens.colors.background.card,
+    borderRadius: tokens.borderRadius.lg,
+    padding: tokens.spacing[padding],
+    transition: tokens.transitions.base,
   };
 
   const variantStyles: Record<string, React.CSSProperties> = {
     default: {
-      border: `1px solid ${designTokens.colors.border.light}`,
+      border: `1px solid ${tokens.colors.border.light}`,
     },
     elevated: {
-      boxShadow: designTokens.shadows.md,
-      border: `1px solid ${designTokens.colors.border.light}`,
+      boxShadow: tokens.shadows.md,
+      border: `1px solid ${tokens.colors.border.light}`,
     },
     outlined: {
-      border: `1px solid ${designTokens.colors.border.medium}`,
+      border: `1px solid ${tokens.colors.border.medium}`,
     },
   };
 
@@ -46,14 +50,14 @@ export const Card: React.FC<CardProps> = ({
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     if (onClick && variant === 'elevated') {
-      e.currentTarget.style.boxShadow = designTokens.shadows.lg;
+      e.currentTarget.style.boxShadow = tokens.shadows.lg;
       e.currentTarget.style.transform = 'translateY(-2px)';
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     if (onClick && variant === 'elevated') {
-      e.currentTarget.style.boxShadow = designTokens.shadows.md;
+      e.currentTarget.style.boxShadow = tokens.shadows.md;
       e.currentTarget.style.transform = 'translateY(0)';
     }
   };

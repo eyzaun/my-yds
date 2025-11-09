@@ -6,14 +6,15 @@ import dynamic from 'next/dynamic';
 import AdBanner from '../../components/AdBanner';
 import { Container } from '@/components/design-system/Container';
 import { Heading1, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 // Replace the import using path alias with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const LoginPage = () => {
+  const { tokens } = useTheme();
   return (
-    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background.primary }}>
       <Container maxWidth="md" className="py-8">
         <Heading1 className="mb-8 text-center">
           Giriş Yap
@@ -25,7 +26,7 @@ const LoginPage = () => {
           <div className="mt-6 text-center">
             <Text>
               Hesabınız yok mu?{' '}
-              <Link href="/register" className="underline" style={{ color: designTokens.colors.primary[600] }}>
+              <Link href="/register" className="underline" style={{ color: tokens.colors.primary[600] }}>
                 Kayıt Ol
               </Link>
             </Text>

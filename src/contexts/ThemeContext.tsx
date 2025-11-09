@@ -67,7 +67,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     html.style.setProperty('--color-text-tertiary', colors.text.tertiary);
     html.style.setProperty('--color-border-light', colors.border.light);
     html.style.setProperty('--color-border-medium', colors.border.medium);
-    html.style.setProperty('--color-border-dark', colors.border.dark);
+    html.style.setProperty('--color-border-strong', colors.border.strong);
   };
 
   if (!mounted) {

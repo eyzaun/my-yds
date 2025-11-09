@@ -2,25 +2,26 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 import { categories } from '@/data/categories';
 
 export default function CategoryPage() {
+  const { tokens } = useTheme();
   return (
     <div
       className="min-h-screen px-4 py-8"
-      style={{ backgroundColor: designTokens.colors.background.primary }}
+      style={{ backgroundColor: tokens.colors.background.primary }}
     >
       <div className="max-w-4xl mx-auto">
         <h1
           className="text-3xl font-bold mb-4"
-          style={{ color: designTokens.colors.text.primary }}
+          style={{ color: tokens.colors.text.primary }}
         >
           Kategoriler
         </h1>
         <p
           className="mb-8"
-          style={{ color: designTokens.colors.text.secondary }}
+          style={{ color: tokens.colors.text.secondary }}
         >
           Lutfen asagidan bir kategori secin.
         </p>
@@ -32,17 +33,17 @@ export default function CategoryPage() {
               href={`/${key}`}
               className="p-6 rounded-lg transition-all duration-300 transform hover:scale-105"
               style={{
-                backgroundColor: designTokens.colors.background.card,
-                boxShadow: designTokens.shadows.md,
+                backgroundColor: tokens.colors.background.card,
+                boxShadow: tokens.shadows.md,
               }}
             >
               <h2
                 className="text-xl font-semibold mb-2"
-                style={{ color: designTokens.colors.primary[600] }}
+                style={{ color: tokens.colors.primary[600] }}
               >
                 {category.name}
               </h2>
-              <p style={{ color: designTokens.colors.text.secondary }}>
+              <p style={{ color: tokens.colors.text.secondary }}>
                 {category.description || 'Kategori detaylarina goz atin'}
               </p>
             </Link>

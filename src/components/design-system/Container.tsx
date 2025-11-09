@@ -1,9 +1,11 @@
+'use client';
+
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface ContainerProps {
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full';
-  padding?: keyof typeof designTokens.spacing;
+  padding?: keyof typeof tokens.spacing;
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -16,6 +18,8 @@ export const Container: React.FC<ContainerProps> = ({
   className = '',
   style = {},
 }) => {
+  const { tokens } = useTheme();
+
   const maxWidthMap = {
     sm: '640px',
     md: '768px',
@@ -32,7 +36,7 @@ export const Container: React.FC<ContainerProps> = ({
   const containerStyles: React.CSSProperties = {
     maxWidth: maxWidthMap[maxWidth],
     margin: '0 auto',
-    padding: designTokens.spacing[padding],
+    padding: tokens.spacing[padding],
     width: '100%',
   };
 

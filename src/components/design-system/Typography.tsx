@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 
 interface TypographyProps {
   children: React.ReactNode;
@@ -12,11 +14,13 @@ export const Heading1: React.FC<TypographyProps> = ({
   className = '',
   style = {},
 }) => {
+  const { tokens } = useTheme();
+
   const h1Styles: React.CSSProperties = {
-    fontSize: designTokens.typography.fontSize.h1,
-    fontWeight: designTokens.typography.fontWeight.bold,
-    lineHeight: designTokens.typography.lineHeight.tight,
-    color: designTokens.colors.text.primary,
+    fontSize: tokens.typography.fontSize.h1,
+    fontWeight: tokens.typography.fontWeight.bold,
+    lineHeight: tokens.typography.lineHeight.tight,
+    color: tokens.colors.text.primary,
     margin: 0,
   };
 
@@ -32,11 +36,13 @@ export const Heading2: React.FC<TypographyProps> = ({
   className = '',
   style = {},
 }) => {
+  const { tokens } = useTheme();
+
   const h2Styles: React.CSSProperties = {
-    fontSize: designTokens.typography.fontSize.h2,
-    fontWeight: designTokens.typography.fontWeight.bold,
-    lineHeight: designTokens.typography.lineHeight.tight,
-    color: designTokens.colors.text.primary,
+    fontSize: tokens.typography.fontSize.h2,
+    fontWeight: tokens.typography.fontWeight.bold,
+    lineHeight: tokens.typography.lineHeight.tight,
+    color: tokens.colors.text.primary,
     margin: 0,
   };
 
@@ -52,11 +58,13 @@ export const Heading3: React.FC<TypographyProps> = ({
   className = '',
   style = {},
 }) => {
+  const { tokens } = useTheme();
+
   const h3Styles: React.CSSProperties = {
-    fontSize: designTokens.typography.fontSize.h3,
-    fontWeight: designTokens.typography.fontWeight.semibold,
-    lineHeight: designTokens.typography.lineHeight.tight,
-    color: designTokens.colors.text.primary,
+    fontSize: tokens.typography.fontSize.h3,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    lineHeight: tokens.typography.lineHeight.tight,
+    color: tokens.colors.text.primary,
     margin: 0,
   };
 
@@ -73,15 +81,17 @@ export const Text: React.FC<TypographyProps & { variant?: 'primary' | 'secondary
   className = '',
   style = {},
 }) => {
+  const { tokens } = useTheme();
+
   const colorMap = {
-    primary: designTokens.colors.text.primary,
-    secondary: designTokens.colors.text.secondary,
-    tertiary: designTokens.colors.text.tertiary,
+    primary: tokens.colors.text.primary,
+    secondary: tokens.colors.text.secondary,
+    tertiary: tokens.colors.text.tertiary,
   };
 
   const textStyles: React.CSSProperties = {
-    fontSize: designTokens.typography.fontSize.base,
-    lineHeight: designTokens.typography.lineHeight.normal,
+    fontSize: tokens.typography.fontSize.base,
+    lineHeight: tokens.typography.lineHeight.normal,
     color: colorMap[variant],
     margin: 0,
   };

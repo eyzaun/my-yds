@@ -1,7 +1,7 @@
 'use client';
 import NavigationBar from './NavigationBar';
 import { usePathname } from 'next/navigation';
-import { designTokens, getDesignTokensByTheme } from '@/styles/design-tokens';
+import { getDesignTokensByTheme } from '@/styles/design-tokens';
 import { useFlashcardFullscreen } from '@/contexts/FlashcardFullscreenContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
