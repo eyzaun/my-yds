@@ -158,7 +158,7 @@ export default function SpacedRepetitionPage() {
 
             {/* Total Cards */}
             <Card className="p-6 text-center">
-              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.text }}>
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.text.primary }}>
                 {statistics.totalCards}
               </div>
               <Text className="text-sm opacity-70">
@@ -194,7 +194,7 @@ export default function SpacedRepetitionPage() {
             <Heading2>📊 İlerleme Durumu</Heading2>
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.text }}>
+                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.text.primary }}>
                   {statistics.newCards}
                 </div>
                 <Text className="text-sm opacity-70">
@@ -284,7 +284,7 @@ export default function SpacedRepetitionPage() {
 
                   <div className="grid grid-cols-3 gap-2 text-center text-sm mb-4">
                     <div>
-                      <div className="font-semibold" style={{ color: designTokens.colors.text }}>
+                      <div className="font-semibold" style={{ color: designTokens.colors.text.primary }}>
                         {group.newCards}
                       </div>
                       <Text className="opacity-60 text-sm">
@@ -327,10 +327,10 @@ export default function SpacedRepetitionPage() {
                 <div
                   key={stat.date}
                   className="flex items-center justify-between py-2 border-b border-opacity-10"
-                  style={{ borderColor: designTokens.colors.text }}
+                  style={{ borderColor: designTokens.colors.text.primary }}
                 >
                   <div className="flex-1">
-                    <div className="font-medium" style={{ color: designTokens.colors.text }}>
+                    <div className="font-medium" style={{ color: designTokens.colors.text.primary }}>
                       {new Date(stat.date).toLocaleDateString('tr-TR', {
                         weekday: 'short',
                         month: 'short',
@@ -339,7 +339,7 @@ export default function SpacedRepetitionPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
-                    <div style={{ color: designTokens.colors.text }}>
+                    <div style={{ color: designTokens.colors.text.primary }}>
                       <span className="font-semibold">{stat.reviewedCards}</span> kart
                     </div>
                     <div className="text-green-500">
@@ -348,7 +348,7 @@ export default function SpacedRepetitionPage() {
                     <div className="text-red-500">
                       ✗ {stat.incorrectAnswers}
                     </div>
-                    <div style={{ color: designTokens.colors.text }} className="opacity-70">
+                    <div style={{ color: designTokens.colors.text.primary }} className="opacity-70">
                       {stat.reviewedCards > 0
                         ? Math.round((stat.correctAnswers / stat.reviewedCards) * 100)
                         : 0}%

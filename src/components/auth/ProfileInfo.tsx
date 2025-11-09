@@ -42,7 +42,7 @@ const ProfileInfo = () => {
             <Text className="block text-sm font-medium mb-1">
               Ad Soyad
             </Text>
-            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background, color: designTokens.colors.text }}>
+            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background.primary, color: designTokens.colors.text.primary }}>
               {user.displayName || 'İsimsiz Kullanıcı'}
             </div>
           </div>
@@ -51,7 +51,7 @@ const ProfileInfo = () => {
             <Text className="block text-sm font-medium mb-1">
               Email
             </Text>
-            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background, color: designTokens.colors.text }}>
+            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background.primary, color: designTokens.colors.text.primary }}>
               {user.email}
             </div>
           </div>

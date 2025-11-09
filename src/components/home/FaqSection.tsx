@@ -9,13 +9,13 @@ interface FaqSectionProps {
 
 export function FaqSection({ faqItems }: FaqSectionProps) {
   return (
-    <div style={{ marginBottom: designTokens.spacing.xl }}>
+    <div style={{ marginBottom: designTokens.spacing[12] }}>
       <Heading2>Sık Sorulan Sorular</Heading2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: designTokens.spacing.md }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: designTokens.spacing[6] }}>
         {faqItems.map((item, index) => (
           <Card key={index}>
-            <div style={{ marginBottom: designTokens.spacing.sm }}>
+            <div style={{ marginBottom: designTokens.spacing[2] }}>
               <Heading3>{item.question}</Heading3>
             </div>
             <Text>{item.answer}</Text>

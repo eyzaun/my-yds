@@ -226,7 +226,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'w-full mx-auto'} px-2 py-2`}
-         style={isFullscreen ? { backgroundColor: designTokens.colors.background } : {}}>
+         style={isFullscreen ? { backgroundColor: designTokens.colors.background.primary } : {}}>
       {/* Üst Kontrol Paneli - sadeleştirildi */}
       <div className="flex flex-col space-y-3 mb-3">
         {/* Butonlar - mobil için optimize edildi */}
@@ -318,7 +318,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
           {isQuizMode && (
             <div className="w-full max-w-md mx-auto mt-4">
               <form onSubmit={handleQuizSubmit} className="flex flex-col">
-                <p className="text-sm mb-2" style={{ color: designTokens.colors.text }}>
+                <p className="text-sm mb-2" style={{ color: designTokens.colors.text.primary }}>
                   {quizResult === 'incorrect' && flipped
                     ? 'Doğru cevabı yazın (kartın arkasında):'
                     : 'Kelimenin Türkçe karşılığını yazın:'}
@@ -333,8 +333,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     className="flex-grow px-3 py-2 rounded-l-lg border focus:outline-none"
                     placeholder={quizResult === 'incorrect' && flipped ? 'Doğru cevabı yazın...' : 'Cevabınızı buraya yazın...'}
                     style={{
-                      backgroundColor: designTokens.colors.background,
-                      color: designTokens.colors.text,
+                      backgroundColor: designTokens.colors.background.primary,
+                      color: designTokens.colors.text.primary,
                       borderColor: quizResult === 'correct' ? 'green' :
                                    quizResult === 'incorrect' ? 'red' :
                                    designTokens.colors.accent,
@@ -372,7 +372,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     <p className="text-red-500 text-sm font-medium">
                       Yanlış cevap!
                     </p>
-                    <p className="text-sm mt-1" style={{ color: designTokens.colors.text }}>
+                    <p className="text-sm mt-1" style={{ color: designTokens.colors.text.primary }}>
                       Kartın arkasına bak ve doğru cevabı yazıp devam et.
                     </p>
                   </div>
@@ -392,13 +392,13 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
               }}
               onClick={() => handleWordClick(index)}
             >
-              <div style={{ color: designTokens.colors.text }} className="text-lg font-semibold">
+              <div style={{ color: designTokens.colors.text.primary }} className="text-lg font-semibold">
                 {word.en}
               </div>
 
               {/* Sadece seçili kelime için anlamını göster */}
               {selectedWordIndex === index && (
-                <div style={{ color: designTokens.colors.text, opacity: 0.8 }} className="mt-1">
+                <div style={{ color: designTokens.colors.text.primary, opacity: 0.8 }} className="mt-1">
                   {word.tr}
                 </div>
               )}

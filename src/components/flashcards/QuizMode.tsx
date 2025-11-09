@@ -233,14 +233,14 @@ export default function QuizMode({
   
   // Form stilleri
   const formStyle = isMobileMode ? {
-    backgroundColor: designTokens.colors.background,
+    backgroundColor: designTokens.colors.background.primary,
   } : {};
 
   return (
     <div className={`w-full max-w-md mx-auto ${alwaysKeepKeyboardOpen ? 'always-focused' : ''}`}>
       <form onSubmit={handleSubmit} className="flex flex-col" style={formStyle}>
         <p className="text-sm mb-1" style={{
-          color: designTokens.colors.text,
+          color: designTokens.colors.text.primary,
           fontSize: isMobile ? '14px' : '15px'
         }}>
           {waitingForEnter || (isFlipped && isCorrect === false)
@@ -259,8 +259,8 @@ export default function QuizMode({
             className="flex-grow px-3 py-1 rounded-l-lg border focus:outline-none"
             placeholder={waitingForEnter || (isFlipped && isCorrect === false) ? 'Enter tuşuna basın...' : 'Cevabınızı buraya yazın...'}
             style={{
-              backgroundColor: designTokens.colors.background,
-              color: designTokens.colors.text,
+              backgroundColor: designTokens.colors.background.primary,
+              color: designTokens.colors.text.primary,
               borderColor: isCorrect === true ? 'green' :
                            isCorrect === false ? 'red' :
                            designTokens.colors.accent,
@@ -315,7 +315,7 @@ export default function QuizMode({
               </Button>
             )}
             {showHint && !isFlipped && (
-              <p className="text-xs mt-1" style={{ color: designTokens.colors.text }}>
+              <p className="text-xs mt-1" style={{ color: designTokens.colors.text.primary }}>
                 İpucu: {currentCard.back.charAt(0)}
                 {currentCard.back.charAt(1)}
                 {currentCard.back.length > 2 ? '...' : ''}

@@ -27,7 +27,7 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
 
       <Container maxWidth="lg" className="py-8">
         <Heading1 className="text-2xl md:text-3xl mb-6 text-center">

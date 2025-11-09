@@ -94,7 +94,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'max-w-4xl mx-auto'} p-4`}
-         style={isFullscreen ? { backgroundColor: designTokens.colors.background } : {}}>
+         style={isFullscreen ? { backgroundColor: designTokens.colors.background.primary } : {}}>
       {/* Tam ekran toggle butonu */}
       <div className="flex justify-end mb-4">
         <button
@@ -125,7 +125,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
               className="mb-8 p-4 rounded-lg shadow-md"
               style={{ backgroundColor: designTokens.colors.cardBackground }}
             >
-              <p style={{ color: designTokens.colors.text }} className="mb-4">
+              <p style={{ color: designTokens.colors.text.primary }} className="mb-4">
                 {question.id}. {question.sentence}
               </p>
               <div className="space-y-2">
@@ -156,7 +156,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           
           {/* Kullanıcı giriş yapmamışsa uyarı mesajı */}
           {!user && (
-            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.accent}30`, color: designTokens.colors.text }}>
+            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.accent}30`, color: designTokens.colors.text.primary }}>
               <p className="text-sm">
                 Test sonuçlarınızı kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
               </p>
@@ -182,7 +182,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           >
             <h2
               className="text-xl mb-4"
-              style={{ color: designTokens.colors.text }}
+              style={{ color: designTokens.colors.text.primary }}
             >
               Sonuçlar: {score} / {questions.length}
             </h2>
@@ -190,11 +190,11 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
             {user && (
               <div className="mt-2">
                 {scoreSaved ? (
-                  <p className="text-sm" style={{ color: designTokens.colors.text }}>
+                  <p className="text-sm" style={{ color: designTokens.colors.text.primary }}>
                     Sınav sonucunuz kaydedildi!
                   </p>
                 ) : savingScore ? (
-                  <p className="text-sm" style={{ color: designTokens.colors.text }}>
+                  <p className="text-sm" style={{ color: designTokens.colors.text.primary }}>
                     Sınav sonucunuz kaydediliyor...
                   </p>
                 ) : null}
@@ -208,10 +208,10 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
               className="p-4 rounded-lg shadow-md"
               style={{ backgroundColor: designTokens.colors.cardBackground }}
             >
-              <p className="mb-2" style={{ color: designTokens.colors.text }}>
+              <p className="mb-2" style={{ color: designTokens.colors.text.primary }}>
                 {question.sentence}
               </p>
-              <p className="mb-2" style={{ color: designTokens.colors.text }}>
+              <p className="mb-2" style={{ color: designTokens.colors.text.primary }}>
                 Kullanılan kelime: <span className="font-bold">{question.word}</span>
                 ({categoryWords.find(w => w.en === question.word)?.tr})
               </p>

@@ -11,6 +11,7 @@ import useFlashcardState from '@/hooks/useFlashcardState';
 import FlashcardCard from '@/components/flashcards/FlashcardCard';
 import FlashcardControl from '@/components/flashcards/FlashcardControl';
 import FlashcardMobileView from '@/components/flashcards/FlashcardMobileView';
+import { useFlashcardFullscreen } from '@/contexts/FlashcardFullscreenContext';
 
 interface FlashcardDeckProps {
   flashcards: FlashcardData[];
@@ -28,11 +29,12 @@ export default function FlashcardDeck({
   quizMode = false
 }: FlashcardDeckProps) {
   const flashcardContainerRef = useRef<HTMLDivElement>(null);
-  
-  const { 
-    state, 
-    handlers, 
-    dimensions, 
+  const { setIsFullscreen } = useFlashcardFullscreen();
+
+  const {
+    state,
+    handlers,
+    dimensions,
     cardStyles,
   } = useFlashcardState({
     flashcards,
@@ -41,13 +43,13 @@ export default function FlashcardDeck({
     quizMode,
     onReset
   });
-  
-  const { 
+
+  const {
     currentIndex, flipped, isFullscreen, canAdvance, completed
   } = state;
-  
+
   const {
-    handleFlip, handleNext, handlePrevious, handleCorrectAnswer, 
+    handleFlip, handleNext, handlePrevious, handleCorrectAnswer,
     handleIncorrectAnswer, resetCardAndMoveNext, handleReset,
     handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd,
     toggleFullscreen
@@ -55,7 +57,12 @@ export default function FlashcardDeck({
   
   const { isMobile, isLandscape, cardWidth, cardHeight,
           fullscreenCardWidth, fullscreenCardHeight } = dimensions;
-  
+
+  // Tam ekran modunu context'e bildir
+  useEffect(() => {
+    setIsFullscreen(isFullscreen);
+  }, [isFullscreen, setIsFullscreen]);
+
   // Global stiller - sadece bir kere oluşturulur
   useEffect(() => {
     const className = 'flashcard-global-styles';
@@ -110,7 +117,7 @@ export default function FlashcardDeck({
   
   // Kart bulunmaması durumu
   if (!flashcards.length) {
-    return <div className="text-center p-8" style={{ color: designTokens.colors.text }}>Henüz kart bulunmuyor.</div>;
+    return <div className="text-center p-8" style={{ color: designTokens.colors.text.primary }}>Henüz kart bulunmuyor.</div>;
   }
   
   // MOBİL QUIZ MODU ÖZEL GÖRÜNÜM
@@ -166,16 +173,16 @@ export default function FlashcardDeck({
       )}
 
       {/* Alt bilgiler */}
-      <div className="text-center text-sm" style={{ color: designTokens.colors.text, marginTop: designTokens.spacing.md }}>
+      <div className="text-center text-sm" style={{ color: designTokens.colors.text.primary, marginTop: designTokens.spacing[4] }}>
         <span className="inline-block rounded-full" style={{
-          backgroundColor: `${designTokens.colors.accent}15`,
-          padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`
+          backgroundColor: `${designTokens.colors.primary[500]}15`,
+          padding: `${designTokens.spacing[1]} ${designTokens.spacing[2]}`
         }}>
           {quizMode ? 'Doğru cevabı görmek için kartın üzerine tıklayın' : 'Kelime çevirmek için kartın üzerine tıklayın'}
         </span>
       </div>
       
-      <div className="text-center" style={{ marginTop: designTokens.spacing.sm }}>
+      <div className="text-center" style={{ marginTop: designTokens.spacing[2] }}>
         <Button
           variant="secondary"
           size="small"
@@ -221,14 +228,14 @@ export default function FlashcardDeck({
         </div>
       )}
 
-      <div className="nav-buttons-wrapper flex items-center justify-center" style={{ gap: designTokens.spacing.md }}>
+      <div className="nav-buttons-wrapper flex items-center justify-center" style={{ gap: designTokens.spacing[6] }}>
         <Button
           variant="secondary"
           onClick={handlePrevious}
           disabled={currentIndex === 0 || state.isAnimating}
           style={{
             visibility: currentIndex === 0 ? 'hidden' : 'visible',
-            padding: designTokens.spacing.xs,
+            padding: designTokens.spacing[1],
             borderRadius: '50%',
             opacity: 0.75
           }}
@@ -239,9 +246,9 @@ export default function FlashcardDeck({
         </Button>
 
         <div className="text-center rounded-full text-sm" style={{
-          backgroundColor: `${designTokens.colors.accent}15`,
-          color: designTokens.colors.text,
-          padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`
+          backgroundColor: `${designTokens.colors.primary[500]}15`,
+          color: designTokens.colors.text.primary,
+          padding: `${designTokens.spacing[1]} ${designTokens.spacing[2]}`
         }}>
           {currentIndex + 1} / {flashcards.length}
         </div>
@@ -252,7 +259,7 @@ export default function FlashcardDeck({
           disabled={currentIndex === flashcards.length - 1 || state.isAnimating || !canAdvance}
           style={{
             visibility: currentIndex === flashcards.length - 1 ? 'hidden' : 'visible',
-            padding: designTokens.spacing.xs,
+            padding: designTokens.spacing[1],
             borderRadius: '50%',
             opacity: canAdvance ? 0.75 : 0.3
           }}

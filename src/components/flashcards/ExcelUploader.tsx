@@ -62,7 +62,7 @@ export default function ExcelUploader({
           backgroundColor: designTokens.colors.background.primary,
           borderColor: `${designTokens.colors.accent.primary}50`,
           color: designTokens.colors.text.primary,
-          padding: designTokens.spacing.xl
+          padding: designTokens.spacing[12]
         }}
         onClick={() => fileInputRef.current?.click()}
         onDragOver={handleDragOver}
@@ -85,7 +85,7 @@ export default function ExcelUploader({
               viewBox="0 0 24 24"
               style={{
                 color: designTokens.colors.accent.primary,
-                marginBottom: designTokens.spacing.sm
+                marginBottom: designTokens.spacing[2]
               }}
             >
               <circle
@@ -114,7 +114,7 @@ export default function ExcelUploader({
               stroke="currentColor"
               style={{
                 color: designTokens.colors.accent.primary,
-                marginBottom: designTokens.spacing.md
+                marginBottom: designTokens.spacing[6]
               }}
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -127,7 +127,7 @@ export default function ExcelUploader({
                   className="text-sm opacity-70"
                   style={{
                     color: designTokens.colors.text.primary,
-                    marginTop: designTokens.spacing.xs
+                    marginTop: designTokens.spacing[1]
                   }}
                 >
                   Başka bir dosya seçmek için tıklayın veya sürükleyin
@@ -140,7 +140,7 @@ export default function ExcelUploader({
                   className="text-sm opacity-70"
                   style={{
                     color: designTokens.colors.text.primary,
-                    marginTop: designTokens.spacing.xs
+                    marginTop: designTokens.spacing[1]
                   }}
                 >
                   veya dosya seçmek için tıklayın

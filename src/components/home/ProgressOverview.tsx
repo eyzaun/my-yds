@@ -58,7 +58,7 @@ export function ProgressOverview() {
   if (loading) {
     return (
       <Card>
-        <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
+        <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
           İlerlemeniz Yükleniyor...
         </Heading2>
         <div className="flex justify-center">
@@ -71,7 +71,7 @@ export function ProgressOverview() {
   if (!user) {
     return (
       <Card>
-        <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
+        <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
           İlerlemenizi Görmek İçin Giriş Yapın
         </Heading2>
         <Text>
@@ -84,7 +84,7 @@ export function ProgressOverview() {
   if (Object.keys(progress).length === 0) {
     return (
       <Card>
-        <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
+        <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
           Henüz İlerleme Kaydedilmedi
         </Heading2>
         <Text>
@@ -96,17 +96,17 @@ export function ProgressOverview() {
 
   return (
     <Card>
-      <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
+      <Heading2 style={{ marginBottom: designTokens.spacing[6] }}>
         Çalışma İlerlemeniz
       </Heading2>
 
-      <div className="grid" style={{ gap: designTokens.spacing.md }}>
+      <div className="grid" style={{ gap: designTokens.spacing[6] }}>
         {Object.entries(progress).map(([categoryId, data]) => (
           <div
             key={categoryId}
             className="block cursor-pointer transition-all hover:scale-105"
             style={{
-              padding: designTokens.spacing.md,
+              padding: designTokens.spacing[6],
               borderRadius: designTokens.borderRadius.md,
               backgroundColor: `${designTokens.colors.primary[600]}10`,
               border: `1px solid ${designTokens.colors.primary[600]}30`
@@ -115,8 +115,8 @@ export function ProgressOverview() {
               window.location.href = `/${categoryId}?index=${data.index}`;
             }}
           >
-            <div className="flex justify-between items-center" style={{ marginBottom: designTokens.spacing.sm }}>
-              <h3 className="font-medium" style={{ color: designTokens.colors.text }}>
+            <div className="flex justify-between items-center" style={{ marginBottom: designTokens.spacing[2] }}>
+              <h3 className="font-medium" style={{ color: designTokens.colors.text.primary }}>
                 {categories.find((c) => c.path === `/${categoryId}`)?.name || categoryId}
               </h3>
               <span style={{ color: designTokens.colors.primary[600] }}>Kart {data.index + 1} / {data.totalCards}</span>
@@ -125,7 +125,7 @@ export function ProgressOverview() {
             <div className="w-full rounded-full overflow-hidden" style={{
               height: '8px',
               backgroundColor: designTokens.colors.background.secondary,
-              marginBottom: designTokens.spacing.sm
+              marginBottom: designTokens.spacing[2]
             }}>
               <div
                 className="h-full rounded-full"
@@ -137,10 +137,10 @@ export function ProgressOverview() {
             </div>
 
             <div className="flex justify-between text-sm">
-              <span style={{ color: designTokens.colors.textSecondary }}>
+              <span style={{ color: designTokens.colors.text.secondary }}>
                 %{Math.round((data.viewedCount / data.totalCards) * 100)} tamamlandı
               </span>
-              <span style={{ color: designTokens.colors.textSecondary }}>
+              <span style={{ color: designTokens.colors.text.secondary }}>
                 Son çalışma: {new Date(data.timestamp.seconds * 1000).toLocaleDateString('tr-TR')}
               </span>
             </div>

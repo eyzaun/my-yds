@@ -12,7 +12,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
   return (
     <div
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-      style={{ gap: designTokens.spacing.lg, marginBottom: designTokens.spacing.xl }}
+      style={{ gap: designTokens.spacing[8], marginBottom: designTokens.spacing[12] }}
     >
       {categories.map((category) => (
         <Link
@@ -21,7 +21,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
           className="transition-transform duration-300 hover:scale-105"
         >
           <Card variant="elevated">
-            <div className="flex items-center" style={{ gap: designTokens.spacing.md }}>
+            <div className="flex items-center" style={{ gap: designTokens.spacing[6] }}>
               <div
                 className="p-2 rounded-full"
                 style={{
@@ -32,7 +32,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 {category.icon}
               </div>
               <div>
-                <Heading3 style={{ marginBottom: designTokens.spacing.xs }}>
+                <Heading3 style={{ marginBottom: designTokens.spacing[1] }}>
                   {category.name}
                 </Heading3>
                 <Text variant="secondary">

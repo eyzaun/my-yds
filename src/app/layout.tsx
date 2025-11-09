@@ -3,6 +3,7 @@ import './globals.css';
 import ClientLayout from '@/components/ClientLayout';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { FlashcardFullscreenProvider } from '@/contexts/FlashcardFullscreenContext';
 // Import the client wrapper instead of using dynamic directly
 import AdSenseScriptWrapper from '@/components/AdSenseScriptWrapper';
 import FirebaseStatus from '@/components/FirebaseStatus';
@@ -254,15 +255,17 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         {/* Use the client wrapper component */}
         <AdSenseScriptWrapper />
-        
+
         {/* Add FirebaseStatus component to show when in safe mode */}
         <FirebaseStatus />
-        
+
         <AuthProvider>
           <ThemeProvider>
-            <ClientLayout>
-              {children}
-            </ClientLayout>
+            <FlashcardFullscreenProvider>
+              <ClientLayout>
+                {children}
+              </ClientLayout>
+            </FlashcardFullscreenProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

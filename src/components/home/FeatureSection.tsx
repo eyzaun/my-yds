@@ -15,8 +15,8 @@ export function FeatureSection({ features }: FeatureSectionProps) {
       <div
         className="grid grid-cols-1 md:grid-cols-3"
         style={{
-          gap: designTokens.spacing.lg,
-          marginTop: designTokens.spacing.lg
+          gap: designTokens.spacing[8],
+          marginTop: designTokens.spacing[8]
         }}
       >
         {features.map((feature, index) => (
@@ -24,14 +24,14 @@ export function FeatureSection({ features }: FeatureSectionProps) {
             <div
               className="rounded-full"
               style={{
-                marginBottom: designTokens.spacing.md,
-                padding: designTokens.spacing.md,
+                marginBottom: designTokens.spacing[6],
+                padding: designTokens.spacing[6],
                 backgroundColor: designTokens.colors.accent
               }}
             >
-              <div style={{ color: designTokens.colors.text }}>{feature.icon}</div>
+              <div style={{ color: designTokens.colors.text.primary }}>{feature.icon}</div>
             </div>
-            <Heading3 style={{ marginBottom: designTokens.spacing.sm }}>
+            <Heading3 style={{ marginBottom: designTokens.spacing[2] }}>
               {feature.title}
             </Heading3>
             <Text style={{ opacity: 0.8 }}>{feature.description}</Text>
@@ -42,22 +42,22 @@ export function FeatureSection({ features }: FeatureSectionProps) {
       <div
         className="grid grid-cols-1"
         style={{
-          gap: designTokens.spacing.lg,
+          gap: designTokens.spacing[8],
           marginTop: designTokens.spacing.xxl
         }}
       >
         <Card variant="elevated">
-          <Heading3 style={{ marginBottom: designTokens.spacing.md }}>
+          <Heading3 style={{ marginBottom: designTokens.spacing[6] }}>
             Kendi Kartlarınızı Oluşturun
           </Heading3>
-          <Text style={{ marginBottom: designTokens.spacing.lg, opacity: 0.8 }}>
+          <Text style={{ marginBottom: designTokens.spacing[8], opacity: 0.8 }}>
             Excel dosyalarınızı yükleyerek kişisel kelime kartlarınızı oluşturun ve çalışın.
           </Text>
           <button
             onClick={() => window.location.href = "/upload-flashcards"}
             className="inline-block rounded-md font-medium transition-all hover:scale-105"
             style={{
-              padding: `${designTokens.spacing.sm} ${designTokens.spacing.lg}`,
+              padding: `${designTokens.spacing[2]} ${designTokens.spacing[8]}`,
               backgroundColor: designTokens.colors.accent,
               color: "#000",
               boxShadow: `0 0 15px ${designTokens.colors.accent}40`

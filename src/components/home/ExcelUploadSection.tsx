@@ -10,23 +10,23 @@ interface ExcelUploadSectionProps {
 
 export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
   return (
-    <Card className="mt-8 mb-12 max-w-5xl mx-auto" style={{ padding: designTokens.spacing.xl }}>
-      <div className="flex flex-col md:flex-row items-center" style={{ gap: designTokens.spacing.lg }}>
+    <Card className="mt-8 mb-12 max-w-5xl mx-auto" style={{ padding: designTokens.spacing[12] }}>
+      <div className="flex flex-col md:flex-row items-center" style={{ gap: designTokens.spacing[8] }}>
         {/* Left column - description */}
         <div className="md:w-1/2">
           <Heading2 style={{
             color: designTokens.colors.accent,
-            marginBottom: designTokens.spacing.md
+            marginBottom: designTokens.spacing[6]
           }}>
             Kendi Kelime Kartlarınızı Oluşturun
           </Heading2>
-          <Text style={{ marginBottom: designTokens.spacing.md }}>
+          <Text style={{ marginBottom: designTokens.spacing[6] }}>
             Excel dosyalarını yükleyerek kişiselleştirilmiş kelime kartları oluşturabilirsiniz.
             Çalışmak istediğiniz kelimeleri Excel&apos;de hazırlayın ve hemen kullanmaya başlayın.
           </Text>
           <ul className="list-disc list-inside space-y-1" style={{
-            color: designTokens.colors.text,
-            marginBottom: designTokens.spacing.md
+            color: designTokens.colors.text.primary,
+            marginBottom: designTokens.spacing[6]
           }}>
             <li>Excel dosyanızda C sütununa kelimeleri, D sütununa anlamlarını yazın</li>
             <li>İsteğe bağlı notları E sütununa ekleyebilirsiniz</li>
@@ -44,13 +44,13 @@ export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
         {/* Right column - example table */}
         <div className="md:w-1/2">
           <Card style={{
-            padding: designTokens.spacing.lg,
-            backgroundColor: designTokens.colors.background,
+            padding: designTokens.spacing[8],
+            backgroundColor: designTokens.colors.background.primary,
             borderColor: `${designTokens.colors.accent}30`
           }}>
             <h3 className="text-lg font-semibold" style={{
-              color: designTokens.colors.text,
-              marginBottom: designTokens.spacing.md
+              color: designTokens.colors.text.primary,
+              marginBottom: designTokens.spacing[6]
             }}>
               Excel Format Örneği
             </h3>
@@ -69,16 +69,16 @@ export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
                       borderBottom: index < exampleData.length - 1 ? `1px solid ${designTokens.colors.accent}20` : 'none'
                     }}>
                       <td className="py-2 px-4" style={{ color: designTokens.colors.accent }}>{row.word}</td>
-                      <td className="py-2 px-4" style={{ color: designTokens.colors.text }}>{row.translation}</td>
-                      <td className="py-2 px-4" style={{ color: `${designTokens.colors.text}80` }}>{row.note}</td>
+                      <td className="py-2 px-4" style={{ color: designTokens.colors.text.primary }}>{row.translation}</td>
+                      <td className="py-2 px-4" style={{ color: `${designTokens.colors.text.primary}80` }}>{row.note}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
             <Text size="sm" style={{
-              marginTop: designTokens.spacing.md,
-              color: `${designTokens.colors.text}80`
+              marginTop: designTokens.spacing[6],
+              color: `${designTokens.colors.text.primary}80`
             }}>
               Not: Google Translate kelime listesi dışa aktarımlarıyla uyumludur.
             </Text>

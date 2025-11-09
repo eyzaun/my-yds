@@ -13,7 +13,7 @@ const ThemeSelector = () => {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: designTokens.spacing.sm
+        gap: designTokens.spacing[2]
       }}
     >
       {Object.keys(themes).map((themeName) => (
