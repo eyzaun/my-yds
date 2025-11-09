@@ -17,8 +17,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <div style={{ backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
-      <NavigationBar />
-      
+      {!isFullscreen && <NavigationBar />}
+
       {/* Üst reklam - Ana Sayfa Üst Banner */}
       {shouldShowAds && (
         <div className="max-w-6xl mx-auto px-4 mt-4">
