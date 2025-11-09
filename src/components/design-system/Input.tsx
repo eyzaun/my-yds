@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -15,8 +15,20 @@ export const Input: React.FC<InputProps> = ({
   fullWidth = false,
   className = '',
   style = {},
+  id: providedId,
+  required = false,
   ...props
 }) => {
+  const designTokens = useDesignTokens();
+
+  // Generate unique ID for label-input association
+  const generatedId = React.useId();
+  const inputId = providedId || generatedId;
+  const errorId = `${inputId}-error`;
+  const helperId = `${inputId}-helper`;
+
+  const [isFocused, setIsFocused] = React.useState(false);
+
   const containerStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -35,12 +47,15 @@ export const Input: React.FC<InputProps> = ({
     fontSize: designTokens.typography.fontSize.base,
     fontFamily: designTokens.typography.fontFamily.base,
     borderRadius: designTokens.borderRadius.md,
-    border: `1px solid ${error ? designTokens.colors.accent.error.main : designTokens.colors.border.medium}`,
-    backgroundColor: designTokens.colors.background.primary,
+    border: `2px solid ${error ? designTokens.colors.accent.error.main : designTokens.colors.border.medium}`,
+    backgroundColor: designTokens.colors.surface.primary,
     color: designTokens.colors.text.primary,
-    transition: designTokens.transitions.base,
+    transition: 'all 0.2s ease-in-out',
     width: '100%',
     outline: 'none',
+    boxShadow: isFocused
+      ? `0 0 0 3px ${error ? designTokens.colors.accent.error.light : designTokens.colors.primary[100]}`
+      : 'none',
   };
 
   const helperStyles: React.CSSProperties = {
@@ -48,33 +63,47 @@ export const Input: React.FC<InputProps> = ({
     color: error ? designTokens.colors.accent.error.main : designTokens.colors.text.secondary,
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.borderColor = error
-      ? designTokens.colors.accent.error.main
-      : designTokens.colors.primary[600];
-    e.target.style.boxShadow = `0 0 0 3px ${error
-      ? designTokens.colors.accent.error.light
-      : designTokens.colors.primary[100]}`;
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.borderColor = error
-      ? designTokens.colors.accent.error.main
-      : designTokens.colors.border.medium;
-    e.target.style.boxShadow = 'none';
+  const requiredIndicatorStyles: React.CSSProperties = {
+    color: designTokens.colors.accent.error.main,
+    marginLeft: designTokens.spacing[1],
   };
 
   return (
     <div style={containerStyles} className={className}>
-      {label && <label style={labelStyles}>{label}</label>}
+      {label && (
+        <label style={labelStyles} htmlFor={inputId}>
+          {label}
+          {required && <span style={requiredIndicatorStyles} aria-label="required">*</span>}
+        </label>
+      )}
       <input
+        id={inputId}
         style={{ ...inputStyles, ...style }}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={(e) => {
+          setIsFocused(true);
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          props.onBlur?.(e);
+        }}
+        aria-invalid={!!error}
+        aria-describedby={
+          error ? errorId : helperText ? helperId : undefined
+        }
+        aria-required={required}
+        required={required}
         {...props}
       />
-      {(error || helperText) && (
-        <span style={helperStyles}>{error || helperText}</span>
+      {error && (
+        <span id={errorId} role="alert" style={helperStyles}>
+          {error}
+        </span>
+      )}
+      {!error && helperText && (
+        <span id={helperId} style={helperStyles}>
+          {helperText}
+        </span>
       )}
     </div>
   );

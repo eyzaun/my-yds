@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface TypographyProps {
   children: React.ReactNode;
@@ -12,12 +12,15 @@ export const Heading1: React.FC<TypographyProps> = ({
   className = '',
   style = {},
 }) => {
+  const designTokens = useDesignTokens();
+
   const h1Styles: React.CSSProperties = {
     fontSize: designTokens.typography.fontSize.h1,
     fontWeight: designTokens.typography.fontWeight.bold,
     lineHeight: designTokens.typography.lineHeight.tight,
     color: designTokens.colors.text.primary,
     margin: 0,
+    marginBottom: designTokens.spacing[4], // Default spacing for better UX
   };
 
   return (
@@ -32,12 +35,15 @@ export const Heading2: React.FC<TypographyProps> = ({
   className = '',
   style = {},
 }) => {
+  const designTokens = useDesignTokens();
+
   const h2Styles: React.CSSProperties = {
     fontSize: designTokens.typography.fontSize.h2,
     fontWeight: designTokens.typography.fontWeight.bold,
     lineHeight: designTokens.typography.lineHeight.tight,
     color: designTokens.colors.text.primary,
     margin: 0,
+    marginBottom: designTokens.spacing[3], // Default spacing for better UX
   };
 
   return (
@@ -52,12 +58,15 @@ export const Heading3: React.FC<TypographyProps> = ({
   className = '',
   style = {},
 }) => {
+  const designTokens = useDesignTokens();
+
   const h3Styles: React.CSSProperties = {
     fontSize: designTokens.typography.fontSize.h3,
     fontWeight: designTokens.typography.fontWeight.semibold,
     lineHeight: designTokens.typography.lineHeight.tight,
     color: designTokens.colors.text.primary,
     margin: 0,
+    marginBottom: designTokens.spacing[2], // Default spacing for better UX
   };
 
   return (
@@ -73,6 +82,8 @@ export const Text: React.FC<TypographyProps & { variant?: 'primary' | 'secondary
   className = '',
   style = {},
 }) => {
+  const designTokens = useDesignTokens();
+
   const colorMap = {
     primary: designTokens.colors.text.primary,
     secondary: designTokens.colors.text.secondary,

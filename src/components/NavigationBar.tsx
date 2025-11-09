@@ -6,7 +6,7 @@ import AdBanner from './AdBanner';
 import { useAuth } from '@/contexts/AuthContext';
 import { logoutUser } from '@/firebase/auth';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import ThemeSelector from '@/components/ThemeSelector';
 
 const NavigationBar = () => {
@@ -14,6 +14,7 @@ const NavigationBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user } = useAuth();
+  const designTokens = useDesignTokens();
 
   // Sayfa değiştiğinde menüyü kapat
   useEffect(() => {

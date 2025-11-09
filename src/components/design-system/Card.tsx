@@ -1,9 +1,9 @@
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface CardProps {
   variant?: 'default' | 'elevated' | 'outlined';
-  padding?: keyof typeof designTokens.spacing;
+  padding?: 'sm' | 'md' | 'lg' | 'xl';
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -12,16 +12,26 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({
   variant = 'default',
-  padding = 6,
+  padding = 'md',
   children,
   className = '',
   style = {},
   onClick,
 }) => {
+  const designTokens = useDesignTokens();
+
+  // Map padding sizes to spacing values
+  const paddingMap = {
+    sm: designTokens.spacing[4],
+    md: designTokens.spacing[6],
+    lg: designTokens.spacing[8],
+    xl: designTokens.spacing[10],
+  };
+
   const baseStyles: React.CSSProperties = {
     backgroundColor: designTokens.colors.background.card,
     borderRadius: designTokens.borderRadius.lg,
-    padding: designTokens.spacing[padding],
+    padding: paddingMap[padding],
     transition: designTokens.transitions.base,
   };
 

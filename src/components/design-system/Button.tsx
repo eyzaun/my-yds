@@ -1,16 +1,17 @@
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'small'; // Added 'small' alias for 'sm'
   fullWidth?: boolean;
   children: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
-  size = 'md',
+  size: sizeProp = 'md',
   fullWidth = false,
   children,
   className = '',
@@ -18,18 +19,25 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
+  const designTokens = useDesignTokens();
+  const { isDark } = useTheme();
+
+  // Handle 'small' alias for backward compatibility
+  const size = sizeProp === 'small' ? 'sm' : sizeProp;
+
   const baseStyles: React.CSSProperties = {
     fontFamily: designTokens.typography.fontFamily.base,
     fontWeight: designTokens.typography.fontWeight.medium,
     borderRadius: designTokens.borderRadius.md,
     border: 'none',
     cursor: disabled ? 'not-allowed' : 'pointer',
-    transition: designTokens.transitions.base,
+    transition: 'all 0.2s ease-in-out',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: fullWidth ? '100%' : 'auto',
-    opacity: disabled ? 0.6 : 1,
+    opacity: disabled ? 0.5 : 1,
+    filter: disabled ? 'grayscale(30%)' : 'none',
   };
 
   const sizeStyles: Record<string, React.CSSProperties> = {
@@ -54,7 +62,9 @@ export const Button: React.FC<ButtonProps> = ({
       border: `1px solid ${designTokens.colors.primary[600]}`,
     },
     secondary: {
-      backgroundColor: designTokens.colors.background.secondary,
+      backgroundColor: isDark
+        ? designTokens.colors.components.button.secondaryDark
+        : designTokens.colors.components.button.secondary,
       color: designTokens.colors.text.primary,
       border: `1px solid ${designTokens.colors.border.medium}`,
     },
@@ -75,27 +85,29 @@ export const Button: React.FC<ButtonProps> = ({
     },
   };
 
-  const hoverStyles: Record<string, string> = {
-    primary: designTokens.colors.primary[700],
-    secondary: designTokens.colors.border.light,
-    outline: designTokens.colors.primary[50],
-    ghost: designTokens.colors.background.secondary,
-    danger: designTokens.colors.accent.error.dark,
-  };
+  const [isHovered, setIsHovered] = React.useState(false);
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!disabled) {
-      if (variant === 'outline' || variant === 'ghost') {
-        e.currentTarget.style.backgroundColor = hoverStyles[variant];
-      } else {
-        e.currentTarget.style.backgroundColor = hoverStyles[variant];
-      }
-    }
-  };
+  // Generate hover background color based on variant
+  const getHoverBackground = () => {
+    if (disabled) return variantStyles[variant].backgroundColor;
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!disabled) {
-      e.currentTarget.style.backgroundColor = variantStyles[variant].backgroundColor as string;
+    if (!isHovered) return variantStyles[variant].backgroundColor;
+
+    switch (variant) {
+      case 'primary':
+        return designTokens.colors.primary[700];
+      case 'secondary':
+        return isDark
+          ? designTokens.colors.components.button.secondaryDarkHover
+          : designTokens.colors.components.button.secondaryHover;
+      case 'outline':
+        return designTokens.colors.primary[50];
+      case 'ghost':
+        return designTokens.colors.background.secondary;
+      case 'danger':
+        return designTokens.colors.accent.error.dark;
+      default:
+        return variantStyles[variant].backgroundColor;
     }
   };
 
@@ -106,11 +118,12 @@ export const Button: React.FC<ButtonProps> = ({
         ...baseStyles,
         ...sizeStyles[size],
         ...variantStyles[variant],
+        backgroundColor: getHoverBackground(),
         ...style,
       }}
       disabled={disabled}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => !disabled && setIsHovered(true)}
+      onMouseLeave={() => !disabled && setIsHovered(false)}
       {...props}
     >
       {children}

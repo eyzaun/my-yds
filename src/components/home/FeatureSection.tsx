@@ -1,15 +1,20 @@
 import { Feature } from '@/types/data';
 import { Card } from '@/components/design-system/Card';
 import { Heading2, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { Button } from '@/components/design-system/Button';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
+import { useRouter } from 'next/navigation';
 
 interface FeatureSectionProps {
   features: Feature[];
 }
 
 export function FeatureSection({ features }: FeatureSectionProps) {
+  const designTokens = useDesignTokens();
+  const router = useRouter();
+
   return (
-    <Card className="text-center" style={{ marginBottom: designTokens.spacing.xxl }}>
+    <Card className="text-center" style={{ marginBottom: designTokens.spacing[12] }}>
       <Heading2>YDS Sınavı için En Kapsamlı Kelime Kaynağı</Heading2>
 
       <div
@@ -26,15 +31,15 @@ export function FeatureSection({ features }: FeatureSectionProps) {
               style={{
                 marginBottom: designTokens.spacing[6],
                 padding: designTokens.spacing[6],
-                backgroundColor: designTokens.colors.accent
+                backgroundColor: designTokens.colors.primary[100],
               }}
             >
-              <div style={{ color: designTokens.colors.text.primary }}>{feature.icon}</div>
+              <div style={{ color: designTokens.colors.primary[700] }}>{feature.icon}</div>
             </div>
             <Heading3 style={{ marginBottom: designTokens.spacing[2] }}>
               {feature.title}
             </Heading3>
-            <Text style={{ opacity: 0.8 }}>{feature.description}</Text>
+            <Text variant="secondary">{feature.description}</Text>
           </div>
         ))}
       </div>
@@ -43,28 +48,23 @@ export function FeatureSection({ features }: FeatureSectionProps) {
         className="grid grid-cols-1"
         style={{
           gap: designTokens.spacing[8],
-          marginTop: designTokens.spacing.xxl
+          marginTop: designTokens.spacing[12]
         }}
       >
         <Card variant="elevated">
           <Heading3 style={{ marginBottom: designTokens.spacing[6] }}>
             Kendi Kartlarınızı Oluşturun
           </Heading3>
-          <Text style={{ marginBottom: designTokens.spacing[8], opacity: 0.8 }}>
+          <Text variant="secondary" style={{ marginBottom: designTokens.spacing[8] }}>
             Excel dosyalarınızı yükleyerek kişisel kelime kartlarınızı oluşturun ve çalışın.
           </Text>
-          <button
-            onClick={() => window.location.href = "/upload-flashcards"}
-            className="inline-block rounded-md font-medium transition-all hover:scale-105"
-            style={{
-              padding: `${designTokens.spacing[2]} ${designTokens.spacing[8]}`,
-              backgroundColor: designTokens.colors.accent,
-              color: "#000",
-              boxShadow: `0 0 15px ${designTokens.colors.accent}40`
-            }}
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={() => router.push("/upload-flashcards")}
           >
             Hemen Başlayın →
-          </button>
+          </Button>
         </Card>
       </div>
     </Card>

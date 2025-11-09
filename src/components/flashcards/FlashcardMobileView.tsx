@@ -79,7 +79,7 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
   const currentCard = flashcards[currentIndex];
   
   return (
-    <div className="flex flex-col h-screen" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10000, backgroundColor: colors.background }}>
+    <div className="flex flex-col h-screen" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050, backgroundColor: colors.background }}>
       {/* Header kısmı */}
       <div className="pt-3 px-3 pb-1">
         <div className="flex justify-between items-center mb-1">

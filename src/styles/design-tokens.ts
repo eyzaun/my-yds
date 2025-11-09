@@ -7,32 +7,32 @@
  */
 
 // ============================================================
-// LIGHT THEME - Figma Style (Black & White)
+// LIGHT THEME - Figma Style (Improved Contrast & Readability)
 // ============================================================
 const lightTheme = {
   background: {
-    primary: '#FFFFFF',      // Pure white - main background
-    secondary: '#F8F8F8',    // Almost white - alt backgrounds
-    tertiary: '#EFEFEF',     // Light gray - section backgrounds
-    card: '#FFFFFF',         // White cards
+    primary: '#F5F5F5',      // Light gray - main background (better contrast)
+    secondary: '#ECECEC',    // Medium gray - alt backgrounds
+    tertiary: '#E0E0E0',     // Darker gray - section backgrounds
+    card: '#FFFFFF',         // Pure white - cards stand out from background
   },
   surface: {
-    primary: '#FFFFFF',      // Navbar, main surfaces
-    elevated: '#FFFFFF',     // Elevated surfaces
+    primary: '#FFFFFF',      // Navbar, main surfaces - pure white
+    elevated: '#FFFFFF',     // Elevated surfaces - pure white
   },
   text: {
-    primary: '#000000',      // Pure black - main text (WCAG AAA ✓)
-    secondary: '#666666',    // Medium gray - secondary text
-    tertiary: '#999999',     // Light gray - tertiary text
-    disabled: '#CCCCCC',     // Light gray - disabled state
+    primary: '#1A1A1A',      // Near-black - better than pure black (WCAG AAA ✓)
+    secondary: '#4A4A4A',    // Dark gray - secondary text (better contrast)
+    tertiary: '#757575',     // Medium gray - tertiary text
+    disabled: '#BDBDBD',     // Light gray - disabled state
     inverse: '#FFFFFF',      // White text on dark backgrounds
     link: '#0066CC',         // Blue - links
     linkHover: '#0052A3',    // Dark blue - links hover
   },
   border: {
-    light: 'rgba(0, 0, 0, 0.06)',      // Very subtle borders
-    medium: 'rgba(0, 0, 0, 0.12)',     // Standard borders
-    strong: 'rgba(0, 0, 0, 0.18)',     // Strong borders
+    light: 'rgba(0, 0, 0, 0.08)',      // Subtle borders (slightly stronger)
+    medium: 'rgba(0, 0, 0, 0.16)',     // Standard borders (more visible)
+    strong: 'rgba(0, 0, 0, 0.24)',     // Strong borders (clearly visible)
     focus: '#0066CC',        // Blue - focus states
   },
   status: {
@@ -148,8 +148,8 @@ const components = {
     primary: '#0066CC',      // Blue button
     primaryHover: '#0052A3', // Darker blue on hover
     primaryActive: '#004080', // Even darker on active
-    secondary: '#F0F0F0',    // Light gray secondary
-    secondaryHover: '#E0E0E0',
+    secondary: '#E8E8E8',    // Light gray secondary (better contrast)
+    secondaryHover: '#D6D6D6', // Darker on hover
     secondaryDark: '#2A2A2A', // Dark gray for dark mode
     secondaryDarkHover: '#3A3A3A',
     ghost: 'transparent',
@@ -157,16 +157,16 @@ const components = {
   input: {
     backgroundLight: '#FFFFFF',
     backgroundDark: '#1A1A1A',
-    borderLight: 'rgba(0, 0, 0, 0.12)',
+    borderLight: 'rgba(0, 0, 0, 0.16)',  // More visible border
     borderDark: 'rgba(255, 255, 255, 0.15)',
     focusBorder: '#0066CC',
   },
   card: {
     backgroundLight: '#FFFFFF',
     backgroundDark: '#1A1A1A',
-    borderLight: 'rgba(0, 0, 0, 0.12)',
+    borderLight: 'rgba(0, 0, 0, 0.08)',  // Subtle but visible
     borderDark: 'rgba(255, 255, 255, 0.15)',
-    hoverLight: '#F8F8F8',
+    hoverLight: '#FAFAFA',    // Very subtle hover
     hoverDark: '#242424',
   },
 };
