@@ -1,5 +1,6 @@
 import React from 'react';
 import { FlashcardData } from '@/types/flashcard';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface ThemeColors {
   text: string;
@@ -32,6 +33,7 @@ const FlashcardControl: React.FC<FlashcardControlProps> = ({
   shouldRenderBottomButtons,
   flashcards
 }) => {
+  const { tokens } = useTheme();
   const { currentIndex, isAnimating, canAdvance, viewedCount, progressPercentage } = state;
   const { handlePrevious, handleNext, toggleFullscreen } = handlers;
   
@@ -51,11 +53,11 @@ const FlashcardControl: React.FC<FlashcardControlProps> = ({
             </div>
           </div>
           
-          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-            <div 
-              className="h-full rounded-full" 
-              style={{ 
-                width: `${progressPercentage}%`, 
+          <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: tokens.colors.background.secondary }}>
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${progressPercentage}%`,
                 backgroundColor: colors.accent
               }}
             />

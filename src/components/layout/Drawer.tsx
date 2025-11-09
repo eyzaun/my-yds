@@ -1,7 +1,8 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface DrawerProps {
 
 const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
+  const { tokens } = useTheme();
 
   // Main navigation links
   const mainLinks = [
@@ -42,24 +44,25 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-gray-800 bg-opacity-50 z-50 transition-opacity ${
+      className={`fixed inset-0 z-50 transition-opacity ${
         isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
+      style={{ backgroundColor: `${tokens.colors.neutralDark}80` }}
       onClick={onClose}
     >
       <div
         className={`fixed top-0 left-0 h-full shadow-lg z-50 transition-transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ backgroundColor: designTokens.colors.background.primary, width: 'min(85%, 320px)' }}
+        style={{ backgroundColor: tokens.colors.cardBackground, width: 'min(85%, 320px)' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="border-b flex justify-between items-center" style={{ padding: designTokens.spacing[6], borderColor: `${designTokens.colors.primary[200]}40` }}>
-          <h2 style={{ color: designTokens.colors.text.primary }} className="text-xl font-bold">
+        <div className="border-b flex justify-between items-center" style={{ padding: tokens.spacing.lg, borderColor: `${tokens.colors.border}40` }}>
+          <h2 style={{ color: tokens.colors.text }} className="text-xl font-bold">
             YDS Kelime Listesi
           </h2>
           <button
-            style={{ color: designTokens.colors.text.primary }}
+            style={{ color: tokens.colors.text }}
             className="rounded-full hover:bg-opacity-10"
             onClick={onClose}
             aria-label="Menüyü Kapat"
@@ -81,10 +84,10 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
         
-        <div style={{ padding: designTokens.spacing[1] }} className="overflow-y-auto h-[calc(100vh-64px)]">
+        <div style={{ padding: tokens.spacing.xs }} className="overflow-y-auto h-[calc(100vh-64px)]">
           {/* Main Links */}
-          <div style={{ marginTop: designTokens.spacing[2] }}>
-            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: designTokens.spacing[6], paddingRight: designTokens.spacing[6], paddingTop: designTokens.spacing[2], paddingBottom: designTokens.spacing[2], color: designTokens.colors.text.primary }}>
+          <div style={{ marginTop: tokens.spacing.sm }}>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: tokens.spacing.lg, paddingRight: tokens.spacing.lg, paddingTop: tokens.spacing.sm, paddingBottom: tokens.spacing.sm, color: tokens.colors.text }}>
               Ana Sayfalar
             </h3>
             {mainLinks.map((link) => (
@@ -93,18 +96,18 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
                 href={link.path}
                 className="flex items-center space-x-3 rounded-lg transition-colors duration-200 hover:bg-opacity-20"
                 style={{
-                  paddingLeft: designTokens.spacing[6],
-                  paddingRight: designTokens.spacing[6],
-                  paddingTop: designTokens.spacing[2],
-                  paddingBottom: designTokens.spacing[2],
-                  marginTop: designTokens.spacing[1],
-                  marginBottom: designTokens.spacing[1],
-                  backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
-                  color: designTokens.colors.text.primary,
+                  paddingLeft: tokens.spacing.lg,
+                  paddingRight: tokens.spacing.lg,
+                  paddingTop: tokens.spacing.sm,
+                  paddingBottom: tokens.spacing.sm,
+                  marginTop: tokens.spacing.xs,
+                  marginBottom: tokens.spacing.xs,
+                  backgroundColor: pathname === link.path ? tokens.colors.accent : 'transparent',
+                  color: tokens.colors.text,
                 }}
                 onMouseEnter={(e) => {
                   if (pathname !== link.path) {
-                    e.currentTarget.style.backgroundColor = designTokens.colors.primary[100];
+                    e.currentTarget.style.backgroundColor = tokens.colors.hover;
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -130,28 +133,28 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Category Links */}
-          <div style={{ marginTop: designTokens.spacing[6] }}>
-            <div className="border-t opacity-20" style={{ marginTop: designTokens.spacing[2], marginBottom: designTokens.spacing[2], borderColor: designTokens.colors.text.primary }}></div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: designTokens.spacing[6], paddingRight: designTokens.spacing[6], paddingTop: designTokens.spacing[2], paddingBottom: designTokens.spacing[2], color: designTokens.colors.text.primary }}>
+          <div style={{ marginTop: tokens.spacing.lg }}>
+            <div className="border-t opacity-20" style={{ marginTop: tokens.spacing.sm, marginBottom: tokens.spacing.sm, borderColor: tokens.colors.text }}></div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: tokens.spacing.lg, paddingRight: tokens.spacing.lg, paddingTop: tokens.spacing.sm, paddingBottom: tokens.spacing.sm, color: tokens.colors.text }}>
               Kategoriler
             </h3>
-            <div className="grid grid-cols-1" style={{ gap: designTokens.spacing[1] }}>
+            <div className="grid grid-cols-1" style={{ gap: tokens.spacing.xs }}>
               {categoryLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
                   className="flex items-center space-x-3 rounded-lg transition-colors duration-200"
                   style={{
-                    paddingLeft: designTokens.spacing[6],
-                    paddingRight: designTokens.spacing[6],
-                    paddingTop: designTokens.spacing[2],
-                    paddingBottom: designTokens.spacing[2],
-                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
-                    color: designTokens.colors.text.primary,
+                    paddingLeft: tokens.spacing.lg,
+                    paddingRight: tokens.spacing.lg,
+                    paddingTop: tokens.spacing.sm,
+                    paddingBottom: tokens.spacing.sm,
+                    backgroundColor: pathname === link.path ? tokens.colors.accent : 'transparent',
+                    color: tokens.colors.text,
                   }}
                   onMouseEnter={(e) => {
                     if (pathname !== link.path) {
-                      e.currentTarget.style.backgroundColor = designTokens.colors.primary[100];
+                      e.currentTarget.style.backgroundColor = tokens.colors.hover;
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -178,28 +181,28 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* About Links */}
-          <div style={{ marginTop: designTokens.spacing[6] }}>
-            <div className="border-t opacity-20" style={{ marginTop: designTokens.spacing[2], marginBottom: designTokens.spacing[2], borderColor: designTokens.colors.text.primary }}></div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: designTokens.spacing[6], paddingRight: designTokens.spacing[6], paddingTop: designTokens.spacing[2], paddingBottom: designTokens.spacing[2], color: designTokens.colors.text.primary }}>
+          <div style={{ marginTop: tokens.spacing.lg }}>
+            <div className="border-t opacity-20" style={{ marginTop: tokens.spacing.sm, marginBottom: tokens.spacing.sm, borderColor: tokens.colors.text }}></div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: tokens.spacing.lg, paddingRight: tokens.spacing.lg, paddingTop: tokens.spacing.sm, paddingBottom: tokens.spacing.sm, color: tokens.colors.text }}>
               Site Bilgileri
             </h3>
-            <div className="grid grid-cols-1" style={{ gap: designTokens.spacing[1] }}>
+            <div className="grid grid-cols-1" style={{ gap: tokens.spacing.xs }}>
               {aboutLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
                   className="flex items-center space-x-3 rounded-lg transition-colors duration-200"
                   style={{
-                    paddingLeft: designTokens.spacing[6],
-                    paddingRight: designTokens.spacing[6],
-                    paddingTop: designTokens.spacing[2],
-                    paddingBottom: designTokens.spacing[2],
-                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
-                    color: designTokens.colors.text.primary,
+                    paddingLeft: tokens.spacing.lg,
+                    paddingRight: tokens.spacing.lg,
+                    paddingTop: tokens.spacing.sm,
+                    paddingBottom: tokens.spacing.sm,
+                    backgroundColor: pathname === link.path ? tokens.colors.accent : 'transparent',
+                    color: tokens.colors.text,
                   }}
                   onMouseEnter={(e) => {
                     if (pathname !== link.path) {
-                      e.currentTarget.style.backgroundColor = designTokens.colors.primary[100];
+                      e.currentTarget.style.backgroundColor = tokens.colors.hover;
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -226,9 +229,9 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Footer */}
-          <div className="text-center text-xs" style={{ marginTop: designTokens.spacing[12], marginBottom: designTokens.spacing[6], paddingLeft: designTokens.spacing[6], paddingRight: designTokens.spacing[6], color: designTokens.colors.text.secondary }}>
+          <div className="text-center text-xs" style={{ marginTop: tokens.spacing.xxl, marginBottom: tokens.spacing.lg, paddingLeft: tokens.spacing.lg, paddingRight: tokens.spacing.lg, color: tokens.colors.textSecondary }}>
             <p>© {new Date().getFullYear()} YDS Kelime Listesi</p>
-            <p style={{ marginTop: designTokens.spacing[1] }}>Tüm Hakları Saklıdır</p>
+            <p style={{ marginTop: tokens.spacing.xs }}>Tüm Hakları Saklıdır</p>
           </div>
         </div>
       </div>

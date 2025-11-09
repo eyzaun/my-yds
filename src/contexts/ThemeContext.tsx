@@ -1,18 +1,20 @@
 // contexts/ThemeContext.tsx
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Theme, themes, getDesignTokensByTheme } from '@/styles/design-tokens';
+import { Theme, themes, getDesignTokensByTheme, DesignTokens } from '@/styles/design-tokens';
 
 type ThemeContextType = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   isDark: boolean;
+  tokens: ReturnType<typeof getDesignTokensByTheme>;
 };
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
   setTheme: () => {},
   isDark: false,
+  tokens: getDesignTokensByTheme('light'),
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -74,8 +76,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     return <>{children}</>;
   }
 
+  const tokens = getDesignTokensByTheme(theme);
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: handleSetTheme, isDark: theme === 'dark' }}>
+    <ThemeContext.Provider value={{ theme, setTheme: handleSetTheme, isDark: theme === 'dark', tokens }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/design-system/Button';
 import { Card } from '@/components/design-system/Card';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
   getReviewCards,
   saveQuizResult,
@@ -30,6 +30,7 @@ export default function SpacedRepetitionQuiz({
   categoryName,
   onExit,
 }: SpacedRepetitionQuizProps) {
+  const { tokens } = useTheme();
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState<SpacedRepetitionCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -362,18 +363,18 @@ export default function SpacedRepetitionQuiz({
     return (
       <div
         className="min-h-screen flex items-center justify-center px-4"
-        style={{ backgroundColor: designTokens.colors.background.primary }}
+        style={{ backgroundColor: tokens.colors.background.primary }}
       >
         <Card className="max-w-md w-full text-center">
           <div className="text-5xl mb-4">📚</div>
-          <h2 className="text-2xl font-bold mb-4" style={{ color: designTokens.colors.text.primary }}>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: tokens.colors.text.primary }}>
             Devam Eden Quiz Bulundu!
           </h2>
-          <p className="mb-6 opacity-70" style={{ color: designTokens.colors.text.primary }}>
+          <p className="mb-6 opacity-70" style={{ color: tokens.colors.text.primary }}>
             Daha önce başladığınız quiz'e kaldığınız yerden devam etmek ister misiniz?
           </p>
 
-          <div className="flex flex-col" style={{ gap: designTokens.spacing[6] }}>
+          <div className="flex flex-col" style={{ gap: tokens.spacing[6] }}>
             <Button
               onClick={resumeSession}
               variant="primary"
@@ -401,16 +402,16 @@ export default function SpacedRepetitionQuiz({
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: designTokens.colors.background.primary }}
+        style={{ backgroundColor: tokens.colors.background.primary }}
       >
         <div className="text-center">
           <div
             className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 mx-auto mb-4"
-            style={{ borderColor: designTokens.colors.primary[600] }}
+            style={{ borderColor: tokens.colors.primary[600] }}
           />
-          <p style={{ color: designTokens.colors.text.primary }}>Kartlar yükleniyor...</p>
+          <p style={{ color: tokens.colors.text.primary }}>Kartlar yükleniyor...</p>
           {savingProgress && (
-            <p className="text-sm mt-2 opacity-70" style={{ color: designTokens.colors.text.primary }}>
+            <p className="text-sm mt-2 opacity-70" style={{ color: tokens.colors.text.primary }}>
               Kaydediliyor...
             </p>
           )}
@@ -428,53 +429,53 @@ export default function SpacedRepetitionQuiz({
     return (
       <div
         className="min-h-screen flex items-center justify-center px-4"
-        style={{ backgroundColor: designTokens.colors.background.primary }}
+        style={{ backgroundColor: tokens.colors.background.primary }}
       >
         <Card className="max-w-md w-full text-center">
           <div className="text-6xl mb-6">
             {accuracy >= 80 ? '🎉' : accuracy >= 60 ? '👍' : '💪'}
           </div>
-          <h2 className="text-3xl font-bold mb-4" style={{ color: designTokens.colors.text.primary }}>
+          <h2 className="text-3xl font-bold mb-4" style={{ color: tokens.colors.text.primary }}>
             {sessionStats.total === 0 ? 'Tebrikler!' : 'Quiz Tamamlandı!'}
           </h2>
           {sessionStats.total === 0 ? (
-            <p className="mb-6 opacity-70" style={{ color: designTokens.colors.text.primary }}>
+            <p className="mb-6 opacity-70" style={{ color: tokens.colors.text.primary }}>
               Bugün için tüm kartları tamamladınız!
             </p>
           ) : (
             <>
-              <div className="grid grid-cols-3 mb-6" style={{ gap: designTokens.spacing[6] }}>
+              <div className="grid grid-cols-3 mb-6" style={{ gap: tokens.spacing[6] }}>
                 <div>
-                  <div className="text-3xl font-bold mb-1" style={{ color: designTokens.colors.text.primary }}>
+                  <div className="text-3xl font-bold mb-1" style={{ color: tokens.colors.text.primary }}>
                     {sessionStats.total}
                   </div>
-                  <div className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
+                  <div className="text-sm opacity-70" style={{ color: tokens.colors.text.primary }}>
                     Toplam
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold mb-1 text-green-500">
+                  <div className="text-3xl font-bold mb-1" style={{ color: tokens.colors.status.success }}>
                     {sessionStats.correct}
                   </div>
-                  <div className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
+                  <div className="text-sm opacity-70" style={{ color: tokens.colors.text.primary }}>
                     Doğru
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold mb-1 text-red-500">
+                  <div className="text-3xl font-bold mb-1" style={{ color: tokens.colors.status.error }}>
                     {sessionStats.incorrect}
                   </div>
-                  <div className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
+                  <div className="text-sm opacity-70" style={{ color: tokens.colors.text.primary }}>
                     Yanlış
                   </div>
                 </div>
               </div>
 
               <div className="mb-6">
-                <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.primary[600] }}>
+                <div className="text-4xl font-bold mb-2" style={{ color: tokens.colors.primary[600] }}>
                   {accuracy}%
                 </div>
-                <div className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
+                <div className="text-sm opacity-70" style={{ color: tokens.colors.text.primary }}>
                   Doğruluk Oranı
                 </div>
               </div>
@@ -497,24 +498,24 @@ export default function SpacedRepetitionQuiz({
   const progress = ((currentIndex + 1) / cards.length) * 100;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+    <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background.primary }}>
       {/* Header */}
       <div
         className="sticky top-0 z-10 shadow-md"
         style={{
-          backgroundColor: designTokens.colors.cardBackground,
-          padding: `${designTokens.spacing[6]} ${designTokens.spacing[6]}`
+          backgroundColor: tokens.colors.surface.primary,
+          padding: `${tokens.spacing[6]} ${tokens.spacing[6]}`
         }}
       >
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-xl font-bold" style={{ color: designTokens.colors.text.primary }}>
+            <h1 className="text-xl font-bold" style={{ color: tokens.colors.text.primary }}>
               {categoryName || 'Tüm Kartlar'}
             </h1>
             <button
               onClick={handleExit}
               className="p-2 rounded-lg hover:bg-opacity-80 transition-all"
-              style={{ backgroundColor: designTokens.colors.background.primary, color: designTokens.colors.text.primary }}
+              style={{ backgroundColor: tokens.colors.background.primary, color: tokens.colors.text.primary }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -536,41 +537,41 @@ export default function SpacedRepetitionQuiz({
           {/* Progress Bar */}
           <div
             className="w-full rounded-full h-2"
-            style={{ backgroundColor: designTokens.colors.border }}
+            style={{ backgroundColor: tokens.colors.border.medium }}
           >
             <div
               className="h-2 rounded-full transition-all"
               style={{
                 width: `${progress}%`,
-                backgroundColor: designTokens.colors.primary[600],
-                borderRadius: designTokens.borderRadius.full
+                backgroundColor: tokens.colors.primary[600],
+                borderRadius: tokens.borderRadius.full
               }}
             />
           </div>
 
           {/* Stats */}
-          <div className="flex items-center justify-between text-sm" style={{ marginTop: designTokens.spacing[1] }}>
-            <span style={{ color: designTokens.colors.text.primary }}>
+          <div className="flex items-center justify-between text-sm" style={{ marginTop: tokens.spacing[1] }}>
+            <span style={{ color: tokens.colors.text.primary }}>
               {currentIndex + 1} / {cards.length}
             </span>
-            <div className="flex" style={{ gap: designTokens.spacing[6] }}>
-              <span className="text-green-500">✓ {sessionStats.correct}</span>
-              <span className="text-red-500">✗ {sessionStats.incorrect}</span>
+            <div className="flex" style={{ gap: tokens.spacing[6] }}>
+              <span style={{ color: tokens.colors.status.success }}>✓ {sessionStats.correct}</span>
+              <span style={{ color: tokens.colors.status.error }}>✗ {sessionStats.incorrect}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Card Display */}
-      <div className="max-w-4xl mx-auto" style={{ padding: `${designTokens.spacing[8]} ${designTokens.spacing[6]}` }}>
+      <div className="max-w-4xl mx-auto" style={{ padding: `${tokens.spacing[8]} ${tokens.spacing[6]}` }}>
         {/* Flashcard */}
         <Card className="p-12 mb-6 text-center shadow-lg min-h-[300px] flex items-center justify-center">
           <div>
-            <div className="text-4xl md:text-5xl font-bold mb-4" style={{ color: designTokens.colors.text.primary }}>
+            <div className="text-4xl md:text-5xl font-bold mb-4" style={{ color: tokens.colors.text.primary }}>
               {currentCard.word}
             </div>
             {flipped && (
-              <div className="text-2xl md:text-3xl opacity-70" style={{ color: designTokens.colors.text.primary }}>
+              <div className="text-2xl md:text-3xl opacity-70" style={{ color: tokens.colors.text.primary }}>
                 {currentCard.translation}
               </div>
             )}
@@ -580,13 +581,13 @@ export default function SpacedRepetitionQuiz({
         {/* Answer Input */}
         <div className="max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="flex flex-col">
-            <p className="text-sm" style={{ color: designTokens.colors.text.primary, marginBottom: designTokens.spacing[1] }}>
+            <p className="text-sm" style={{ color: tokens.colors.text.primary, marginBottom: tokens.spacing[1] }}>
               {result === 'incorrect' && flipped
                 ? 'Doğru cevabı yazın (kartın arkasında):'
                 : 'Kelimenin Türkçe karşılığını yazın:'}
             </p>
 
-            <div className="flex w-full" style={{ marginBottom: designTokens.spacing[6] }}>
+            <div className="flex w-full" style={{ marginBottom: tokens.spacing[6] }}>
               <input
                 ref={inputRef}
                 type="text"
@@ -599,14 +600,14 @@ export default function SpacedRepetitionQuiz({
                     : 'Cevabınızı buraya yazın...'
                 }
                 style={{
-                  backgroundColor: designTokens.colors.background.primary,
-                  color: designTokens.colors.text.primary,
+                  backgroundColor: tokens.colors.background.primary,
+                  color: tokens.colors.text.primary,
                   borderColor:
                     result === 'correct'
-                      ? designTokens.colors.success
+                      ? tokens.colors.status.success
                       : result === 'incorrect'
-                      ? designTokens.colors.error
-                      : designTokens.colors.primary,
+                      ? tokens.colors.status.error
+                      : tokens.colors.primary[600],
                   fontSize: '16px',
                   height: '48px',
                 }}
@@ -621,11 +622,11 @@ export default function SpacedRepetitionQuiz({
                 style={{
                   backgroundColor:
                     result === 'correct'
-                      ? designTokens.colors.status.success
+                      ? tokens.colors.status.success
                       : result === 'incorrect' && flipped
-                      ? designTokens.colors.status.warning
-                      : designTokens.colors.primary[600],
-                  color: designTokens.colors.text.inverse,
+                      ? tokens.colors.status.warning
+                      : tokens.colors.primary[600],
+                  color: tokens.colors.text.inverse,
                   fontSize: '16px',
                   height: '48px',
                 }}
@@ -637,15 +638,15 @@ export default function SpacedRepetitionQuiz({
 
             {/* Feedback */}
             {result === 'correct' && (
-              <p className="text-center font-medium" style={{ marginBottom: designTokens.spacing[1], color: designTokens.colors.status.success }}>
+              <p className="text-center font-medium" style={{ marginBottom: tokens.spacing[1], color: tokens.colors.status.success }}>
                 ✓ Doğru cevap! 👍
               </p>
             )}
 
             {result === 'incorrect' && flipped && (
-              <div className="text-center" style={{ marginBottom: designTokens.spacing[6] }}>
-                <p className="font-medium mb-1" style={{ color: designTokens.colors.status.error }}>✗ Yanlış cevap!</p>
-                <p className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
+              <div className="text-center" style={{ marginBottom: tokens.spacing[6] }}>
+                <p className="font-medium mb-1" style={{ color: tokens.colors.status.error }}>✗ Yanlış cevap!</p>
+                <p className="text-sm opacity-70" style={{ color: tokens.colors.text.primary }}>
                   Kartın arkasına bak ve doğru cevabı yazıp devam et.
                 </p>
               </div>

@@ -21,7 +21,7 @@ import { Container } from '@/components/design-system/Container';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading1, Heading2, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const SpacedRepetitionQuiz = dynamic(
   () => import('@/components/SpacedRepetitionQuiz'),
@@ -30,6 +30,7 @@ const SpacedRepetitionQuiz = dynamic(
 
 export default function SpacedRepetitionPage() {
   const { user } = useAuth();
+  const { tokens } = useTheme();
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -210,7 +211,7 @@ export default function SpacedRepetitionPage() {
                 </Text>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1 text-green-500">
+                <div className="text-2xl font-bold mb-1" style={{ color: tokens.colors.success }}>
                   {statistics.masteredCards}
                 </div>
                 <Text className="text-sm opacity-70">
@@ -300,7 +301,7 @@ export default function SpacedRepetitionPage() {
                       </Text>
                     </div>
                     <div>
-                      <div className="font-semibold text-green-500">
+                      <div className="font-semibold" style={{ color: tokens.colors.success }}>
                         {group.masteredCards}
                       </div>
                       <Text className="opacity-60 text-sm">
@@ -339,16 +340,16 @@ export default function SpacedRepetitionPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
-                    <div style={{ color: designTokens.colors.text.primary }}>
+                    <div style={{ color: tokens.colors.text }}>
                       <span className="font-semibold">{stat.reviewedCards}</span> kart
                     </div>
-                    <div className="text-green-500">
+                    <div style={{ color: tokens.colors.success }}>
                       ✓ {stat.correctAnswers}
                     </div>
-                    <div className="text-red-500">
+                    <div style={{ color: tokens.colors.error }}>
                       ✗ {stat.incorrectAnswers}
                     </div>
-                    <div style={{ color: designTokens.colors.text.primary }} className="opacity-70">
+                    <div style={{ color: tokens.colors.text }} className="opacity-70">
                       {stat.reviewedCards > 0
                         ? Math.round((stat.correctAnswers / stat.reviewedCards) * 100)
                         : 0}%
