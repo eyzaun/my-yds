@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import QuizMode from './QuizMode';
+import { useTheme } from '@/hooks/useTheme';
 
 interface ThemeColors {
   text: string;
@@ -64,7 +65,8 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
   cardStyles,
   colors
 }) => {
-  const { 
+  const { tokens } = useTheme();
+  const {
     currentIndex, flipped, completed, viewedCount, progressPercentage, isAnimating
   } = state;
   
@@ -106,11 +108,11 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
           </div>
         </div>
         
-        <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden">
-          <div 
-            className="h-full rounded-full" 
-            style={{ 
-              width: `${progressPercentage}%`, 
+        <div className="w-full h-1 rounded-full overflow-hidden" style={{ backgroundColor: tokens.colors.gray[700] }}>
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: `${progressPercentage}%`,
               backgroundColor: colors.accent
             }}
           />
@@ -179,8 +181,9 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
               />
               
               {completed[currentCard.id] && (
-                <div className="absolute top-2 right-2 text-white w-5 h-5 rounded-full flex items-center justify-center"
-                    style={{ 
+                <div className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center"
+                    style={{
+                      color: tokens.colors.text.inverse,
                       backgroundColor: colors.accent,
                       boxShadow: `0 0 10px ${colors.accent}50`
                     }}>

@@ -1,6 +1,9 @@
+'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
-import { designTokens } from '@/styles/design-tokens';
+import { getDesignTokensByTheme } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -76,6 +79,9 @@ export default function useFlashcardState({
   quizMode,
   onReset
 }: UseFlashcardStateProps): FlashcardStateReturn {
+  const { theme } = useTheme();
+  const tokens = getDesignTokensByTheme(theme);
+
   const safeInitialIndex = initialIndex >= 0 && initialIndex < flashcards.length ? initialIndex : 0;
   const [currentIndex, setCurrentIndex] = useState(safeInitialIndex);
   const [flipped, setFlipped] = useState(false);
@@ -126,13 +132,13 @@ export default function useFlashcardState({
     setCanAdvance(!quizMode);
   }, [quizMode, currentIndex]);
 
-  const accentColor = designTokens.colors.primary[500]; // Use primary as accent
+  const accentColor = tokens.colors.primary[500]; // Use primary as accent
 
   const cardStyles: FlashcardStyles = {
-    frontBackground: '#2a2a2a',
-    backBackground: '#1c1c1c',
+    frontBackground: tokens.colors.background.flashcardFront,
+    backBackground: tokens.colors.background.flashcardBack,
     textColor: accentColor || '#06b6d4',
-    notesColor: '#a3a3a3',
+    notesColor: tokens.colors.text.note,
     boxShadow: `0 8px 32px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(6, 182, 212, 0.05)`,
     border: 'none',
     glow: `0 0 25px ${accentColor}30, 0 0 5px ${accentColor}10`

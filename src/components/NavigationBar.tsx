@@ -7,9 +7,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { logoutUser } from '@/firebase/auth';
 import { Button } from '@/components/design-system/Button';
 import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/hooks/useTheme';
 import ThemeSelector from '@/components/ThemeSelector';
 
 const NavigationBar = () => {
+  const { tokens } = useTheme();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -346,9 +348,12 @@ const NavigationBar = () => {
 
       {/* Yan Menü - Hem mobil hem de masaüstü için */}
       <div
-        className={`fixed inset-0 z-40 transition-opacity duration-300 bg-black bg-opacity-50 ${
+        className={`fixed inset-0 z-40 transition-opacity duration-300 ${
           isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+        }}
         onClick={toggleMenu}
       >
         <div

@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/design-system/Button';
 import { Card } from '@/components/design-system/Card';
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getDesignTokensByTheme, designTokens } from '@/styles/design-tokens';
 import {
   getReviewCards,
   saveQuizResult,
@@ -30,6 +31,8 @@ export default function SpacedRepetitionQuiz({
   categoryName,
   onExit,
 }: SpacedRepetitionQuizProps) {
+  const { theme } = useTheme();
+  const tokens = getDesignTokensByTheme(theme);
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState<SpacedRepetitionCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -453,7 +456,7 @@ export default function SpacedRepetitionQuiz({
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold mb-1 text-green-500">
+                  <div className="text-3xl font-bold mb-1" style={{ color: tokens.colors.green[500] }}>
                     {sessionStats.correct}
                   </div>
                   <div className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
@@ -461,7 +464,7 @@ export default function SpacedRepetitionQuiz({
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold mb-1 text-red-500">
+                  <div className="text-3xl font-bold mb-1" style={{ color: tokens.colors.red[500] }}>
                     {sessionStats.incorrect}
                   </div>
                   <div className="text-sm opacity-70" style={{ color: designTokens.colors.text.primary }}>
@@ -554,8 +557,8 @@ export default function SpacedRepetitionQuiz({
               {currentIndex + 1} / {cards.length}
             </span>
             <div className="flex" style={{ gap: designTokens.spacing[6] }}>
-              <span className="text-green-500">✓ {sessionStats.correct}</span>
-              <span className="text-red-500">✗ {sessionStats.incorrect}</span>
+              <span style={{ color: tokens.colors.green[500] }}>✓ {sessionStats.correct}</span>
+              <span style={{ color: tokens.colors.red[500] }}>✗ {sessionStats.incorrect}</span>
             </div>
           </div>
         </div>

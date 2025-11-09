@@ -1,13 +1,18 @@
+'use client';
 import { Feature } from '@/types/data';
 import { Card } from '@/components/design-system/Card';
 import { Heading2, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { designTokens, getDesignTokensByTheme } from '@/styles/design-tokens';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface FeatureSectionProps {
   features: Feature[];
 }
 
 export function FeatureSection({ features }: FeatureSectionProps) {
+  const { theme } = useTheme();
+  const tokens = getDesignTokensByTheme(theme);
+
   return (
     <Card className="text-center" style={{ marginBottom: designTokens.spacing.xxl }}>
       <Heading2>YDS Sınavı için En Kapsamlı Kelime Kaynağı</Heading2>
@@ -59,7 +64,7 @@ export function FeatureSection({ features }: FeatureSectionProps) {
             style={{
               padding: `${designTokens.spacing[2]} ${designTokens.spacing[8]}`,
               backgroundColor: designTokens.colors.accent,
-              color: "#000",
+              color: tokens.colors.text.inverse,
               boxShadow: `0 0 15px ${designTokens.colors.accent}40`
             }}
           >

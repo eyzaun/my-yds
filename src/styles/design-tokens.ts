@@ -15,6 +15,8 @@ const lightTheme = {
     secondary: '#F8F8F8',    // Almost white - alt backgrounds
     tertiary: '#EFEFEF',     // Light gray - section backgrounds
     card: '#FFFFFF',         // White cards
+    flashcardFront: '#FFFFFF', // Flashcard front
+    flashcardBack: '#F8F8F8',  // Flashcard back
   },
   surface: {
     primary: '#FFFFFF',      // Navbar, main surfaces
@@ -28,6 +30,7 @@ const lightTheme = {
     inverse: '#FFFFFF',      // White text on dark backgrounds
     link: '#0066CC',         // Blue - links
     linkHover: '#0052A3',    // Dark blue - links hover
+    note: '#999999',         // Note text (light gray)
   },
   border: {
     light: 'rgba(0, 0, 0, 0.06)',      // Very subtle borders
@@ -74,6 +77,8 @@ const darkTheme = {
     secondary: '#1A1A1A',    // Dark gray - secondary backgrounds
     tertiary: '#242424',     // Lighter dark gray - section backgrounds
     card: '#1A1A1A',         // Dark cards
+    flashcardFront: '#2a2a2a', // Flashcard front (dark gray)
+    flashcardBack: '#1c1c1c',  // Flashcard back (darker gray)
   },
   surface: {
     primary: '#1A1A1A',      // Navbar, main surfaces
@@ -87,6 +92,7 @@ const darkTheme = {
     inverse: '#111111',      // Dark text on light backgrounds
     link: '#66B2FF',         // Light blue - links in dark mode
     linkHover: '#99CCFF',    // Lighter blue - links hover in dark mode
+    note: '#a3a3a3',         // Note text (light gray)
   },
   border: {
     light: 'rgba(255, 255, 255, 0.08)',   // Very subtle borders
@@ -140,6 +146,60 @@ const primaryColors = {
   700: '#004080',
   800: '#002E59',
   900: '#001A33',
+};
+
+// Utility Color Palettes
+const grayColors = {
+  50: '#f9fafb',
+  100: '#f3f4f6',
+  200: '#e5e7eb',
+  300: '#d1d5db',
+  400: '#9ca3af',
+  500: '#6b7280',
+  600: '#4b5563',
+  700: '#374151',
+  800: '#1f2937',
+  900: '#111827',
+};
+
+const redColors = {
+  50: '#fef2f2',
+  100: '#fee2e2',
+  200: '#fecaca',
+  300: '#fca5a5',
+  400: '#f87171',
+  500: '#ef4444',
+  600: '#dc2626',
+  700: '#b91c1c',
+  800: '#991b1b',
+  900: '#7f1d1d',
+};
+
+const greenColors = {
+  50: '#f0fdf4',
+  100: '#dcfce7',
+  200: '#bbf7d0',
+  300: '#86efac',
+  400: '#4ade80',
+  500: '#22c55e',
+  600: '#16a34a',
+  700: '#15803d',
+  800: '#166534',
+  900: '#14532d',
+};
+
+const cyanColors = {
+  50: '#ecfeff',
+  100: '#cffafe',
+  200: '#a5f3fc',
+  300: '#67e8f9',
+  400: '#22d3ee',
+  500: '#06b6d4',
+  600: '#0891b2',
+  700: '#0e7490',
+  800: '#155e75',
+  900: '#164e63',
+  bright: '#14FFEC', // Special bright cyan
 };
 
 // Component Backgrounds & Interactive States
@@ -269,11 +329,19 @@ export const themes: Record<Theme, any> = {
   light: {
     ...lightTheme,
     primary: primaryColors,
+    gray: grayColors,
+    red: redColors,
+    green: greenColors,
+    cyan: cyanColors,
     components: components,
   },
   dark: {
     ...darkTheme,
     primary: primaryColors,
+    gray: grayColors,
+    red: redColors,
+    green: greenColors,
+    cyan: cyanColors,
     components: components,
   },
 };
@@ -290,6 +358,10 @@ export const designTokens = {
     surface: lightTheme.surface,
     text: lightTheme.text,
     primary: primaryColors,
+    gray: grayColors,
+    red: redColors,
+    green: greenColors,
+    cyan: cyanColors,
     border: lightTheme.border,
     status: lightTheme.status,
     accent: lightTheme.accent,
