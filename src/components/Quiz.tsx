@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { designTokens } from '@/styles/design-tokens';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { saveQuizScore } from '@/firebase/firestore';
 import AdBanner from './AdBanner';
 import Link from 'next/link';
@@ -30,7 +29,6 @@ interface QuizProps {
 
 const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQuizComplete }) => {
   const { user } = useAuth();
-  const { tokens } = useTheme();
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
@@ -147,7 +145,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                       value={option}
                       checked={userAnswers[question.id] === option}
                       onChange={() => handleAnswerSelect(question.id, option)}
-                      style={{ accentColor: tokens.colors.accent }}
+                      className="text-[#14FFEC]"
                     />
                     <span>{option}</span>
                   </label>
@@ -218,15 +216,15 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                 ({categoryWords.find(w => w.en === question.word)?.tr})
               </p>
               <p className="mb-2">
-                Sizin cevabınız: <span style={{
-                  color: userAnswers[question.id] === question.correctAnswer ?
-                    tokens.colors.success : tokens.colors.error
+                Sizin cevabınız: <span style={{ 
+                  color: userAnswers[question.id] === question.correctAnswer ? 
+                    'rgb(74, 222, 128)' : 'rgb(248, 113, 113)'
                 }}>
                   {userAnswers[question.id]}
                 </span>
               </p>
               {userAnswers[question.id] !== question.correctAnswer && (
-                <p style={{ color: tokens.colors.success }}>
+                <p style={{ color: 'rgb(74, 222, 128)' }}>
                   Doğru cevap: {question.correctAnswer}
                 </p>
               )}

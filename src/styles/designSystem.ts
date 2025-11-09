@@ -9,20 +9,13 @@ export interface DesignTokens {
     accent: string;
     text: string;
     textSecondary: string;
-    textTertiary: string;
     disabled: string;
     success: string;
-    successLight: string;
     error: string;
-    errorLight: string;
     warning: string;
-    warningLight: string;
     info: string;
     border: string;
     hover: string;
-    neutral: string;
-    neutralLight: string;
-    neutralDark: string;
   };
 
   // Gölgeler
@@ -107,20 +100,13 @@ export const colorThemes = {
     accent: '#0f3460',
     text: '#e94560',
     textSecondary: '#e9456080',
-    textTertiary: '#e9456060',
     disabled: '#16213e80',
     success: '#10b981',
-    successLight: '#d1fae5',
     error: '#ef4444',
-    errorLight: '#fee2e2',
     warning: '#f59e0b',
-    warningLight: '#fef3c7',
     info: '#3b82f6',
     border: '#0f346040',
     hover: '#0f346020',
-    neutral: '#374151',
-    neutralLight: '#6b7280',
-    neutralDark: '#1f2937',
   },
   purple: {
     background: '#1a1625',
@@ -128,20 +114,13 @@ export const colorThemes = {
     accent: '#8b5cf6',
     text: '#e9d5ff',
     textSecondary: '#e9d5ff80',
-    textTertiary: '#e9d5ff60',
     disabled: '#2d1b3d80',
     success: '#10b981',
-    successLight: '#d1fae5',
     error: '#ef4444',
-    errorLight: '#fee2e2',
     warning: '#f59e0b',
-    warningLight: '#fef3c7',
     info: '#8b5cf6',
     border: '#8b5cf640',
     hover: '#8b5cf620',
-    neutral: '#374151',
-    neutralLight: '#6b7280',
-    neutralDark: '#1f2937',
   },
   green: {
     background: '#1a2519',
@@ -149,20 +128,13 @@ export const colorThemes = {
     accent: '#10b981',
     text: '#86efac',
     textSecondary: '#86efac80',
-    textTertiary: '#86efac60',
     disabled: '#1e3a1e80',
     success: '#10b981',
-    successLight: '#d1fae5',
     error: '#ef4444',
-    errorLight: '#fee2e2',
     warning: '#f59e0b',
-    warningLight: '#fef3c7',
     info: '#3b82f6',
     border: '#10b98140',
     hover: '#10b98120',
-    neutral: '#374151',
-    neutralLight: '#6b7280',
-    neutralDark: '#1f2937',
   },
   orange: {
     background: '#251a1a',
@@ -170,20 +142,13 @@ export const colorThemes = {
     accent: '#f97316',
     text: '#fed7aa',
     textSecondary: '#fed7aa80',
-    textTertiary: '#fed7aa60',
     disabled: '#3a1e1e80',
     success: '#10b981',
-    successLight: '#d1fae5',
     error: '#ef4444',
-    errorLight: '#fee2e2',
     warning: '#f59e0b',
-    warningLight: '#fef3c7',
     info: '#3b82f6',
     border: '#f9731640',
     hover: '#f9731620',
-    neutral: '#374151',
-    neutralLight: '#6b7280',
-    neutralDark: '#1f2937',
   },
   dark: {
     background: '#0f172a',
@@ -191,41 +156,27 @@ export const colorThemes = {
     accent: '#0ea5e9',
     text: '#f1f5f9',
     textSecondary: '#f1f5f980',
-    textTertiary: '#f1f5f960',
     disabled: '#1e293b80',
     success: '#10b981',
-    successLight: '#d1fae5',
     error: '#ef4444',
-    errorLight: '#fee2e2',
     warning: '#f59e0b',
-    warningLight: '#fef3c7',
     info: '#0ea5e9',
     border: '#0ea5e940',
     hover: '#0ea5e920',
-    neutral: '#475569',
-    neutralLight: '#64748b',
-    neutralDark: '#334155',
   },
   light: {
     background: '#f8fafc',
     cardBackground: '#ffffff',
     accent: '#3b82f6',
     text: '#0f172a',
-    textSecondary: '#64748b',
-    textTertiary: '#94a3b8',
-    disabled: '#e2e8f0',
+    textSecondary: '#0f172a80',
+    disabled: '#ffffff80',
     success: '#10b981',
-    successLight: '#059669',
     error: '#ef4444',
-    errorLight: '#dc2626',
     warning: '#f59e0b',
-    warningLight: '#d97706',
     info: '#3b82f6',
-    border: '#cbd5e1',
-    hover: '#e2e8f0',
-    neutral: '#64748b',
-    neutralLight: '#94a3b8',
-    neutralDark: '#475569',
+    border: '#3b82f640',
+    hover: '#3b82f620',
   },
 };
 

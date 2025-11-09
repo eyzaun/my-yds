@@ -4,20 +4,18 @@ import { ReactNode } from 'react';
 //import { redirect } from 'next/navigation';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 
 interface ProtectedRouteProps {
   children: ReactNode;
   redirectTo?: string;
 }
 
-export default function ProtectedRoute({
-  children,
+export default function ProtectedRoute({ 
+  children, 
   redirectTo = '/login'
 }: ProtectedRouteProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { tokens } = useTheme();
   
   useEffect(() => {
     const auth = getAuth();
@@ -37,13 +35,7 @@ export default function ProtectedRoute({
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div
-          className="animate-spin rounded-full h-12 w-12"
-          style={{
-            borderTop: `2px solid ${tokens.colors.accent.primary}`,
-            borderBottom: `2px solid ${tokens.colors.accent.primary}`,
-          }}
-        ></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }

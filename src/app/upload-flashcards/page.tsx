@@ -9,7 +9,7 @@ import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
-import { useTheme } from '@/contexts/ThemeContext';
+import { designTokens } from '@/styles/design-tokens';
 import { FlashcardData } from '@/types/flashcard';
 import { parseExcelFile, convertExcelRowsToFlashcards } from '@/utils/excelParser';
 import { saveFlashcardSet, getUserFlashcardSets, getFlashcardsBySetId, deleteFlashcardSet } from '@/lib/firebase/flashcardStorage';
@@ -31,7 +31,6 @@ const convertFlashcardsToWords = (flashcards: FlashcardData[]): Word[] => {
 };
 
 export default function UploadFlashcardsPage() {
-  const { tokens } = useTheme();
   const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
   const [savedSets, setSavedSets] = useState<{id: string, name: string, cardCount: number, createdAt: Date}[]>([]);
   const [setName, setSetName] = useState('');
@@ -180,7 +179,7 @@ export default function UploadFlashcardsPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background }}>
+      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
         <Container maxWidth="4xl" className="py-8">
           <Heading1 className="mb-6 text-center">
             Kişisel Kelime Kartları
@@ -203,7 +202,7 @@ export default function UploadFlashcardsPage() {
   if (showViewer && flashcards.length > 0) {
     const words = convertFlashcardsToWords(flashcards);
     return (
-      <div className="min-h-screen pb-16" style={{ backgroundColor: tokens.colors.background }}>
+      <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
         <Container maxWidth="6xl" className="py-8">
           {/* Header with close button */}
           <div className="flex justify-between items-center mb-6">
@@ -219,8 +218,8 @@ export default function UploadFlashcardsPage() {
               }}
               className="p-2 rounded-lg transition-all hover:bg-opacity-80"
               style={{
-                backgroundColor: tokens.colors.cardBackground,
-                color: tokens.colors.text
+                backgroundColor: designTokens.colors.background.secondary,
+                color: designTokens.colors.text.primary
               }}
               title="Geri Dön"
             >
@@ -238,7 +237,7 @@ export default function UploadFlashcardsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: tokens.colors.background }}>
+    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
       <Container maxWidth="6xl" className="py-8">
         <Heading1 className="mb-8 text-center">
           Kişisel Kelime Kartları
@@ -246,26 +245,14 @@ export default function UploadFlashcardsPage() {
 
         {/* Notifications */}
         {error && (
-          <div
-            className="mb-6 p-4 rounded-lg"
-            style={{
-              backgroundColor: `${tokens.colors.error}10`,
-              border: `1px solid ${tokens.colors.error}30`
-            }}
-          >
-            <Text style={{ color: tokens.colors.error }}>{error}</Text>
+          <div className="mb-6 p-4 rounded-lg bg-red-500 bg-opacity-10 border border-red-500 border-opacity-20">
+            <Text className="text-red-600">{error}</Text>
           </div>
         )}
 
         {success && (
-          <div
-            className="mb-6 p-4 rounded-lg"
-            style={{
-              backgroundColor: `${tokens.colors.success}10`,
-              border: `1px solid ${tokens.colors.success}30`
-            }}
-          >
-            <Text style={{ color: tokens.colors.success }}>{success}</Text>
+          <div className="mb-6 p-4 rounded-lg bg-green-500 bg-opacity-10 border border-green-500 border-opacity-20">
+            <Text className="text-green-600">{success}</Text>
           </div>
         )}
 
@@ -277,11 +264,11 @@ export default function UploadFlashcardsPage() {
               Excel Dosyanızı Yükleyin
             </Heading2>
 
-            <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: `${tokens.colors.accent}10` }}>
+            <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary[600]}10` }}>
               <Text className="text-sm mb-2">
                 <strong>Excel Format:</strong>
               </Text>
-              <ul className="text-sm space-y-1" style={{ color: tokens.colors.text }}>
+              <ul className="text-sm space-y-1" style={{ color: designTokens.colors.text.primary }}>
                 <li>• <strong>C sütunu:</strong> Kelime (ön yüz)</li>
                 <li>• <strong>D sütunu:</strong> Anlam (arka yüz)</li>
                 <li>• <strong>E sütunu:</strong> İpucu/Not (ön yüzde küçük yazı)</li>
@@ -300,11 +287,11 @@ export default function UploadFlashcardsPage() {
                 htmlFor="excel-file"
                 className="block w-full p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-all hover:bg-opacity-5"
                 style={{
-                  borderColor: tokens.colors.accent,
-                  backgroundColor: `${tokens.colors.accent}05`
+                  borderColor: designTokens.colors.primary[600],
+                  backgroundColor: `${designTokens.colors.primary[600]}05`
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke={tokens.colors.accent}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.primary[600]}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
                 <Text className="font-medium">
@@ -317,7 +304,7 @@ export default function UploadFlashcardsPage() {
             </div>
 
             {flashcards.length > 0 && (
-              <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${tokens.colors.accent}10` }}>
+              <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary[600]}10` }}>
                 <Text className="font-medium">
                   {flashcards.length} kelime yüklendi
                 </Text>
@@ -334,7 +321,7 @@ export default function UploadFlashcardsPage() {
             {flashcards.length > 0 ? (
               <>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2" style={{ color: tokens.colors.text }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: designTokens.colors.text.primary }}>
                     Set Adı
                   </label>
                   <Input
@@ -350,7 +337,7 @@ export default function UploadFlashcardsPage() {
                     <div
                       key={card.id}
                       className="mb-2 p-3 rounded-lg"
-                      style={{ backgroundColor: `${tokens.colors.accent}05` }}
+                      style={{ backgroundColor: `${designTokens.colors.primary[600]}05` }}
                     >
                       <Text className="text-sm">
                         <strong>{index + 1}.</strong> {card.front} → {card.back}
@@ -385,7 +372,7 @@ export default function UploadFlashcardsPage() {
               </>
             ) : (
               <div className="text-center py-12">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={tokens.colors.text}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.text.primary}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <Text className="opacity-50">
@@ -404,7 +391,7 @@ export default function UploadFlashcardsPage() {
 
           {isLoading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 mx-auto" style={{ borderColor: tokens.colors.accent }}></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 mx-auto" style={{ borderColor: designTokens.colors.primary[600] }}></div>
             </div>
           ) : savedSets.length > 0 ? (
             <div className="grid gap-3">
@@ -412,11 +399,11 @@ export default function UploadFlashcardsPage() {
                 <div
                   key={set.id}
                   className="group flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
-                  style={{ backgroundColor: tokens.colors.background }}
+                  style={{ backgroundColor: designTokens.colors.background.primary }}
                   onClick={() => handleLoadFlashcardSet(set.id)}
                 >
                   <div className="flex-1 pointer-events-none">
-                    <h3 className="font-medium group-hover:underline" style={{ color: tokens.colors.text }}>
+                    <h3 className="font-medium group-hover:underline" style={{ color: designTokens.colors.text.primary }}>
                       {set.name}
                     </h3>
                     <Text className="text-sm opacity-70">
@@ -429,8 +416,8 @@ export default function UploadFlashcardsPage() {
                       disabled={isDeleting === set.id}
                       className="p-2 rounded-lg transition-all"
                       style={{
-                        backgroundColor: tokens.colors.errorLight,
-                        color: tokens.colors.error,
+                        backgroundColor: designTokens.colors.status.errorBg,
+                        color: designTokens.colors.status.error,
                         opacity: isDeleting === set.id ? 0.5 : 1
                       }}
                     >
@@ -444,7 +431,7 @@ export default function UploadFlashcardsPage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={tokens.colors.text}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.text.primary}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
               </svg>
               <Text className="opacity-50">
