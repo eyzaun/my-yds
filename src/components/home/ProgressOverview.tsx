@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { db, auth } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { db, auth } from '@/lib/firebase';
 import { categories } from '@/data/categories';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';

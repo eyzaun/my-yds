@@ -1,57 +1,131 @@
 /**
- * Design Tokens with Dark Mode Support
- * Centralized design system tokens for consistent styling across the application
+ * Design Tokens with Professional Light & Dark Mode
+ * Based on modern design systems (Figma, Tailwind, Vercel, GitHub)
  */
 
-// Light theme colors - WCAG AA compliant
+// ============================================================
+// LIGHT THEME - Professional & Accessible
+// ============================================================
 const lightTheme = {
   background: {
-    primary: '#F3F4F6',      // Light gray
-    secondary: '#E5E7EB',    // Darker gray
-    card: '#FFFFFF',         // White
+    primary: '#FFFFFF',      // Pure white
+    secondary: '#F8FAFC',    // Slate-50
+    tertiary: '#F1F5F9',     // Slate-100
+    card: '#FFFFFF',         // White cards
   },
   surface: {
-    primary: '#FFFFFF',      // White elevated
-    elevated: '#FFFFFF',     // White shadow
+    primary: '#FFFFFF',
+    elevated: '#FFFFFF',
   },
   text: {
-    primary: '#111827',      // Very dark gray (~5.8:1 contrast)
-    secondary: '#4B5563',    // Medium-dark gray (~5.1:1 contrast) - IMPROVED
-    tertiary: '#6B7280',     // Medium gray (~4.5:1 contrast) - IMPROVED
-    inverse: '#FFFFFF',      // White
+    primary: '#0F172A',      // Slate-900 (14:1 contrast)
+    secondary: '#475569',    // Slate-600 (7:1 contrast)
+    tertiary: '#64748B',     // Slate-500 (4.5:1 contrast)
+    disabled: '#94A3B8',     // Slate-400
+    inverse: '#FFFFFF',
+    link: '#2563EB',         // Blue-600
+    linkHover: '#1D4ED8',    // Blue-700
   },
   border: {
-    light: '#E5E7EB',
-    medium: '#D1D5DB',
-    dark: '#9CA3AF',
+    light: '#F1F5F9',        // Slate-100
+    medium: '#E2E8F0',       // Slate-200
+    strong: '#CBD5E1',       // Slate-300
+    focus: '#3B82F6',        // Blue-500
+  },
+  status: {
+    success: '#10B981',      // Green-500
+    successBg: '#D1FAE5',    // Green-100
+    error: '#EF4444',        // Red-500
+    errorBg: '#FEE2E2',      // Red-100
+    warning: '#F59E0B',      // Amber-500
+    warningBg: '#FEF3C7',    // Amber-100
+    info: '#3B82F6',         // Blue-500
+    infoBg: '#DBEAFE',       // Blue-100
+  },
+  accent: {
+    primary: '#3B82F6',      // Blue-500
+    success: {
+      main: '#10B981',       // Green-500
+      light: '#D1FAE5',      // Green-100
+      dark: '#059669',       // Green-600
+    },
+    error: {
+      main: '#EF4444',       // Red-500
+      light: '#FEE2E2',      // Red-100
+      dark: '#DC2626',       // Red-600
+    },
+    warning: {
+      main: '#F59E0B',       // Amber-500
+      light: '#FEF3C7',      // Amber-100
+      dark: '#D97706',       // Amber-600
+    },
   },
 };
 
-// Dark theme colors - WCAG AA compliant
+// ============================================================
+// DARK THEME - Professional & Accessible
+// ============================================================
 const darkTheme = {
   background: {
-    primary: '#0F172A',      // Very dark blue
-    secondary: '#1E293B',    // Dark slate
-    card: '#1A2332',         // Dark card
+    primary: '#0F172A',      // Slate-900 (pure dark)
+    secondary: '#1E293B',    // Slate-800
+    tertiary: '#334155',     // Slate-700
+    card: '#1E293B',         // Slate-800 cards
   },
   surface: {
-    primary: '#1A2332',      // Dark surface
-    elevated: '#1E293B',     // Elevated dark
+    primary: '#1E293B',
+    elevated: '#334155',
   },
   text: {
-    primary: '#F1F5F9',      // Light gray (~9.3:1 contrast)
-    secondary: '#CBD5E1',    // Medium light gray (~5.8:1 contrast)
-    tertiary: '#94A3B8',     // Medium gray (~4.5:1 contrast)
-    inverse: '#0F172A',      // Dark inverse
+    primary: '#F8FAFC',      // Slate-50 (13:1 contrast)
+    secondary: '#CBD5E1',    // Slate-300 (7.5:1 contrast)
+    tertiary: '#94A3B8',     // Slate-400 (4.6:1 contrast)
+    disabled: '#64748B',     // Slate-500
+    inverse: '#0F172A',
+    link: '#60A5FA',         // Blue-400
+    linkHover: '#93C5FD',    // Blue-300
   },
   border: {
-    light: '#334155',
-    medium: '#475569',
-    dark: '#64748B',
+    light: 'rgba(255, 255, 255, 0.05)',
+    medium: 'rgba(255, 255, 255, 0.1)',
+    strong: 'rgba(255, 255, 255, 0.2)',
+    focus: '#3B82F6',
+  },
+  status: {
+    success: '#10B981',
+    successBg: 'rgba(16, 185, 129, 0.1)',
+    error: '#EF4444',
+    errorBg: 'rgba(239, 68, 68, 0.1)',
+    warning: '#F59E0B',
+    warningBg: 'rgba(245, 158, 11, 0.1)',
+    info: '#3B82F6',
+    infoBg: 'rgba(59, 130, 246, 0.1)',
+  },
+  accent: {
+    primary: '#60A5FA',      // Blue-400 (lighter for dark mode)
+    success: {
+      main: '#10B981',       // Green-500
+      light: 'rgba(16, 185, 129, 0.2)',
+      dark: '#059669',       // Green-600
+    },
+    error: {
+      main: '#EF4444',       // Red-500
+      light: 'rgba(239, 68, 68, 0.2)',
+      dark: '#DC2626',       // Red-600
+    },
+    warning: {
+      main: '#F59E0B',       // Amber-500
+      light: 'rgba(245, 158, 11, 0.2)',
+      dark: '#D97706',       // Amber-600
+    },
   },
 };
 
-// Brand primary colors (same for both themes)
+// ============================================================
+// SHARED TOKENS (Both Themes)
+// ============================================================
+
+// Brand Primary Colors
 const primaryColors = {
   50: '#EFF6FF',
   100: '#DBEAFE',
@@ -65,47 +139,51 @@ const primaryColors = {
   900: '#1E3A8A',
 };
 
-// Accent colors (same for both themes)
-const accentColors = {
-  success: {
-    light: '#D1FAE5',
-    main: '#10B981',
-    dark: '#059669',
+// Component Backgrounds & Interactive States
+const components = {
+  button: {
+    primary: '#3B82F6',
+    primaryHover: '#2563EB',
+    primaryActive: '#1D4ED8',
+    secondary: '#F1F5F9', // Light
+    secondaryHover: '#E2E8F0',
+    secondaryDark: '#334155', // Dark
+    secondaryDarkHover: '#475569',
+    ghost: 'transparent',
   },
-  warning: {
-    light: '#FEF3C7',
-    main: '#F59E0B',
-    dark: '#D97706',
+  input: {
+    backgroundLight: '#FFFFFF',
+    backgroundDark: '#1E293B',
+    borderLight: '#E2E8F0',
+    borderDark: 'rgba(255, 255, 255, 0.1)',
+    focusBorder: '#3B82F6',
   },
-  error: {
-    light: '#FEE2E2',
-    main: '#EF4444',
-    dark: '#DC2626',
-  },
-  info: {
-    light: '#DBEAFE',
-    main: '#3B82F6',
-    dark: '#2563EB',
+  card: {
+    backgroundLight: '#FFFFFF',
+    backgroundDark: '#1E293B',
+    borderLight: '#E2E8F0',
+    borderDark: 'rgba(255, 255, 255, 0.1)',
+    hoverLight: '#FAFBFC',
+    hoverDark: '#334155',
   },
 };
 
-// Shared tokens (spacing, typography, etc.)
 const sharedTokens = {
   spacing: {
     0: '0',
-    1: '0.25rem',
-    2: '0.5rem',
-    3: '0.75rem',
-    4: '1rem',
-    5: '1.25rem',
-    6: '1.5rem',
-    8: '2rem',
-    10: '2.5rem',
-    12: '3rem',
-    16: '4rem',
-    20: '5rem',
-    24: '6rem',
-    32: '8rem',
+    1: '0.25rem',    // 4px
+    2: '0.5rem',     // 8px
+    3: '0.75rem',    // 12px
+    4: '1rem',       // 16px
+    5: '1.25rem',    // 20px
+    6: '1.5rem',     // 24px
+    8: '2rem',       // 32px
+    10: '2.5rem',    // 40px
+    12: '3rem',      // 48px
+    16: '4rem',      // 64px
+    20: '5rem',      // 80px
+    24: '6rem',      // 96px
+    32: '8rem',      // 128px
   },
 
   typography: {
@@ -178,37 +256,41 @@ const sharedTokens = {
   },
 };
 
+// ============================================================
+// EXPORTS
+// ============================================================
+
 export type Theme = 'light' | 'dark';
 
-// Create theme objects
 export const themes: Record<Theme, any> = {
   light: {
     ...lightTheme,
     primary: primaryColors,
-    accent: accentColors,
+    components: components,
   },
   dark: {
     ...darkTheme,
     primary: primaryColors,
-    accent: accentColors,
+    components: components,
   },
 };
 
-// Get design tokens for a specific theme
 export const getDesignTokensByTheme = (theme: Theme = 'light') => ({
   colors: themes[theme],
   ...sharedTokens,
 });
 
-// Default light theme tokens (for backward compatibility)
+// Default light theme (backward compatibility)
 export const designTokens = {
   colors: {
     background: lightTheme.background,
     surface: lightTheme.surface,
     text: lightTheme.text,
     primary: primaryColors,
-    accent: accentColors,
     border: lightTheme.border,
+    status: lightTheme.status,
+    accent: lightTheme.accent,
+    components: components,
   },
   ...sharedTokens,
 } as const;

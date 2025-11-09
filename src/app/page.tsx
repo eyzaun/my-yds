@@ -12,10 +12,16 @@ import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { FeatureSection } from '@/components/home/FeatureSection';
 import { ExcelUploadSection } from '@/components/home/ExcelUploadSection';
 import { FaqSection } from '@/components/home/FaqSection';
-import { ProgressOverview } from '@/components/home/ProgressOverview';
+import dynamic from 'next/dynamic';
 
 // Import data
 import { categories, features, faqItems, excelSampleData } from '@/data/homeData';
+
+// Dynamically import ProgressOverview to prevent Firebase errors during build
+const ProgressOverview = dynamic(() => import('@/components/home/ProgressOverview').then(mod => ({ default: mod.ProgressOverview })), {
+  ssr: false,
+  loading: () => <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>
+});
 
 export default function HomePage() {
   // SEO için yapısal veri ekleme
