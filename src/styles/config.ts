@@ -22,7 +22,7 @@ export const themes = {
   green: {
     background: designTokens.colors.background.primary,
     cardBackground: designTokens.colors.background.secondary,
-    accent: designTokens.colors.accent.success.main,
+    accent: designTokens.colors.status.success,
     text: designTokens.colors.text.primary,
     textSecondary: designTokens.colors.text.secondary,
     disabled: designTokens.colors.text.disabled

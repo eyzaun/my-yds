@@ -105,7 +105,7 @@ export const Button: React.FC<ButtonProps> = ({
       case 'ghost':
         return designTokens.colors.background.secondary;
       case 'danger':
-        return designTokens.colors.accent.error.dark;
+        return designTokens.colors.status.error;
       default:
         return variantStyles[variant].backgroundColor;
     }

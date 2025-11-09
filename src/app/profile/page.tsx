@@ -135,7 +135,7 @@ const ProfilePage = () => {
                         <div key={index} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.primary[600]}40` }}>
                           <div className="flex justify-between mb-1">
                             <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
-                            <span style={{ color: Number(scorePercentage) >= 70 ? designTokens.colors.accent.success.main : Number(scorePercentage) >= 50 ? designTokens.colors.accent.warning.main : designTokens.colors.accent.error.main }}>
+                            <span style={{ color: Number(scorePercentage) >= 70 ? designTokens.colors.status.success : Number(scorePercentage) >= 50 ? designTokens.colors.status.warning : designTokens.colors.status.error }}>
                               %{scorePercentage} ({score.score}/{score.totalQuestions})
                             </span>
                           </div>
