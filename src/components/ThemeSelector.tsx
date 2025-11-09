@@ -1,9 +1,10 @@
 // components/ThemeSelector.tsx
 'use client';
 import { useTheme } from '@/contexts/ThemeContext';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 const ThemeSelector = () => {
+  const designTokens = useDesignTokens();
   const { theme, setTheme } = useTheme();
 
   const handleToggle = () => {

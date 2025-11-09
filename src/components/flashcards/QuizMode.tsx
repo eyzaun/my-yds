@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface QuizModeProps {
   flashcards: FlashcardData[];
@@ -27,6 +27,7 @@ export default function QuizMode({
   alwaysKeepKeyboardOpen = false,
   isMobileMode = false
 }: QuizModeProps) {
+  const designTokens = useDesignTokens();
   const [answer, setAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showHint, setShowHint] = useState(false);

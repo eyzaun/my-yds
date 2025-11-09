@@ -7,7 +7,7 @@ import Link from 'next/link'; // Make sure Link is imported
 import { Card } from '@/components/design-system/Card';
 import { Container } from '@/components/design-system/Container';
 import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { FeatureSection } from '@/components/home/FeatureSection';
 import { ExcelUploadSection } from '@/components/home/ExcelUploadSection';
@@ -24,6 +24,7 @@ const ProgressOverview = dynamic(() => import('@/components/home/ProgressOvervie
 });
 
 export default function HomePage() {
+  const designTokens = useDesignTokens();
   // SEO için yapısal veri ekleme
   useEffect(() => {
     const script = document.createElement('script');

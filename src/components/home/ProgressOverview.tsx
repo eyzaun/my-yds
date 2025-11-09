@@ -8,7 +8,7 @@ import { categories } from '@/data/categories';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface Timestamp {
   seconds: number;
@@ -27,6 +27,7 @@ interface UserProgress {
 }
 
 export function ProgressOverview() {
+  const designTokens = useDesignTokens();
   const [user] = useAuthState(auth);
   const [progress, setProgress] = useState<UserProgress>({});
   const [loading, setLoading] = useState(true);

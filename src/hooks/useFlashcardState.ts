@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -76,6 +76,7 @@ export default function useFlashcardState({
   quizMode,
   onReset
 }: UseFlashcardStateProps): FlashcardStateReturn {
+  const designTokens = useDesignTokens();
   const safeInitialIndex = initialIndex >= 0 && initialIndex < flashcards.length ? initialIndex : 0;
   const [currentIndex, setCurrentIndex] = useState(safeInitialIndex);
   const [flipped, setFlipped] = useState(false);

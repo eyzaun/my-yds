@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import QuizMode from '@/components/flashcards/QuizMode';
 import FullscreenWrapper from '@/components/flashcards/FullscreenWrapper';
 import useFlashcardState from '@/hooks/useFlashcardState';
@@ -28,6 +28,7 @@ export default function FlashcardDeck({
   initialIndex = 0,
   quizMode = false
 }: FlashcardDeckProps) {
+  const designTokens = useDesignTokens();
   const flashcardContainerRef = useRef<HTMLDivElement>(null);
   const { setIsFullscreen } = useFlashcardFullscreen();
 

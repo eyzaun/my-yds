@@ -1,5 +1,5 @@
 import React from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface ContainerProps {
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full';
@@ -16,6 +16,7 @@ export const Container: React.FC<ContainerProps> = ({
   className = '',
   style = {},
 }) => {
+  const designTokens = useDesignTokens();
   const maxWidthMap = {
     sm: '640px',
     md: '768px',

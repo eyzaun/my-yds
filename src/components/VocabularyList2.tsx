@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const VocabularyList = () => {
+  const designTokens = useDesignTokens();
   const { theme } = useTheme();
   const tokens = theme === 'light' ? designTokens.colors : designTokens.colors;
   const [selectedWord, setSelectedWord] = useState<string | null>(null);

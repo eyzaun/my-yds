@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface Word {
   en: string;
@@ -26,6 +26,7 @@ const MemoizedFlashCard = React.memo(function FlashCard({
   isQuizMode = false,
   forceFlipped
 }: FlashCardProps) {
+  const designTokens = useDesignTokens();
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);

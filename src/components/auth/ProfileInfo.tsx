@@ -7,9 +7,10 @@ import { logoutUser } from '@/firebase/auth';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 const ProfileInfo = () => {
+  const designTokens = useDesignTokens();
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);

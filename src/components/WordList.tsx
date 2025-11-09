@@ -2,7 +2,7 @@
 'use client';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizResult } from '@/lib/firebase/spacedRepetition';
 import { CardType } from '@/types/spacedRepetition';
@@ -29,6 +29,7 @@ interface WordListProps {
 }
 
 const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, isCustomCard = false }) => {
+  const designTokens = useDesignTokens();
   const { user } = useAuth();
 
   // Ana state'ler

@@ -1,13 +1,14 @@
 import { FaqItem } from '@/types/data';
 import { Card } from '@/components/design-system/Card';
 import { Heading2, Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface FaqSectionProps {
   faqItems: FaqItem[];
 }
 
 export function FaqSection({ faqItems }: FaqSectionProps) {
+  const designTokens = useDesignTokens();
   return (
     <div style={{ marginBottom: designTokens.spacing[12] }}>
       <Heading2>Sık Sorulan Sorular</Heading2>

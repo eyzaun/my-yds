@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface FullscreenWrapperProps {
   children: React.ReactNode;
@@ -16,6 +16,7 @@ export default function FullscreenWrapper({
   onExit,
   //isQuizMode = false
 }: FullscreenWrapperProps) {
+  const designTokens = useDesignTokens();
   const [windowDimensions, setWindowDimensions] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
     height: typeof window !== 'undefined' ? window.innerHeight : 800

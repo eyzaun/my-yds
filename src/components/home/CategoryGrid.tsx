@@ -2,13 +2,14 @@ import Link from 'next/link';
 import { Category } from '@/types/data';
 import { Card } from '@/components/design-system/Card';
 import { Heading3, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface CategoryGridProps {
   categories: Category[];
 }
 
 export function CategoryGrid({ categories }: CategoryGridProps) {
+  const designTokens = useDesignTokens();
   return (
     <div
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"

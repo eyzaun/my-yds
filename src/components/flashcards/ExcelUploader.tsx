@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface ExcelUploaderProps {
   onFileUpload: (file: File) => void;
@@ -15,6 +15,7 @@ export default function ExcelUploader({
   onFileUpload,
   isLoading
 }: ExcelUploaderProps) {
+  const designTokens = useDesignTokens();
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   

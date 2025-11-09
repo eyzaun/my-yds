@@ -1,7 +1,7 @@
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { ExcelSampleRow } from '@/types/data';
 
 interface ExcelUploadSectionProps {
@@ -9,6 +9,7 @@ interface ExcelUploadSectionProps {
 }
 
 export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
+  const designTokens = useDesignTokens();
   return (
     <Card className="mt-8 mb-12 max-w-5xl mx-auto" style={{ padding: designTokens.spacing[12] }}>
       <div className="flex flex-col md:flex-row items-center" style={{ gap: designTokens.spacing[8] }}>

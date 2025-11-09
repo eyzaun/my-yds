@@ -8,9 +8,10 @@ import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
 import { Card } from '@/components/design-system/Card';
 import { Heading2 } from '@/components/design-system/Typography';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 const RegisterForm = () => {
+  const designTokens = useDesignTokens();
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');

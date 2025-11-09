@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { designTokens } from '@/styles/design-tokens'
+import { useDesignTokens } from '@/hooks/useDesignTokens'
 
 export default function NotFound() {
+  const designTokens = useDesignTokens();
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
