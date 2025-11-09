@@ -1,17 +1,27 @@
 /**
  * Custom hook to get design tokens based on current theme
- * This ensures components update when theme changes
- * Includes SSR safety check
+ * Includes proper SSR safety and hydration handling
  */
+import { useState, useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { getDesignTokensByTheme } from '@/styles/design-tokens';
 
 export const useDesignTokens = () => {
-  // For SSR: return default light theme tokens
-  if (typeof window === 'undefined') {
+  const [mounted, setMounted] = useState(false);
+
+  // Always call hooks in the same order (hook rules)
+  const themeContext = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // SSR or before mount: return default light theme tokens
+  // This prevents hydration mismatches and SSR errors
+  if (!mounted || typeof window === 'undefined') {
     return getDesignTokensByTheme('light');
   }
 
-  const { theme } = useTheme();
-  return getDesignTokensByTheme(theme);
+  // Client-side after mount: use actual theme from context
+  return getDesignTokensByTheme(themeContext.theme);
 };

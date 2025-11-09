@@ -121,10 +121,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       : colors.components.button.secondaryHover);
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
+  // Always provide context, even during SSR and before mount
   return (
     <ThemeContext.Provider value={{ theme, setTheme: handleSetTheme, isDark: theme === 'dark' }}>
       {children}
