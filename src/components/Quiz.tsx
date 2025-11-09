@@ -1,7 +1,7 @@
 // src/components/Quiz.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizScore } from '@/firebase/firestore';
 import AdBanner from './AdBanner';
@@ -29,6 +29,7 @@ interface QuizProps {
 
 const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQuizComplete }) => {
   const { user } = useAuth();
+  const designTokens = useDesignTokens();
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
@@ -102,7 +103,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
           style={{
             backgroundColor: isFullscreen ? designTokens.colors.accent : designTokens.colors.cardBackground,
-            color: designTokens.colors.text
+            color: designTokens.colors.text.primary
           }}
           title="Tam Ekran"
         >
@@ -135,8 +136,8 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                     className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-opacity-80 transition-colors duration-200"
                     style={{
                       backgroundColor: userAnswers[question.id] === option ?
-                        designTokens.colors.accent : 'transparent',
-                      color: designTokens.colors.text
+                        `${designTokens.colors.accent}40` : 'transparent',
+                      color: designTokens.colors.text.primary
                     }}
                   >
                     <input
@@ -145,7 +146,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                       value={option}
                       checked={userAnswers[question.id] === option}
                       onChange={() => handleAnswerSelect(question.id, option)}
-                      className="text-[#14FFEC]"
+                      style={{ accentColor: designTokens.colors.accent }}
                     />
                     <span>{option}</span>
                   </label>
@@ -168,7 +169,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
             className="w-full p-3 rounded-lg transition-colors duration-200"
             style={{
               backgroundColor: designTokens.colors.accent,
-              color: designTokens.colors.text
+              color: designTokens.colors.text.inverse
             }}
           >
             {savingScore ? 'Sınav Sonuçları Kaydediliyor...' : 'Sınavı Bitir'}
@@ -216,15 +217,15 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                 ({categoryWords.find(w => w.en === question.word)?.tr})
               </p>
               <p className="mb-2">
-                Sizin cevabınız: <span style={{ 
-                  color: userAnswers[question.id] === question.correctAnswer ? 
-                    'rgb(74, 222, 128)' : 'rgb(248, 113, 113)'
+                Sizin cevabınız: <span style={{
+                  color: userAnswers[question.id] === question.correctAnswer ?
+                    designTokens.colors.success : designTokens.colors.error
                 }}>
                   {userAnswers[question.id]}
                 </span>
               </p>
               {userAnswers[question.id] !== question.correctAnswer && (
-                <p style={{ color: 'rgb(74, 222, 128)' }}>
+                <p style={{ color: designTokens.colors.success }}>
                   Doğru cevap: {question.correctAnswer}
                 </p>
               )}

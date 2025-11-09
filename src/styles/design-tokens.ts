@@ -270,11 +270,25 @@ export const themes: Record<Theme, any> = {
     ...lightTheme,
     primary: primaryColors,
     components: components,
+    // Shortcuts for backward compatibility and easier access
+    accent: primaryColors[500],        // Shortcut to primary blue
+    cardBackground: lightTheme.background.card,  // Shortcut to card background
+    success: lightTheme.status.success,  // Shortcut to success color
+    error: lightTheme.status.error,      // Shortcut to error color
+    warning: lightTheme.status.warning,  // Shortcut to warning color
+    info: lightTheme.status.info,        // Shortcut to info color
   },
   dark: {
     ...darkTheme,
     primary: primaryColors,
     components: components,
+    // Shortcuts for backward compatibility and easier access
+    accent: darkTheme.accent.primary,    // Shortcut to dark mode accent (light blue)
+    cardBackground: darkTheme.background.card,  // Shortcut to card background
+    success: darkTheme.status.success,   // Shortcut to success color
+    error: darkTheme.status.error,       // Shortcut to error color
+    warning: darkTheme.status.warning,   // Shortcut to warning color
+    info: darkTheme.status.info,         // Shortcut to info color
   },
 };
 
@@ -294,6 +308,12 @@ export const designTokens = {
     status: lightTheme.status,
     accent: lightTheme.accent,
     components: components,
+    // Shortcuts for backward compatibility and easier access (light theme defaults)
+    cardBackground: lightTheme.background.card,
+    success: lightTheme.status.success,
+    error: lightTheme.status.error,
+    warning: lightTheme.status.warning,
+    info: lightTheme.status.info,
   },
   ...sharedTokens,
 } as const;
