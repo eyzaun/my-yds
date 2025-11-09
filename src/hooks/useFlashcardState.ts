@@ -126,14 +126,16 @@ export default function useFlashcardState({
     setCanAdvance(!quizMode);
   }, [quizMode, currentIndex]);
 
+  const accentColor = designTokens.colors.primary[500]; // Use primary as accent
+
   const cardStyles: FlashcardStyles = {
     frontBackground: '#2a2a2a',
     backBackground: '#1c1c1c',
-    textColor: designTokens.colors.accent || '#06b6d4',
+    textColor: accentColor || '#06b6d4',
     notesColor: '#a3a3a3',
     boxShadow: `0 8px 32px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(6, 182, 212, 0.05)`,
     border: 'none',
-    glow: `0 0 25px ${designTokens.colors.accent}30, 0 0 5px ${designTokens.colors.accent}10`
+    glow: `0 0 25px ${accentColor}30, 0 0 5px ${accentColor}10`
   };
 
   const minSwipeDistance = 50;
