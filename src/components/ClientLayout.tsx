@@ -1,8 +1,9 @@
 'use client';
 import NavigationBar from './NavigationBar';
 import { usePathname } from 'next/navigation';
-import { designTokens } from '@/styles/design-tokens';
+import { designTokens, getDesignTokensByTheme } from '@/styles/design-tokens';
 import { useFlashcardFullscreen } from '@/contexts/FlashcardFullscreenContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 // Doğrudan bileşeni import edin
 import AdUnit from '@/components/AdUnit';
@@ -10,13 +11,17 @@ import AdUnit from '@/components/AdUnit';
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isFullscreen } = useFlashcardFullscreen();
+  const { theme } = useTheme();
+
+  // Tema renglerini al
+  const themeTokens = getDesignTokensByTheme(theme);
 
   // Bazı sayfalarda reklam göstermek istemiyorsanız
   const excludedPaths = ['/login', '/register'];
   const shouldShowAds = !excludedPaths.includes(pathname || '') && !isFullscreen;
 
   return (
-    <div style={{ backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ backgroundColor: themeTokens.colors.background.primary, minHeight: '100vh' }}>
       {!isFullscreen && <NavigationBar />}
 
       {/* Üst reklam - Ana Sayfa Üst Banner */}
