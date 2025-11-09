@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { logoutUser } from '@/firebase/auth';
 import { Button } from '@/components/design-system/Button';
 import { designTokens } from '@/styles/design-tokens';
+import ThemeSelector from '@/components/ThemeSelector';
 
 const NavigationBar = () => {
   const pathname = usePathname();
@@ -81,7 +82,8 @@ const NavigationBar = () => {
   const renderAuthLinks = () => {
     if (user) {
       return (
-        <div className="flex items-center" style={{ marginLeft: designTokens.spacing[4] }}>
+        <div className="flex items-center" style={{ marginLeft: designTokens.spacing[4], gap: designTokens.spacing[2] }}>
+          <ThemeSelector />
           <Link
             href="/profile"
             className="transition-colors duration-200"
@@ -103,6 +105,7 @@ const NavigationBar = () => {
 
     return (
       <div className="flex items-center" style={{ marginLeft: designTokens.spacing[4], gap: designTokens.spacing[2] }}>
+        <ThemeSelector />
         <Link
           href="/login"
           className="transition-colors duration-200"
