@@ -67,39 +67,39 @@ const lightTheme = {
 // ============================================================
 const darkTheme = {
   background: {
-    primary: '#0F172A',      // Slate-900 (pure dark)
-    secondary: '#1E293B',    // Slate-800
-    tertiary: '#334155',     // Slate-700
-    card: '#1E293B',         // Slate-800 cards
+    primary: '#0F172A',      // Slate-900 - main dark background
+    secondary: '#1E293B',    // Slate-800 - secondary backgrounds
+    tertiary: '#334155',     // Slate-700 - tertiary/section backgrounds
+    card: '#1E293B',         // Slate-800 - dark cards
   },
   surface: {
-    primary: '#1E293B',
-    elevated: '#334155',
+    primary: '#1E293B',      // Navbar, main surfaces
+    elevated: '#334155',     // Elevated surfaces (dropdowns, menus)
   },
   text: {
-    primary: '#F8FAFC',      // Slate-50 (13:1 contrast)
-    secondary: '#CBD5E1',    // Slate-300 (7.5:1 contrast)
-    tertiary: '#94A3B8',     // Slate-400 (4.6:1 contrast)
-    disabled: '#64748B',     // Slate-500
-    inverse: '#0F172A',
-    link: '#60A5FA',         // Blue-400
-    linkHover: '#93C5FD',    // Blue-300
+    primary: '#F8FAFC',      // Slate-50 - main text (13:1 contrast) ✓
+    secondary: '#CBD5E1',    // Slate-300 - secondary text (7.5:1 contrast) ✓
+    tertiary: '#94A3B8',     // Slate-400 - tertiary text (4.6:1 contrast) ✓
+    disabled: '#64748B',     // Slate-500 - disabled state
+    inverse: '#0F172A',      // Dark text on light backgrounds
+    link: '#60A5FA',         // Blue-400 - links in dark mode
+    linkHover: '#93C5FD',    // Blue-300 - links hover in dark mode
   },
   border: {
-    light: 'rgba(255, 255, 255, 0.05)',
-    medium: 'rgba(255, 255, 255, 0.1)',
-    strong: 'rgba(255, 255, 255, 0.2)',
-    focus: '#3B82F6',
+    light: 'rgba(255, 255, 255, 0.08)',   // Very subtle borders
+    medium: 'rgba(255, 255, 255, 0.15)',  // Standard borders
+    strong: 'rgba(255, 255, 255, 0.25)',  // Strong borders
+    focus: '#60A5FA',        // Blue-400 - focus states
   },
   status: {
-    success: '#10B981',
-    successBg: 'rgba(16, 185, 129, 0.1)',
-    error: '#EF4444',
-    errorBg: 'rgba(239, 68, 68, 0.1)',
-    warning: '#F59E0B',
-    warningBg: 'rgba(245, 158, 11, 0.1)',
-    info: '#3B82F6',
-    infoBg: 'rgba(59, 130, 246, 0.1)',
+    success: '#10B981',      // Green-500
+    successBg: 'rgba(16, 185, 129, 0.15)',
+    error: '#EF4444',        // Red-500
+    errorBg: 'rgba(239, 68, 68, 0.15)',
+    warning: '#F59E0B',      // Amber-500
+    warningBg: 'rgba(245, 158, 11, 0.15)',
+    info: '#60A5FA',         // Blue-400 (lighter blue for dark mode)
+    infoBg: 'rgba(96, 165, 250, 0.15)',
   },
   accent: {
     primary: '#60A5FA',      // Blue-400 (lighter for dark mode)

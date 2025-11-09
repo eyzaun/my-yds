@@ -1,44 +1,43 @@
 // components/ThemeSelector.tsx
 'use client';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Button } from '@/components/design-system/Button';
 import { designTokens } from '@/styles/design-tokens';
 
 const ThemeSelector = () => {
   const { theme, setTheme } = useTheme();
 
-  const themes = [
-    { id: 'light' as const, label: 'Açık Tema', icon: '☀️' },
-    { id: 'dark' as const, label: 'Koyu Tema', icon: '🌙' },
-  ];
+  const handleToggle = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   return (
-    <div
+    <button
+      onClick={handleToggle}
+      title={theme === 'light' ? 'Koyu Tema' : 'Açık Tema'}
+      aria-label={theme === 'light' ? 'Koyu temaya geç' : 'Açık temaya geç'}
       style={{
-        display: 'flex',
+        display: 'inline-flex',
         alignItems: 'center',
-        gap: designTokens.spacing[2],
+        justifyContent: 'center',
+        width: '40px',
+        height: '40px',
+        borderRadius: designTokens.borderRadius.md,
+        border: `1px solid ${designTokens.colors.border.medium}`,
+        backgroundColor: designTokens.colors.background.secondary,
+        color: designTokens.colors.text.primary,
+        cursor: 'pointer',
+        transition: designTokens.transitions.base,
+        fontSize: '20px',
       }}
-      title="Tema seç"
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = designTokens.colors.border.light;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = designTokens.colors.background.secondary;
+      }}
     >
-      {themes.map((t) => (
-        <Button
-          key={t.id}
-          onClick={() => setTheme(t.id)}
-          variant={theme === t.id ? 'primary' : 'secondary'}
-          size="sm"
-          aria-label={t.label}
-          title={t.label}
-          style={{
-            padding: `${designTokens.spacing[1]} ${designTokens.spacing[2]}`,
-            minWidth: 'unset',
-            fontSize: '16px',
-          }}
-        >
-          {t.icon}
-        </Button>
-      ))}
-    </div>
+      {theme === 'light' ? '🌙' : '☀️'}
+    </button>
   );
 };
 

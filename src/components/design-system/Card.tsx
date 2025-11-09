@@ -27,14 +27,14 @@ export const Card: React.FC<CardProps> = ({
 
   const variantStyles: Record<string, React.CSSProperties> = {
     default: {
-      border: 'none',
+      border: `1px solid ${designTokens.colors.border.light}`,
     },
     elevated: {
       boxShadow: designTokens.shadows.md,
-      border: 'none',
+      border: `1px solid ${designTokens.colors.border.light}`,
     },
     outlined: {
-      border: `1px solid ${designTokens.colors.border.light}`,
+      border: `1px solid ${designTokens.colors.border.medium}`,
     },
   };
 

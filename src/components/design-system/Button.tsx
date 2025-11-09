@@ -51,10 +51,12 @@ export const Button: React.FC<ButtonProps> = ({
     primary: {
       backgroundColor: designTokens.colors.primary[600],
       color: designTokens.colors.text.inverse,
+      border: `1px solid ${designTokens.colors.primary[600]}`,
     },
     secondary: {
       backgroundColor: designTokens.colors.background.secondary,
       color: designTokens.colors.text.primary,
+      border: `1px solid ${designTokens.colors.border.medium}`,
     },
     outline: {
       backgroundColor: 'transparent',
@@ -64,10 +66,12 @@ export const Button: React.FC<ButtonProps> = ({
     ghost: {
       backgroundColor: 'transparent',
       color: designTokens.colors.text.primary,
+      border: 'none',
     },
     danger: {
       backgroundColor: designTokens.colors.accent.error.main,
       color: designTokens.colors.text.inverse,
+      border: `1px solid ${designTokens.colors.accent.error.main}`,
     },
   };
 
