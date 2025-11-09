@@ -12,6 +12,8 @@ import { useDesignTokens } from '@/hooks/useDesignTokens';
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const LoginPage = () => {
+  const designTokens = useDesignTokens();
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
       <Container maxWidth="md" className="py-8">

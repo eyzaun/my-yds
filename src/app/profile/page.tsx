@@ -18,6 +18,7 @@ import { useDesignTokens } from '@/hooks/useDesignTokens';
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProfilePage = () => {
+  const designTokens = useDesignTokens();
   const { user } = useAuth();
   const [progress, setProgress] = useState<Record<string, UserProgress>>({});
   const [scores, setScores] = useState<QuizScore[]>([]);

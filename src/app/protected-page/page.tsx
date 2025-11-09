@@ -12,6 +12,8 @@ import { useDesignTokens } from '@/hooks/useDesignTokens';
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProtectedPage = () => {
+  const designTokens = useDesignTokens();
+
   return (
     <RequireAuth>
       <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
