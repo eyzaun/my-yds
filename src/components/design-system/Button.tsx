@@ -79,9 +79,9 @@ export const Button: React.FC<ButtonProps> = ({
       border: 'none',
     },
     danger: {
-      backgroundColor: designTokens.colors.accent.error.main,
+      backgroundColor: designTokens.colors.status.error,
       color: designTokens.colors.text.inverse,
-      border: `1px solid ${designTokens.colors.accent.error.main}`,
+      border: `1px solid ${designTokens.colors.status.error}`,
     },
   };
 

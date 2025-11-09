@@ -47,24 +47,24 @@ export const Input: React.FC<InputProps> = ({
     fontSize: designTokens.typography.fontSize.base,
     fontFamily: designTokens.typography.fontFamily.base,
     borderRadius: designTokens.borderRadius.md,
-    border: `2px solid ${error ? designTokens.colors.accent.error.main : designTokens.colors.border.medium}`,
+    border: `2px solid ${error ? designTokens.colors.status.error : designTokens.colors.border.medium}`,
     backgroundColor: designTokens.colors.surface.primary,
     color: designTokens.colors.text.primary,
     transition: 'all 0.2s ease-in-out',
     width: '100%',
     outline: 'none',
     boxShadow: isFocused
-      ? `0 0 0 3px ${error ? designTokens.colors.accent.error.light : designTokens.colors.primary[100]}`
+      ? `0 0 0 3px ${error ? designTokens.colors.status.errorBg : designTokens.colors.primary[100]}`
       : 'none',
   };
 
   const helperStyles: React.CSSProperties = {
     fontSize: designTokens.typography.fontSize.sm,
-    color: error ? designTokens.colors.accent.error.main : designTokens.colors.text.secondary,
+    color: error ? designTokens.colors.status.error : designTokens.colors.text.secondary,
   };
 
   const requiredIndicatorStyles: React.CSSProperties = {
-    color: designTokens.colors.accent.error.main,
+    color: designTokens.colors.status.error,
     marginLeft: designTokens.spacing[1],
   };
 
