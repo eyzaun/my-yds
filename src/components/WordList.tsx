@@ -256,7 +256,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
               className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
               style={{
                 backgroundColor: isQuizMode ? tokens.colors.accent.primary : tokens.colors.background.card,
-                color: tokens.colors.text
+                color: tokens.colors.text.primary
               }}
               title="Quiz Modu"
             >
@@ -273,7 +273,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
               backgroundColor: isFullscreen ? tokens.colors.accent.primary : tokens.colors.background.card,
-              color: tokens.colors.text
+              color: tokens.colors.text.primary
             }}
             title="Tam Ekran"
           >
