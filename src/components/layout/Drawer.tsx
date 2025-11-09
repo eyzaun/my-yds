@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { designTokens } from '@/styles/design-tokens';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface DrawerProps {
 }
 
 const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
+  const designTokens = useDesignTokens();
   const pathname = usePathname();
 
   // Main navigation links
@@ -42,9 +43,10 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-gray-800 bg-opacity-50 z-50 transition-opacity ${
+      className={`fixed inset-0 z-50 transition-opacity ${
         isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
+      style={{ backgroundColor: designTokens.colors.utility.backdrop }}
       onClick={onClose}
     >
       <div

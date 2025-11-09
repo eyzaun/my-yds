@@ -210,7 +210,7 @@ export default function SpacedRepetitionPage() {
                 </Text>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1 text-green-500">
+                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.success }}>
                   {statistics.masteredCards}
                 </div>
                 <Text className="text-sm opacity-70">
@@ -300,7 +300,7 @@ export default function SpacedRepetitionPage() {
                       </Text>
                     </div>
                     <div>
-                      <div className="font-semibold text-green-500">
+                      <div className="font-semibold" style={{ color: designTokens.colors.success }}>
                         {group.masteredCards}
                       </div>
                       <Text className="opacity-60 text-sm">
@@ -342,10 +342,10 @@ export default function SpacedRepetitionPage() {
                     <div style={{ color: designTokens.colors.text.primary }}>
                       <span className="font-semibold">{stat.reviewedCards}</span> kart
                     </div>
-                    <div className="text-green-500">
+                    <div style={{ color: designTokens.colors.success }}>
                       ✓ {stat.correctAnswers}
                     </div>
-                    <div className="text-red-500">
+                    <div style={{ color: designTokens.colors.error }}>
                       ✗ {stat.incorrectAnswers}
                     </div>
                     <div style={{ color: designTokens.colors.text.primary }} className="opacity-70">

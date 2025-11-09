@@ -245,14 +245,24 @@ export default function UploadFlashcardsPage() {
 
         {/* Notifications */}
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-red-500 bg-opacity-10 border border-red-500 border-opacity-20">
-            <Text className="text-red-600">{error}</Text>
+          <div className="mb-6 p-4 rounded-lg" style={{
+            backgroundColor: designTokens.colors.status.errorBg,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: `${designTokens.colors.status.error}33`
+          }}>
+            <Text style={{ color: designTokens.colors.status.error }}>{error}</Text>
           </div>
         )}
 
         {success && (
-          <div className="mb-6 p-4 rounded-lg bg-green-500 bg-opacity-10 border border-green-500 border-opacity-20">
-            <Text className="text-green-600">{success}</Text>
+          <div className="mb-6 p-4 rounded-lg" style={{
+            backgroundColor: designTokens.colors.status.successBg,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: `${designTokens.colors.status.success}33`
+          }}>
+            <Text style={{ color: designTokens.colors.status.success }}>{success}</Text>
           </div>
         )}
 

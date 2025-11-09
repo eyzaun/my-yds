@@ -129,11 +129,11 @@ export default function useFlashcardState({
   const accentColor = designTokens.colors.primary[500]; // Use primary as accent
 
   const cardStyles: FlashcardStyles = {
-    frontBackground: '#2a2a2a',
-    backBackground: '#1c1c1c',
-    textColor: accentColor || '#06b6d4',
-    notesColor: '#a3a3a3',
-    boxShadow: `0 8px 32px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(6, 182, 212, 0.05)`,
+    frontBackground: designTokens.colors.gray[800],
+    backBackground: designTokens.colors.gray[900],
+    textColor: accentColor || designTokens.colors.primary[500],
+    notesColor: designTokens.colors.gray[400],
+    boxShadow: `0 8px 32px ${accentColor}26, 0 0 0 1px ${accentColor}0D`,
     border: 'none',
     glow: `0 0 25px ${accentColor}30, 0 0 5px ${accentColor}10`
   };
