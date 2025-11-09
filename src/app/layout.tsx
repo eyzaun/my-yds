@@ -93,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" suppressHydrationWarning>
+    <html lang="tr" suppressHydrationWarning data-theme="light">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Remove direct CSS link */}

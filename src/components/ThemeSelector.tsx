@@ -1,38 +1,42 @@
 // components/ThemeSelector.tsx
 'use client';
 import { useTheme } from '@/contexts/ThemeContext';
-import { themes } from '@/styles/config';
 import { Button } from '@/components/design-system/Button';
 import { designTokens } from '@/styles/design-tokens';
 
 const ThemeSelector = () => {
   const { theme, setTheme } = useTheme();
 
+  const themes = [
+    { id: 'light' as const, label: 'Açık Tema', icon: '☀️' },
+    { id: 'dark' as const, label: 'Koyu Tema', icon: '🌙' },
+  ];
+
   return (
     <div
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: designTokens.spacing[2]
+        gap: designTokens.spacing[2],
       }}
+      title="Tema seç"
     >
-      {Object.keys(themes).map((themeName) => (
+      {themes.map((t) => (
         <Button
-          key={themeName}
-          onClick={() => setTheme(themeName)}
-          variant="ghost"
+          key={t.id}
+          onClick={() => setTheme(t.id)}
+          variant={theme === t.id ? 'primary' : 'secondary'}
           size="sm"
-          aria-label={`${themeName} tema`}
+          aria-label={t.label}
+          title={t.label}
           style={{
-            width: '24px',
-            height: '24px',
-            borderRadius: '50%',
-            padding: 0,
+            padding: `${designTokens.spacing[1]} ${designTokens.spacing[2]}`,
             minWidth: 'unset',
-            backgroundColor: themes[themeName as keyof typeof themes].accent,
-            border: theme === themeName ? '2px solid white' : '2px solid transparent',
+            fontSize: '16px',
           }}
-        />
+        >
+          {t.icon}
+        </Button>
       ))}
     </div>
   );
