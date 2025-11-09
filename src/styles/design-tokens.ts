@@ -11,59 +11,59 @@
 // ============================================================
 const lightTheme = {
   background: {
-    primary: '#FFFFFF',      // Pure white - main background
-    secondary: '#F8F8F8',    // Almost white - alt backgrounds
-    tertiary: '#EFEFEF',     // Light gray - section backgrounds
-    card: '#FFFFFF',         // White cards
-    flashcardFront: '#FFFFFF', // Flashcard front
-    flashcardBack: '#F8F8F8',  // Flashcard back
+    primary: '#f8f9fa',      // Soft light gray - main background
+    secondary: '#ffffff',    // Pure white - alt backgrounds
+    tertiary: '#f0f2f5',     // Light gray - section backgrounds
+    card: '#ffffff',         // White cards
+    flashcardFront: '#ffffff', // Flashcard front
+    flashcardBack: '#f8fafb',  // Flashcard back
   },
   surface: {
-    primary: '#FFFFFF',      // Navbar, main surfaces
-    elevated: '#FFFFFF',     // Elevated surfaces
+    primary: '#ffffff',      // Navbar, main surfaces
+    elevated: '#ffffff',     // Elevated surfaces
   },
   text: {
-    primary: '#000000',      // Pure black - main text (WCAG AAA ✓)
-    secondary: '#666666',    // Medium gray - secondary text
-    tertiary: '#999999',     // Light gray - tertiary text
-    disabled: '#CCCCCC',     // Light gray - disabled state
-    inverse: '#FFFFFF',      // White text on dark backgrounds
-    link: '#0066CC',         // Blue - links
-    linkHover: '#0052A3',    // Dark blue - links hover
-    note: '#999999',         // Note text (light gray)
+    primary: '#1a1a1a',      // Near black - main text (WCAG AAA ✓)
+    secondary: '#4a5568',    // Medium gray - secondary text
+    tertiary: '#718096',     // Light gray - tertiary text
+    disabled: '#a0aec0',     // Light gray - disabled state
+    inverse: '#ffffff',      // White text on dark backgrounds
+    link: '#5b8ec6',         // Soft blue - links
+    linkHover: '#4a7ab5',    // Darker blue - links hover
+    note: '#718096',         // Note text (light gray)
   },
   border: {
-    light: 'rgba(0, 0, 0, 0.06)',      // Very subtle borders
-    medium: 'rgba(0, 0, 0, 0.12)',     // Standard borders
-    strong: 'rgba(0, 0, 0, 0.18)',     // Strong borders
-    focus: '#0066CC',        // Blue - focus states
+    light: '#edf2f7',        // Very subtle borders
+    medium: '#e2e8f0',       // Standard borders
+    strong: '#cbd5e0',       // Strong borders
+    focus: '#5b8ec6',        // Soft blue - focus states
   },
   status: {
-    success: '#27AE60',      // Green
-    successBg: '#E8F5E9',    // Light green
-    error: '#E74C3C',        // Red
-    errorBg: '#FADBD8',      // Light red
-    warning: '#F39C12',      // Orange
-    warningBg: '#FEF5E7',    // Light orange
-    info: '#0066CC',         // Blue
-    infoBg: '#EBF2FA',       // Light blue
+    success: '#6bc490',      // Soft green
+    successBg: '#e8f5e9',    // Light green
+    error: '#e57373',        // Soft red
+    errorBg: '#fee2e2',      // Light red
+    warning: '#f6b93b',      // Soft orange
+    warningBg: '#fef3c7',    // Light orange
+    info: '#64b5f6',         // Soft blue
+    infoBg: '#ebf2fa',       // Light blue
   },
   accent: {
-    primary: '#0066CC',      // Blue
+    primary: '#5b8ec6',      // Soft blue
     success: {
-      main: '#27AE60',
-      light: '#E8F5E9',
-      dark: '#1E8449',
+      main: '#6bc490',
+      light: '#e8f5e9',
+      dark: '#5aae7e',
     },
     error: {
-      main: '#E74C3C',
-      light: '#FADBD8',
-      dark: '#C0392B',
+      main: '#e57373',
+      light: '#fee2e2',
+      dark: '#d75a5a',
     },
     warning: {
-      main: '#F39C12',
-      light: '#FEF5E7',
-      dark: '#BA4A00',
+      main: '#f6b93b',
+      light: '#fef3c7',
+      dark: '#e5a82a',
     },
   },
 };
@@ -73,59 +73,59 @@ const lightTheme = {
 // ============================================================
 const darkTheme = {
   background: {
-    primary: '#111111',      // Near-black - main dark background
-    secondary: '#1A1A1A',    // Dark gray - secondary backgrounds
-    tertiary: '#242424',     // Lighter dark gray - section backgrounds
-    card: '#1A1A1A',         // Dark cards
+    primary: '#121212',      // Pure black - main dark background
+    secondary: '#1e1e1e',    // Dark gray - secondary backgrounds
+    tertiary: '#2a2a2a',     // Lighter dark gray - section backgrounds
+    card: '#1e1e1e',         // Dark cards
     flashcardFront: '#2a2a2a', // Flashcard front (dark gray)
-    flashcardBack: '#1c1c1c',  // Flashcard back (darker gray)
+    flashcardBack: '#1e1e1e',  // Flashcard back (darker gray)
   },
   surface: {
-    primary: '#1A1A1A',      // Navbar, main surfaces
-    elevated: '#242424',     // Elevated surfaces (dropdowns, menus)
+    primary: '#1e1e1e',      // Navbar, main surfaces
+    elevated: '#2a2a2a',     // Elevated surfaces (dropdowns, menus)
   },
   text: {
-    primary: '#FFFFFF',      // Pure white - main text (WCAG AAA ✓)
-    secondary: '#CCCCCC',    // Light gray - secondary text
-    tertiary: '#999999',     // Medium gray - tertiary text
-    disabled: '#666666',     // Medium gray - disabled state
-    inverse: '#111111',      // Dark text on light backgrounds
-    link: '#66B2FF',         // Light blue - links in dark mode
-    linkHover: '#99CCFF',    // Lighter blue - links hover in dark mode
-    note: '#a3a3a3',         // Note text (light gray)
+    primary: '#f5f5f5',      // Light gray - main text (WCAG AAA ✓)
+    secondary: '#b8b8b8',    // Medium gray - secondary text
+    tertiary: '#8a8a8a',     // Gray - tertiary text
+    disabled: '#5a5a5a',     // Dark gray - disabled state
+    inverse: '#121212',      // Dark text on light backgrounds
+    link: '#e0e0e0',         // Light gray - links in dark mode
+    linkHover: '#f0f0f0',    // Lighter gray - links hover in dark mode
+    note: '#a3a3a3',         // Note text (gray)
   },
   border: {
-    light: 'rgba(255, 255, 255, 0.08)',   // Very subtle borders
-    medium: 'rgba(255, 255, 255, 0.15)',  // Standard borders
-    strong: 'rgba(255, 255, 255, 0.25)',  // Strong borders
-    focus: '#66B2FF',        // Light blue - focus states
+    light: '#2a2a2a',        // Very subtle borders
+    medium: '#3a3a3a',       // Standard borders
+    strong: '#4a4a4a',       // Strong borders
+    focus: '#e0e0e0',        // Light gray - focus states
   },
   status: {
-    success: '#27AE60',      // Green (same as light mode)
-    successBg: 'rgba(39, 174, 96, 0.2)',
-    error: '#E74C3C',        // Red (same as light mode)
-    errorBg: 'rgba(231, 76, 60, 0.2)',
-    warning: '#F39C12',      // Orange (same as light mode)
-    warningBg: 'rgba(243, 156, 18, 0.2)',
-    info: '#66B2FF',         // Light blue
-    infoBg: 'rgba(102, 178, 255, 0.2)',
+    success: '#b8b8b8',      // Light gray (monochrome success)
+    successBg: 'rgba(184, 184, 184, 0.2)',
+    error: '#c8c8c8',        // Lighter gray (monochrome error)
+    errorBg: 'rgba(200, 200, 200, 0.2)',
+    warning: '#d0d0d0',      // Very light gray (monochrome warning)
+    warningBg: 'rgba(208, 208, 208, 0.2)',
+    info: '#a8a8a8',         // Medium gray (monochrome info)
+    infoBg: 'rgba(168, 168, 168, 0.2)',
   },
   accent: {
-    primary: '#66B2FF',      // Light blue
+    primary: '#e0e0e0',      // Light gray (monochrome)
     success: {
-      main: '#27AE60',
-      light: 'rgba(39, 174, 96, 0.2)',
-      dark: '#1E8449',
+      main: '#b8b8b8',
+      light: 'rgba(184, 184, 184, 0.2)',
+      dark: '#a0a0a0',
     },
     error: {
-      main: '#E74C3C',
-      light: 'rgba(231, 76, 60, 0.2)',
-      dark: '#C0392B',
+      main: '#c8c8c8',
+      light: 'rgba(200, 200, 200, 0.2)',
+      dark: '#b0b0b0',
     },
     warning: {
-      main: '#F39C12',
-      light: 'rgba(243, 156, 18, 0.2)',
-      dark: '#BA4A00',
+      main: '#d0d0d0',
+      light: 'rgba(208, 208, 208, 0.2)',
+      dark: '#b8b8b8',
     },
   },
 };
@@ -205,29 +205,29 @@ const cyanColors = {
 // Component Backgrounds & Interactive States
 const components = {
   button: {
-    primary: '#0066CC',      // Blue button
-    primaryHover: '#0052A3', // Darker blue on hover
-    primaryActive: '#004080', // Even darker on active
-    secondary: '#F0F0F0',    // Light gray secondary
-    secondaryHover: '#E0E0E0',
-    secondaryDark: '#2A2A2A', // Dark gray for dark mode
-    secondaryDarkHover: '#3A3A3A',
+    primary: '#5b8ec6',      // Soft blue button (light theme)
+    primaryHover: '#4a7ab5', // Darker blue on hover
+    primaryActive: '#3d6699', // Even darker on active
+    secondary: '#f0f2f5',    // Light gray secondary
+    secondaryHover: '#e2e6ea',
+    secondaryDark: '#2a2a2a', // Dark gray for dark mode
+    secondaryDarkHover: '#3a3a3a',
     ghost: 'transparent',
   },
   input: {
-    backgroundLight: '#FFFFFF',
-    backgroundDark: '#1A1A1A',
-    borderLight: 'rgba(0, 0, 0, 0.12)',
-    borderDark: 'rgba(255, 255, 255, 0.15)',
-    focusBorder: '#0066CC',
+    backgroundLight: '#ffffff',
+    backgroundDark: '#1e1e1e',
+    borderLight: '#e2e8f0',
+    borderDark: '#3a3a3a',
+    focusBorder: '#5b8ec6',
   },
   card: {
-    backgroundLight: '#FFFFFF',
-    backgroundDark: '#1A1A1A',
-    borderLight: 'rgba(0, 0, 0, 0.12)',
-    borderDark: 'rgba(255, 255, 255, 0.15)',
-    hoverLight: '#F8F8F8',
-    hoverDark: '#242424',
+    backgroundLight: '#ffffff',
+    backgroundDark: '#1e1e1e',
+    borderLight: '#e2e8f0',
+    borderDark: '#3a3a3a',
+    hoverLight: '#f8fafb',
+    hoverDark: '#2a2a2a',
   },
 };
 

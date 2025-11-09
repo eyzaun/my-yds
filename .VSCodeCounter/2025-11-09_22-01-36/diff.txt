@@ -1,0 +1,165 @@
+Date : 2025-11-09 22:01:36
+Directory : e:\web_project2\my-yds
+Total : 92 files,  2852 codes, 438 comments, 469 blanks, all 3759 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| TypeScript     |          8 |      1,307 |        389 |        214 |      1,910 |
+| TypeScript JSX |         66 |      1,170 |         60 |        106 |      1,336 |
+| Markdown       |          3 |        382 |          0 |        150 |        532 |
+| PostCSS        |          2 |        253 |         19 |         46 |        318 |
+| Firebase Rules |          1 |         53 |         11 |         16 |         80 |
+| JSON           |          2 |         18 |          0 |          1 |         19 |
+| log            |          1 |        -36 |          0 |         -1 |        -37 |
+| JavaScript     |          9 |       -295 |        -41 |        -63 |       -399 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                     | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                        |         92 |      2,852 |        438 |        469 |      3,759 |
+| . (Files)                                                                |          7 |        446 |         13 |        165 |        624 |
+| .claude                                                                  |          1 |         15 |          0 |          1 |         16 |
+| src                                                                      |         84 |      2,391 |        425 |        303 |      3,119 |
+| src\app                                                                  |         25 |        775 |         33 |         43 |        851 |
+| src\app (Files)                                                          |          4 |         45 |         -2 |         -1 |         42 |
+| src\app\about                                                            |          1 |          2 |          0 |         -1 |          1 |
+| src\app\abstract                                                         |          1 |         -6 |         -1 |          1 |         -6 |
+| src\app\academic-terms                                                   |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\all-words                                                        |          1 |         43 |          0 |          0 |         43 |
+| src\app\business                                                         |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\category                                                         |          1 |         42 |         -2 |          2 |         42 |
+| src\app\conjunctions                                                     |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\contact                                                          |          1 |         31 |          0 |         -1 |         30 |
+| src\app\design-system                                                    |          1 |        589 |         37 |         38 |        664 |
+| src\app\login                                                            |          1 |          1 |          0 |         -1 |          0 |
+| src\app\nature                                                           |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\official                                                         |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\phrasal                                                          |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\phrasal2                                                         |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\privacy                                                          |          1 |          2 |          0 |          0 |          2 |
+| src\app\profile                                                          |          1 |          3 |          0 |          0 |          3 |
+| src\app\protected-page                                                   |          1 |          2 |          0 |         -1 |          1 |
+| src\app\register                                                         |          1 |          1 |          0 |         -1 |          0 |
+| src\app\social-sciences                                                  |          1 |         -1 |          0 |          0 |         -1 |
+| src\app\spaced-repetition                                                |          1 |        327 |         13 |         30 |        370 |
+| src\app\upload-flashcards                                                |          1 |       -299 |        -12 |        -22 |       -333 |
+| src\components                                                           |         46 |        113 |          0 |          2 |        115 |
+| src\components (Files)                                                   |         20 |         36 |          7 |          0 |         43 |
+| src\components\auth                                                      |          3 |         -5 |          0 |          0 |         -5 |
+| src\components\design-system                                             |          5 |        378 |          0 |         42 |        420 |
+| src\components\flashcards                                                |          6 |         51 |          1 |          2 |         54 |
+| src\components\home                                                      |          5 |         55 |         -1 |         -3 |         51 |
+| src\components\layout                                                    |          2 |       -209 |         -7 |        -12 |       -228 |
+| src\components\ui                                                        |          5 |       -193 |          0 |        -27 |       -220 |
+| src\contexts                                                             |          2 |         48 |          4 |         13 |         65 |
+| src\hooks                                                                |          2 |         10 |          4 |          5 |         19 |
+| src\lib                                                                  |          3 |        845 |        298 |        151 |      1,294 |
+| src\lib (Files)                                                          |          2 |        244 |        121 |         45 |        410 |
+| src\lib\firebase                                                         |          1 |        601 |        177 |        106 |        884 |
+| src\styles                                                               |          3 |        487 |         36 |         60 |        583 |
+| src\types                                                                |          1 |        139 |         60 |         36 |        235 |
+| src\utils                                                                |          2 |        -26 |        -10 |         -7 |        -43 |
++--------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                 | language       | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| e:\web_project2\my-yds\.claude\settings.local.json                       | JSON           |         15 |          0 |          1 |         16 |
+| e:\web_project2\my-yds\FIREBASE_DEPLOYMENT.md                            | Markdown       |        157 |          0 |         54 |        211 |
+| e:\web_project2\my-yds\FIREBASE_FIX_GUIDE.md                             | Markdown       |        213 |          0 |         90 |        303 |
+| e:\web_project2\my-yds\README.md                                         | Markdown       |         12 |          0 |          6 |         18 |
+| e:\web_project2\my-yds\firebase-debug.log                                | log            |        -36 |          0 |         -1 |        -37 |
+| e:\web_project2\my-yds\firebase.json                                     | JSON           |          3 |          0 |          0 |          3 |
+| e:\web_project2\my-yds\firestore.rules                                   | Firebase Rules |         53 |         11 |         16 |         80 |
+| e:\web_project2\my-yds\src\app\about\page.tsx                            | TypeScript JSX |          2 |          0 |         -1 |          1 |
+| e:\web_project2\my-yds\src\app\abstract\page.tsx                         | TypeScript JSX |         -6 |         -1 |          1 |         -6 |
+| e:\web_project2\my-yds\src\app\academic-terms\page.tsx                   | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\all-words\page.tsx                        | TypeScript JSX |         43 |          0 |          0 |         43 |
+| e:\web_project2\my-yds\src\app\business\page.tsx                         | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\category\page.tsx                         | TypeScript JSX |         42 |         -2 |          2 |         42 |
+| e:\web_project2\my-yds\src\app\conjunctions\page.tsx                     | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\contact\page.tsx                          | TypeScript JSX |         31 |          0 |         -1 |         30 |
+| e:\web_project2\my-yds\src\app\design-system\page.tsx                    | TypeScript JSX |        589 |         37 |         38 |        664 |
+| e:\web_project2\my-yds\src\app\globals.css                               | PostCSS        |          6 |          0 |          0 |          6 |
+| e:\web_project2\my-yds\src\app\layout.tsx                                | TypeScript JSX |          3 |          0 |          0 |          3 |
+| e:\web_project2\my-yds\src\app\login\page.tsx                            | TypeScript JSX |          1 |          0 |         -1 |          0 |
+| e:\web_project2\my-yds\src\app\nature\page.tsx                           | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\not-found.tsx                             | TypeScript JSX |         32 |         -3 |         -1 |         28 |
+| e:\web_project2\my-yds\src\app\official\page.tsx                         | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\page.tsx                                  | TypeScript JSX |          4 |          1 |          0 |          5 |
+| e:\web_project2\my-yds\src\app\phrasal2\page.tsx                         | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\phrasal\page.tsx                          | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\privacy\page.tsx                          | TypeScript JSX |          2 |          0 |          0 |          2 |
+| e:\web_project2\my-yds\src\app\profile\page.tsx                          | TypeScript JSX |          3 |          0 |          0 |          3 |
+| e:\web_project2\my-yds\src\app\protected-page\page.tsx                   | TypeScript JSX |          2 |          0 |         -1 |          1 |
+| e:\web_project2\my-yds\src\app\register\page.tsx                         | TypeScript JSX |          1 |          0 |         -1 |          0 |
+| e:\web_project2\my-yds\src\app\social-sciences\page.tsx                  | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\app\spaced-repetition\page.tsx                | TypeScript JSX |        327 |         13 |         30 |        370 |
+| e:\web_project2\my-yds\src\app\upload-flashcards\page.tsx                | TypeScript JSX |       -299 |        -12 |        -22 |       -333 |
+| e:\web_project2\my-yds\src\components\AdSenseInit.tsx                    | TypeScript JSX |        -23 |         -5 |         -5 |        -33 |
+| e:\web_project2\my-yds\src\components\AdSenseScript.tsx                  | TypeScript JSX |        -16 |         -1 |         -2 |        -19 |
+| e:\web_project2\my-yds\src\components\AdUnit.tsx                         | TypeScript JSX |          3 |          3 |          0 |          6 |
+| e:\web_project2\my-yds\src\components\CategoryStats.tsx                  | TypeScript JSX |        -16 |          0 |         -3 |        -19 |
+| e:\web_project2\my-yds\src\components\ClientAd.js                        | JavaScript     |        -52 |        -12 |        -15 |        -79 |
+| e:\web_project2\my-yds\src\components\ClientLayout.tsx                   | TypeScript JSX |          4 |          1 |          1 |          6 |
+| e:\web_project2\my-yds\src\components\ClientScript.tsx                   | TypeScript JSX |         -5 |          0 |         -3 |         -8 |
+| e:\web_project2\my-yds\src\components\ContinueStudying.js                | JavaScript     |        -90 |         -2 |        -16 |       -108 |
+| e:\web_project2\my-yds\src\components\FirebaseStatus.tsx                 | TypeScript JSX |          2 |          0 |          0 |          2 |
+| e:\web_project2\my-yds\src\components\FlashCard.tsx                      | TypeScript JSX |         -1 |          2 |         -1 |          0 |
+| e:\web_project2\my-yds\src\components\HydrationSafePage.js               | JavaScript     |        -22 |         -3 |         -6 |        -31 |
+| e:\web_project2\my-yds\src\components\Layout.js                          | JavaScript     |        -28 |          0 |         -3 |        -31 |
+| e:\web_project2\my-yds\src\components\NavigationBar.tsx                  | TypeScript JSX |         60 |         -4 |         -5 |         51 |
+| e:\web_project2\my-yds\src\components\Quiz.tsx                           | TypeScript JSX |         37 |          2 |          3 |         42 |
+| e:\web_project2\my-yds\src\components\SafeSVG.js                         | JavaScript     |        -30 |         -3 |         -4 |        -37 |
+| e:\web_project2\my-yds\src\components\SomeComponentWithSVG.js            | JavaScript     |        -18 |         -3 |         -4 |        -25 |
+| e:\web_project2\my-yds\src\components\SpacedRepetitionQuiz.tsx           | TypeScript JSX |        578 |         31 |         65 |        674 |
+| e:\web_project2\my-yds\src\components\ThemeSelector.tsx                  | TypeScript JSX |         17 |          0 |          1 |         18 |
+| e:\web_project2\my-yds\src\components\VocabularyList2.tsx                | TypeScript JSX |       -482 |         -4 |        -12 |       -498 |
+| e:\web_project2\my-yds\src\components\WordList.tsx                       | TypeScript JSX |        118 |          5 |          9 |        132 |
+| e:\web_project2\my-yds\src\components\auth\LoginForm.tsx                 | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\components\auth\ProfileInfo.tsx               | TypeScript JSX |          1 |          0 |          0 |          1 |
+| e:\web_project2\my-yds\src\components\auth\RegisterForm.tsx              | TypeScript JSX |         -5 |          0 |          0 |         -5 |
+| e:\web_project2\my-yds\src\components\design-system\Button.tsx           | TypeScript JSX |        111 |          0 |          9 |        120 |
+| e:\web_project2\my-yds\src\components\design-system\Card.tsx             | TypeScript JSX |         70 |          0 |          8 |         78 |
+| e:\web_project2\my-yds\src\components\design-system\Container.tsx        | TypeScript JSX |         40 |          0 |          5 |         45 |
+| e:\web_project2\my-yds\src\components\design-system\Input.tsx            | TypeScript JSX |         73 |          0 |          9 |         82 |
+| e:\web_project2\my-yds\src\components\design-system\Typography.tsx       | TypeScript JSX |         84 |          0 |         11 |         95 |
+| e:\web_project2\my-yds\src\components\flashcards\ExcelUploader.tsx       | TypeScript JSX |         32 |          0 |          0 |         32 |
+| e:\web_project2\my-yds\src\components\flashcards\FlashcardControl.tsx    | TypeScript JSX |          2 |          0 |          0 |          2 |
+| e:\web_project2\my-yds\src\components\flashcards\FlashcardDeck.tsx       | TypeScript JSX |         11 |          1 |          1 |         13 |
+| e:\web_project2\my-yds\src\components\flashcards\FlashcardMobileView.tsx | TypeScript JSX |          3 |          0 |          0 |          3 |
+| e:\web_project2\my-yds\src\components\flashcards\FullscreenWrapper.tsx   | TypeScript JSX |         -1 |          0 |          0 |         -1 |
+| e:\web_project2\my-yds\src\components\flashcards\QuizMode.tsx            | TypeScript JSX |          4 |          0 |          1 |          5 |
+| e:\web_project2\my-yds\src\components\home\CategoryGrid.tsx              | TypeScript JSX |         11 |          0 |         -1 |         10 |
+| e:\web_project2\my-yds\src\components\home\ExcelUploadSection.tsx        | TypeScript JSX |         12 |         -1 |         -1 |         10 |
+| e:\web_project2\my-yds\src\components\home\FaqSection.tsx                | TypeScript JSX |         -1 |          0 |         -1 |         -2 |
+| e:\web_project2\my-yds\src\components\home\FeatureSection.tsx            | TypeScript JSX |         25 |          0 |          0 |         25 |
+| e:\web_project2\my-yds\src\components\home\ProgressOverview.tsx          | TypeScript JSX |          8 |          0 |          0 |          8 |
+| e:\web_project2\my-yds\src\components\layout\Drawer.tsx                  | TypeScript JSX |       -177 |         -7 |        -11 |       -195 |
+| e:\web_project2\my-yds\src\components\layout\Header.tsx                  | TypeScript JSX |        -32 |          0 |         -1 |        -33 |
+| e:\web_project2\my-yds\src\components\ui\Button.tsx                      | TypeScript JSX |        -74 |          0 |         -8 |        -82 |
+| e:\web_project2\my-yds\src\components\ui\Card.tsx                        | TypeScript JSX |        -31 |          0 |         -5 |        -36 |
+| e:\web_project2\my-yds\src\components\ui\SectionTitle.tsx                | TypeScript JSX |        -13 |          0 |         -3 |        -16 |
+| e:\web_project2\my-yds\src\components\ui\StyledCard.tsx                  | TypeScript JSX |        -17 |          0 |         -3 |        -20 |
+| e:\web_project2\my-yds\src\components\ui\Typography.tsx                  | TypeScript JSX |        -58 |          0 |         -8 |        -66 |
+| e:\web_project2\my-yds\src\contexts\FlashcardFullscreenContext.tsx       | TypeScript JSX |         22 |          0 |          7 |         29 |
+| e:\web_project2\my-yds\src\contexts\ThemeContext.tsx                     | TypeScript JSX |         26 |          4 |          6 |         36 |
+| e:\web_project2\my-yds\src\hooks\useFlashcardState.ts                    | TypeScript     |          4 |          0 |          3 |          7 |
+| e:\web_project2\my-yds\src\hooks\useTheme.ts                             | TypeScript     |          6 |          4 |          2 |         12 |
+| e:\web_project2\my-yds\src\lib\adLoader.js                               | JavaScript     |        -29 |         -8 |         -8 |        -45 |
+| e:\web_project2\my-yds\src\lib\firebase\spacedRepetition.ts              | TypeScript     |        601 |        177 |        106 |        884 |
+| e:\web_project2\my-yds\src\lib\spacedRepetition.ts                       | TypeScript     |        273 |        129 |         53 |        455 |
+| e:\web_project2\my-yds\src\styles\config.ts                              | TypeScript     |        -86 |         -6 |        -10 |       -102 |
+| e:\web_project2\my-yds\src\styles\design-tokens.ts                       | TypeScript     |        326 |         23 |         24 |        373 |
+| e:\web_project2\my-yds\src\styles\globals.css                            | PostCSS        |        247 |         19 |         46 |        312 |
+| e:\web_project2\my-yds\src\types\spacedRepetition.ts                     | TypeScript     |        139 |         60 |         36 |        235 |
+| e:\web_project2\my-yds\src\utils\debugHydration.js                       | JavaScript     |        -24 |         -9 |         -6 |        -39 |
+| e:\web_project2\my-yds\src\utils\version.js                              | JavaScript     |         -2 |         -1 |         -1 |         -4 |
+| e:\web_project2\my-yds\tailwind.config.ts                                | TypeScript     |         44 |          2 |          0 |         46 |
+| Total                                                                    |                |      2,852 |        438 |        469 |      3,759 |
++--------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
