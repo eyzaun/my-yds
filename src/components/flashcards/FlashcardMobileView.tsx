@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlashcardData } from '@/types/flashcard';
 import QuizMode from './QuizMode';
+import { useDesignTokens } from '@/hooks/useDesignTokens';
 
 interface ThemeColors {
   text: string;
@@ -64,18 +65,19 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
   cardStyles,
   colors
 }) => {
-  const { 
+  const designTokens = useDesignTokens();
+  const {
     currentIndex, flipped, completed, viewedCount, progressPercentage, isAnimating
   } = state;
-  
+
   const {
     handleFlip, handleNext, handlePrevious, handleRightClick, handleTouchStart,
     handleTouchMove, handleTouchEnd, toggleFullscreen, handleCorrectAnswer,
     handleIncorrectAnswer, resetCardAndMoveNext
   } = handlers;
-  
+
   const { cardWidth, cardHeight } = dimensions;
-  
+
   const currentCard = flashcards[currentIndex];
   
   return (
@@ -106,11 +108,11 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
           </div>
         </div>
         
-        <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden">
-          <div 
-            className="h-full rounded-full" 
-            style={{ 
-              width: `${progressPercentage}%`, 
+        <div className="w-full h-1 rounded-full overflow-hidden" style={{ backgroundColor: designTokens.colors.gray[700] }}>
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: `${progressPercentage}%`,
               backgroundColor: colors.accent
             }}
           />
@@ -273,7 +275,7 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
       </div>
       
       {/* Quiz giriş alanı */}
-      <div className="py-2 px-3" style={{ backgroundColor: colors.background, borderTop: '1px solid rgba(100, 100, 100, 0.3)' }}>
+      <div className="py-2 px-3" style={{ backgroundColor: colors.background, borderTop: `1px solid ${designTokens.colors.utility.divider}` }}>
         <QuizMode 
           flashcards={flashcards}
           currentIndex={currentIndex}

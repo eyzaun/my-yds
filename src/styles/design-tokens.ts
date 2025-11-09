@@ -142,6 +142,36 @@ const primaryColors = {
   900: '#001A33',
 };
 
+// Gray Scale (Neutral colors for UI elements)
+const grayColors = {
+  50: '#F9FAFB',
+  100: '#F3F4F6',
+  200: '#E5E7EB',
+  300: '#D1D5DB',
+  400: '#9CA3AF',
+  500: '#6B7280',
+  600: '#4B5563',
+  700: '#374151',
+  800: '#1F2937',
+  900: '#111827',
+};
+
+// Utility Colors (Overlays, backdrops, etc.)
+const utilityColors = {
+  overlay: {
+    light: 'rgba(0, 0, 0, 0.5)',        // Light mode overlay
+    dark: 'rgba(0, 0, 0, 0.7)',         // Dark mode overlay
+  },
+  backdrop: {
+    light: 'rgba(17, 24, 39, 0.5)',     // Gray-900 with 50% opacity
+    dark: 'rgba(17, 24, 39, 0.8)',      // Gray-900 with 80% opacity
+  },
+  divider: {
+    light: 'rgba(100, 100, 100, 0.3)',  // Light mode divider
+    dark: 'rgba(255, 255, 255, 0.1)',   // Dark mode divider
+  },
+};
+
 // Component Backgrounds & Interactive States
 const components = {
   button: {
@@ -269,6 +299,12 @@ export const themes: Record<Theme, any> = {
   light: {
     ...lightTheme,
     primary: primaryColors,
+    gray: grayColors,
+    utility: {
+      overlay: utilityColors.overlay.light,
+      backdrop: utilityColors.backdrop.light,
+      divider: utilityColors.divider.light,
+    },
     components: components,
     // Shortcuts for backward compatibility and easier access
     accent: primaryColors[500],        // Shortcut to primary blue
@@ -281,6 +317,12 @@ export const themes: Record<Theme, any> = {
   dark: {
     ...darkTheme,
     primary: primaryColors,
+    gray: grayColors,
+    utility: {
+      overlay: utilityColors.overlay.dark,
+      backdrop: utilityColors.backdrop.dark,
+      divider: utilityColors.divider.dark,
+    },
     components: components,
     // Shortcuts for backward compatibility and easier access
     accent: darkTheme.accent.primary,    // Shortcut to dark mode accent (light blue)
