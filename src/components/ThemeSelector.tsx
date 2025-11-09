@@ -1,11 +1,9 @@
 // components/ThemeSelector.tsx
 'use client';
-import { useTheme as useThemeContext } from '@/contexts/ThemeContext';
 import { useTheme } from '@/hooks/useTheme';
 
 const ThemeSelector = () => {
-  const { theme, setTheme } = useThemeContext();
-  const { tokens } = useTheme();
+  const { theme, setTheme, tokens } = useTheme();
 
   const handleToggle = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');

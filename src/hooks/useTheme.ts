@@ -1,11 +1,16 @@
-import { designTokens } from '@/styles/design-tokens';
+import { useTheme as useThemeContext } from '@/contexts/ThemeContext';
+import { getDesignTokensByTheme } from '@/styles/design-tokens';
 
 /**
  * Hook to access design tokens for theme-aware styling
- * Returns the design tokens object for use in component styling
+ * Returns dynamic design tokens based on current theme + theme controls
  */
 export const useTheme = () => {
+  const { theme, setTheme, isDark } = useThemeContext();
   return {
-    tokens: designTokens,
+    tokens: getDesignTokensByTheme(theme),
+    theme,
+    setTheme,
+    isDark,
   };
 };
