@@ -29,8 +29,8 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
               <div
                 className="p-2 rounded-full"
                 style={{
-                  backgroundColor: tokens.colors.accent,
-                  color: tokens.colors.text
+                  backgroundColor: tokens.colors.accent.primary,
+                  color: tokens.colors.text.primary
                 }}
               >
                 {category.icon}

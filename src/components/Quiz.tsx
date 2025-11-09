@@ -102,8 +102,8 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           onClick={() => setIsFullscreen(!isFullscreen)}
           className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
           style={{
-            backgroundColor: isFullscreen ? tokens.colors.accent : tokens.colors.cardBackground,
-            color: tokens.colors.text
+            backgroundColor: isFullscreen ? tokens.colors.accent.primary : tokens.colors.background.card,
+            color: tokens.colors.text.primary
           }}
           title="Tam Ekran"
         >
@@ -124,7 +124,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
             <div
               key={question.id}
               className="mb-8 p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: tokens.colors.cardBackground }}
+              style={{ backgroundColor: tokens.colors.background.card }}
             >
               <p style={{ color: tokens.colors.text.primary }} className="mb-4">
                 {question.id}. {question.sentence}
@@ -136,8 +136,8 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                     className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-opacity-80 transition-colors duration-200"
                     style={{
                       backgroundColor: userAnswers[question.id] === option ?
-                        tokens.colors.accent : 'transparent',
-                      color: tokens.colors.text
+                        tokens.colors.accent.primary : 'transparent',
+                      color: tokens.colors.text.primary
                     }}
                   >
                     <input
@@ -157,7 +157,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           
           {/* Kullanıcı giriş yapmamışsa uyarı mesajı */}
           {!user && (
-            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${tokens.colors.accent}30`, color: tokens.colors.text.primary }}>
+            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${tokens.colors.accent.primary}30`, color: tokens.colors.text.primary }}>
               <p className="text-sm">
                 Test sonuçlarınızı kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
               </p>
@@ -168,8 +168,8 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
             onClick={handleSubmit}
             className="w-full p-3 rounded-lg transition-colors duration-200"
             style={{
-              backgroundColor: tokens.colors.accent,
-              color: tokens.colors.text
+              backgroundColor: tokens.colors.accent.primary,
+              color: tokens.colors.text.primary
             }}
           >
             {savingScore ? 'Sınav Sonuçları Kaydediliyor...' : 'Sınavı Bitir'}
@@ -179,7 +179,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
         <div className="space-y-6">
           <div
             className="p-4 rounded-lg shadow-md"
-            style={{ backgroundColor: tokens.colors.cardBackground }}
+            style={{ backgroundColor: tokens.colors.background.card }}
           >
             <h2
               className="text-xl mb-4"
@@ -207,7 +207,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
             <div
               key={question.id}
               className="p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: tokens.colors.cardBackground }}
+              style={{ backgroundColor: tokens.colors.background.card }}
             >
               <p className="mb-2" style={{ color: tokens.colors.text.primary }}>
                 {question.sentence}

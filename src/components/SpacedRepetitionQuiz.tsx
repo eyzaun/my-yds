@@ -503,7 +503,7 @@ export default function SpacedRepetitionQuiz({
       <div
         className="sticky top-0 z-10 shadow-md"
         style={{
-          backgroundColor: tokens.colors.cardBackground,
+          backgroundColor: tokens.colors.background.card,
           padding: `${tokens.spacing[6]} ${tokens.spacing[6]}`
         }}
       >

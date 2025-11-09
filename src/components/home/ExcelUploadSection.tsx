@@ -19,7 +19,7 @@ export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
         {/* Left column - description */}
         <div className="md:w-1/2">
           <Heading2 style={{
-            color: tokens.colors.accent,
+            color: tokens.colors.accent.primary,
             marginBottom: tokens.spacing[6]
           }}>
             Kendi Kelime Kartlarınızı Oluşturun
@@ -50,7 +50,7 @@ export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
           <Card style={{
             padding: tokens.spacing[8],
             backgroundColor: tokens.colors.background.primary,
-            borderColor: `${tokens.colors.accent}30`
+            borderColor: `${tokens.colors.accent.primary}30`
           }}>
             <h3 className="text-lg font-semibold" style={{
               color: tokens.colors.text.primary,
@@ -61,18 +61,18 @@ export function ExcelUploadSection({ exampleData }: ExcelUploadSectionProps) {
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
                 <thead>
-                  <tr style={{ borderBottom: `1px solid ${tokens.colors.accent}30` }}>
-                    <th className="py-2 px-4" style={{ backgroundColor: tokens.colors.cardBackground }}>C</th>
-                    <th className="py-2 px-4" style={{ backgroundColor: tokens.colors.cardBackground }}>D</th>
-                    <th className="py-2 px-4" style={{ backgroundColor: tokens.colors.cardBackground }}>E</th>
+                  <tr style={{ borderBottom: `1px solid ${tokens.colors.accent.primary}30` }}>
+                    <th className="py-2 px-4" style={{ backgroundColor: tokens.colors.background.card }}>C</th>
+                    <th className="py-2 px-4" style={{ backgroundColor: tokens.colors.background.card }}>D</th>
+                    <th className="py-2 px-4" style={{ backgroundColor: tokens.colors.background.card }}>E</th>
                   </tr>
                 </thead>
                 <tbody>
                   {exampleData.map((row, index) => (
                     <tr key={index} style={{
-                      borderBottom: index < exampleData.length - 1 ? `1px solid ${tokens.colors.accent}20` : 'none'
+                      borderBottom: index < exampleData.length - 1 ? `1px solid ${tokens.colors.accent.primary}20` : 'none'
                     }}>
-                      <td className="py-2 px-4" style={{ color: tokens.colors.accent }}>{row.word}</td>
+                      <td className="py-2 px-4" style={{ color: tokens.colors.accent.primary }}>{row.word}</td>
                       <td className="py-2 px-4" style={{ color: tokens.colors.text.primary }}>{row.translation}</td>
                       <td className="py-2 px-4" style={{ color: `${tokens.colors.text.primary}80` }}>{row.note}</td>
                     </tr>

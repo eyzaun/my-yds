@@ -236,8 +236,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             onClick={toggleViewMode}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
-              backgroundColor: tokens.colors.cardBackground,
-              color: tokens.colors.text
+              backgroundColor: tokens.colors.background.card,
+              color: tokens.colors.text.primary
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -255,7 +255,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
               onClick={toggleQuizMode}
               className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
               style={{
-                backgroundColor: isQuizMode ? tokens.colors.accent : tokens.colors.cardBackground,
+                backgroundColor: isQuizMode ? tokens.colors.accent.primary : tokens.colors.background.card,
                 color: tokens.colors.text
               }}
               title="Quiz Modu"
@@ -272,7 +272,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             onClick={toggleFullscreen}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
-              backgroundColor: isFullscreen ? tokens.colors.accent : tokens.colors.cardBackground,
+              backgroundColor: isFullscreen ? tokens.colors.accent.primary : tokens.colors.background.card,
               color: tokens.colors.text
             }}
             title="Tam Ekran"
@@ -291,8 +291,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             onClick={handleReset}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
-              backgroundColor: tokens.colors.cardBackground,
-              color: tokens.colors.text
+              backgroundColor: tokens.colors.background.card,
+              color: tokens.colors.text.primary
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -389,7 +389,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
               key={`${word.en}-${index}`}
               className="p-4 rounded-lg cursor-pointer transition-all duration-300 shadow-md"
               style={{
-                backgroundColor: tokens.colors.cardBackground
+                backgroundColor: tokens.colors.background.card
               }}
               onClick={() => handleWordClick(index)}
             >

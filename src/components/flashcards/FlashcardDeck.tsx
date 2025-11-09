@@ -141,7 +141,11 @@ export default function FlashcardDeck({
       <FlashcardControl
         state={state}
         handlers={handlers}
-        colors={tokens.colors}
+        colors={{
+          text: tokens.colors.text.primary,
+          accent: tokens.colors.accent.primary,
+          cardBackground: tokens.colors.background.card
+        }}
         shouldRenderBottomButtons={isMobile}
         flashcards={flashcards}
       />
@@ -153,7 +157,11 @@ export default function FlashcardDeck({
         cardWidth={cardWidth}
         cardHeight={cardHeight}
         cardStyles={cardStyles}
-        colors={tokens.colors}
+        colors={{
+          text: tokens.colors.text.primary,
+          accent: tokens.colors.accent.primary,
+          cardBackground: tokens.colors.background.card
+        }}
         handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
         dimensions={{isMobile, isLandscape}}
         completed={completed}
@@ -206,7 +214,11 @@ export default function FlashcardDeck({
           cardWidth={fullscreenCardWidth}
           cardHeight={fullscreenCardHeight}
           cardStyles={cardStyles}
-          colors={tokens.colors}
+          colors={{
+            text: tokens.colors.text.primary,
+            accent: tokens.colors.accent.primary,
+            cardBackground: tokens.colors.background.card
+          }}
           handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
           dimensions={{isMobile, isLandscape}}
           isFullscreen={true}

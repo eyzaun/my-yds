@@ -310,7 +310,7 @@ export default function QuizMode({
                 onClick={() => setShowHint(true)}
                 variant="ghost"
                 className="text-xs underline mt-1"
-                style={{ color: tokens.colors.accent, padding: 0 }}
+                style={{ color: tokens.colors.accent.primary, padding: 0 }}
               >
                 İpucu göster
               </Button>

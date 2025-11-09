@@ -29,7 +29,7 @@ export function FeatureSection({ features }: FeatureSectionProps) {
               style={{
                 marginBottom: tokens.spacing[6],
                 padding: tokens.spacing[6],
-                backgroundColor: tokens.colors.accent
+                backgroundColor: tokens.colors.accent.primary
               }}
             >
               <div style={{ color: tokens.colors.text.primary }}>{feature.icon}</div>
@@ -61,9 +61,9 @@ export function FeatureSection({ features }: FeatureSectionProps) {
             className="inline-block rounded-md font-medium transition-all hover:scale-105"
             style={{
               padding: `${tokens.spacing[2]} ${tokens.spacing[8]}`,
-              backgroundColor: tokens.colors.accent,
+              backgroundColor: tokens.colors.accent.primary,
               color: tokens.colors.text.inverse,
-              boxShadow: `0 0 15px ${tokens.colors.accent}40`
+              boxShadow: `0 0 15px ${tokens.colors.accent.primary}40`
             }}
           >
             Hemen Başlayın →
