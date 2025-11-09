@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { designTokens } from '@/styles/design-tokens';
 
 interface QuizModeProps {
   flashcards: FlashcardData[];
@@ -29,8 +31,7 @@ export default function QuizMode({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [waitingForEnter, setWaitingForEnter] = useState(false);
-  const { colors } = useTheme();
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   
@@ -232,15 +233,15 @@ export default function QuizMode({
   
   // Form stilleri
   const formStyle = isMobileMode ? {
-    backgroundColor: colors.background,
+    backgroundColor: designTokens.colors.background,
   } : {};
 
   return (
     <div className={`w-full max-w-md mx-auto ${alwaysKeepKeyboardOpen ? 'always-focused' : ''}`}>
       <form onSubmit={handleSubmit} className="flex flex-col" style={formStyle}>
-        <p className="text-sm mb-1" style={{ 
-          color: colors.text, 
-          fontSize: isMobile ? '14px' : '15px' 
+        <p className="text-sm mb-1" style={{
+          color: designTokens.colors.text,
+          fontSize: isMobile ? '14px' : '15px'
         }}>
           {waitingForEnter || (isFlipped && isCorrect === false)
             ? 'Sonraki kelimeye geçmek için Enter tuşuna basın'
@@ -257,12 +258,12 @@ export default function QuizMode({
             onBlur={handleBlur}
             className="flex-grow px-3 py-1 rounded-l-lg border focus:outline-none"
             placeholder={waitingForEnter || (isFlipped && isCorrect === false) ? 'Enter tuşuna basın...' : 'Cevabınızı buraya yazın...'}
-            style={{ 
-              backgroundColor: colors.background,
-              color: colors.text,
-              borderColor: isCorrect === true ? 'green' : 
-                           isCorrect === false ? 'red' : 
-                           colors.accent,
+            style={{
+              backgroundColor: designTokens.colors.background,
+              color: designTokens.colors.text,
+              borderColor: isCorrect === true ? 'green' :
+                           isCorrect === false ? 'red' :
+                           designTokens.colors.accent,
               fontSize: '16px',
               height: isMobileMode ? '44px' : '40px'
             }}
@@ -270,26 +271,29 @@ export default function QuizMode({
             readOnly={isCorrect === true}
             autoFocus
           />
-          
-          <button
+
+
+          <Button
             type="submit"
-            className="px-3 py-1 rounded-r-lg transition-colors"
+            variant="primary"
+            className="rounded-r-lg"
             style={{
-              backgroundColor: isCorrect === true ? 'green' : 
+              backgroundColor: isCorrect === true ? 'green' :
                               waitingForEnter || (isFlipped && isCorrect === false) ? 'orange' :
-                              colors.accent,
+                              designTokens.colors.accent,
               color: 'white',
               fontSize: '16px',
-              height: isMobileMode ? '44px' : '40px'
+              height: isMobileMode ? '44px' : '40px',
+              borderRadius: '0 0.5rem 0.5rem 0'
             }}
             disabled={(!answer.trim() && !waitingForEnter && !(isFlipped && isCorrect === false)) || isCorrect === true}
           >
             {waitingForEnter || (isFlipped && isCorrect === false) ? 'Sonraki' : 'Kontrol Et'}
-          </button>
+          </Button>
         </div>
         
         {isCorrect === true && (
-          <p className="text-green-500 mt-2 text-sm">Doğru cevap! 👍</p>
+          <p className="text-green-500 mt-2 text-sm">Doğru cevap!</p>
         )}
         
         {isCorrect === false && (
@@ -300,17 +304,18 @@ export default function QuizMode({
                 : 'Yanlış cevap, tekrar deneyin.'}
             </p>
             {!showHint && !isFlipped && (
-              <button 
-                type="button" 
+              <Button
+                type="button"
                 onClick={() => setShowHint(true)}
+                variant="ghost"
                 className="text-xs underline mt-1"
-                style={{ color: colors.accent }}
+                style={{ color: designTokens.colors.accent, padding: 0 }}
               >
                 İpucu göster
-              </button>
+              </Button>
             )}
             {showHint && !isFlipped && (
-              <p className="text-xs mt-1" style={{ color: colors.text }}>
+              <p className="text-xs mt-1" style={{ color: designTokens.colors.text }}>
                 İpucu: {currentCard.back.charAt(0)}
                 {currentCard.back.charAt(1)}
                 {currentCard.back.length > 2 ? '...' : ''}

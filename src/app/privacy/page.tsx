@@ -1,10 +1,12 @@
 'use client';
 import { useEffect } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import Link from 'next/link';
+import { Container } from '@/components/design-system/Container';
+import { Card } from '@/components/design-system/Card';
+import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/components/design-system/tokens';
 
 export default function Privacy() {
-  const { colors } = useTheme();
   
   // Sayfa için SEO ve yapısal veri ekleme
   useEffect(() => {
@@ -25,205 +27,205 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
-      
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center" style={{ color: colors.text }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background }}>
+
+      <Container maxWidth="lg" className="py-8">
+        <Heading1 className="text-2xl md:text-3xl mb-6 text-center">
           Gizlilik Politikası
-        </h1>
-        
+        </Heading1>
+
         <div className="mt-8 space-y-6">
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Giriş
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
-              Bu gizlilik politikası, YDS Kelime Listesi (&quot;biz&quot;, &quot;bizim&quot; veya &quot;sitemiz&quot; olarak anılacaktır) web sitesini 
-              kullanırken topladığımız verilerin nasıl kullanıldığı, korunduğu ve ifşa edildiği hakkında bilgi vermek 
+            </Heading2>
+            <Text className="mb-3">
+              Bu gizlilik politikası, YDS Kelime Listesi (&quot;biz&quot;, &quot;bizim&quot; veya &quot;sitemiz&quot; olarak anılacaktır) web sitesini
+              kullanırken topladığımız verilerin nasıl kullanıldığı, korunduğu ve ifşa edildiği hakkında bilgi vermek
               amacıyla oluşturulmuştur.
-            </p>
-            <p style={{ color: colors.text }}>
-              Web sitemizi kullanarak, bu politika kapsamında belirtilen veri toplama ve kullanma uygulamalarını 
+            </Text>
+            <Text>
+              Web sitemizi kullanarak, bu politika kapsamında belirtilen veri toplama ve kullanma uygulamalarını
               kabul etmiş olursunuz. Bu politika, kişisel veriler de dahil olmak üzere sitemizde toplanan tüm bilgileri kapsar.
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Topladığımız Veriler
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
+            </Heading2>
+            <Text className="mb-3">
               Sitemizi kullanırken, aşağıdaki verileri otomatik olarak toplayabiliriz:
-            </p>
-            <ul className="list-disc pl-5 mb-3 space-y-2" style={{ color: colors.text }}>
+            </Text>
+            <ul className="list-disc pl-5 mb-3 space-y-2">
               <li>
-                <strong>Cihaz Bilgileri:</strong> Kullandığınız tarayıcı tipi, işletim sistemi, cihaz türü, 
-                ekran çözünürlüğü gibi teknik bilgiler.
+                <Text as="span"><strong>Cihaz Bilgileri:</strong> Kullandığınız tarayıcı tipi, işletim sistemi, cihaz türü,
+                ekran çözünürlüğü gibi teknik bilgiler.</Text>
               </li>
               <li>
-                <strong>Log Verileri:</strong> IP adresi, ziyaret saati ve tarihi, görüntülediğiniz sayfalar, 
-                sitemizde geçirdiğiniz süre gibi bilgiler.
+                <Text as="span"><strong>Log Verileri:</strong> IP adresi, ziyaret saati ve tarihi, görüntülediğiniz sayfalar,
+                sitemizde geçirdiğiniz süre gibi bilgiler.</Text>
               </li>
               <li>
-                <strong>Çerezler:</strong> Sitemizi nasıl kullandığınızı hatırlamak için çerezler ve benzer 
-                teknolojiler kullanabiliriz.
+                <Text as="span"><strong>Çerezler:</strong> Sitemizi nasıl kullandığınızı hatırlamak için çerezler ve benzer
+                teknolojiler kullanabiliriz.</Text>
               </li>
             </ul>
-            <p style={{ color: colors.text }}>
-              Şu an için sitemiz herhangi bir oturum açma, kayıt olma veya form doldurma gerektirmemektedir. 
+            <Text>
+              Şu an için sitemiz herhangi bir oturum açma, kayıt olma veya form doldurma gerektirmemektedir.
               Bu nedenle, kullanıcılardan aktif olarak kişisel veri toplamamaktayız.
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Verilerin Kullanımı
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
+            </Heading2>
+            <Text className="mb-3">
               Topladığımız verileri aşağıdaki amaçlar için kullanabiliriz:
-            </p>
-            <ul className="list-disc pl-5 mb-3 space-y-2" style={{ color: colors.text }}>
-              <li>Sitemizin performansını ve içeriğini iyileştirmek</li>
-              <li>Kullanıcı deneyimini geliştirmek</li>
-              <li>Sitemizin nasıl kullanıldığını analiz etmek</li>
-              <li>Teknik sorunları tespit etmek ve çözmek</li>
-              <li>Yasal yükümlülüklerimizi yerine getirmek</li>
+            </Text>
+            <ul className="list-disc pl-5 mb-3 space-y-2">
+              <li><Text as="span">Sitemizin performansını ve içeriğini iyileştirmek</Text></li>
+              <li><Text as="span">Kullanıcı deneyimini geliştirmek</Text></li>
+              <li><Text as="span">Sitemizin nasıl kullanıldığını analiz etmek</Text></li>
+              <li><Text as="span">Teknik sorunları tespit etmek ve çözmek</Text></li>
+              <li><Text as="span">Yasal yükümlülüklerimizi yerine getirmek</Text></li>
             </ul>
-          </section>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Google AdSense ve Çerezler
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
-              Sitemizde Google AdSense reklamları kullanılmaktadır. Bu hizmet, site içeriğinize ve ziyaretçilerinizin 
-              ilgi alanlarına göre hedeflenmiş reklamlar sunmak için çerezleri kullanabilir. Google AdSense, 
+            </Heading2>
+            <Text className="mb-3">
+              Sitemizde Google AdSense reklamları kullanılmaktadır. Bu hizmet, site içeriğinize ve ziyaretçilerinizin
+              ilgi alanlarına göre hedeflenmiş reklamlar sunmak için çerezleri kullanabilir. Google AdSense,
               kullanıcıların reklamları görüntülemesi ve reklamlara tıklaması hakkında bilgileri toplar.
-            </p>
-            <p className="mb-3" style={{ color: colors.text }}>
-              Google, bu bilgileri kullanarak reklam performansını değerlendirir, raporlar oluşturur ve reklam 
-              hizmetlerini iyileştirmek için kullanır. Google, bilgileri kendi gizlilik politikasına uygun olarak 
-              kullanır. Google&apos;ın veri toplama ve kullanma uygulamaları hakkında daha fazla bilgi edinmek için, 
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: colors.accent }}>
+            </Text>
+            <Text className="mb-3">
+              Google, bu bilgileri kullanarak reklam performansını değerlendirir, raporlar oluşturur ve reklam
+              hizmetlerini iyileştirmek için kullanır. Google, bilgileri kendi gizlilik politikasına uygun olarak
+              kullanır. Google&apos;ın veri toplama ve kullanma uygulamaları hakkında daha fazla bilgi edinmek için,
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
                 Google Gizlilik Politikası
               </a>
               adresini ziyaret edebilirsiniz.
-            </p>
-            <p className="mb-3" style={{ color: colors.text }}>
+            </Text>
+            <Text className="mb-3">
               Google AdSense dışında, sitemiz aşağıdaki çerez türlerini kullanabilir:
-            </p>
-            <ul className="list-disc pl-5 mb-3 space-y-2" style={{ color: colors.text }}>
+            </Text>
+            <ul className="list-disc pl-5 mb-3 space-y-2">
               <li>
-                <strong>Zorunlu Çerezler:</strong> Sitenin düzgün çalışması için gerekli olan çerezler.
+                <Text as="span"><strong>Zorunlu Çerezler:</strong> Sitenin düzgün çalışması için gerekli olan çerezler.</Text>
               </li>
               <li>
-                <strong>Analitik Çerezler:</strong> Kullanıcıların sitemizle nasıl etkileşim kurduğunu anlamamıza 
-                yardımcı olur.
+                <Text as="span"><strong>Analitik Çerezler:</strong> Kullanıcıların sitemizle nasıl etkileşim kurduğunu anlamamıza
+                yardımcı olur.</Text>
               </li>
               <li>
-                <strong>Fonksiyonel Çerezler:</strong> Kullanıcı tercihlerini hatırlamak için kullanılır.
+                <Text as="span"><strong>Fonksiyonel Çerezler:</strong> Kullanıcı tercihlerini hatırlamak için kullanılır.</Text>
               </li>
             </ul>
-          </section>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Çerez Kontrolü ve Kişiselleştirilmiş Reklamları Devre Dışı Bırakma
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
-              Çoğu web tarayıcısı, çerezleri otomatik olarak kabul eder, ancak tarayıcı ayarlarınızı değiştirerek 
-              çerezleri engellemeyi veya çerezler hakkında uyarı almayı seçebilirsiniz. Çerezleri devre dışı bırakmak, 
+            </Heading2>
+            <Text className="mb-3">
+              Çoğu web tarayıcısı, çerezleri otomatik olarak kabul eder, ancak tarayıcı ayarlarınızı değiştirerek
+              çerezleri engellemeyi veya çerezler hakkında uyarı almayı seçebilirsiniz. Çerezleri devre dışı bırakmak,
               sitemizin bazı özelliklerinin düzgün çalışmamasına neden olabilir.
-            </p>
-            <p className="mb-3" style={{ color: colors.text }}>
-              Google&apos;ın sunduğu kişiselleştirilmiş reklamları devre dışı bırakmak için 
-              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: colors.accent }}>
+            </Text>
+            <Text className="mb-3">
+              Google&apos;ın sunduğu kişiselleştirilmiş reklamları devre dışı bırakmak için
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
                 Google Reklam Ayarları
               </a>
               sayfasını ziyaret edebilirsiniz.
-            </p>
-            <p style={{ color: colors.text }}>
-              Ayrıca, 
-              <a href="http://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: colors.accent }}>
+            </Text>
+            <Text>
+              Ayrıca,
+              <a href="http://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
                 Digital Advertising Alliance
               </a>
-              veya 
-              <a href="http://www.youronlinechoices.eu/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: colors.accent }}>
+              veya
+              <a href="http://www.youronlinechoices.eu/" target="_blank" rel="noopener noreferrer" className="mx-1 underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
                 Your Online Choices
               </a>
               gibi platformlar aracılığıyla çeşitli reklam ağları için tercihlerinizi yönetebilirsiniz.
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Veri Paylaşımı ve Açıklama
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
+            </Heading2>
+            <Text className="mb-3">
               Topladığımız verileri aşağıdaki durumlar hariç üçüncü taraflarla paylaşmayız veya açıklamayız:
-            </p>
-            <ul className="list-disc pl-5 mb-3 space-y-2" style={{ color: colors.text }}>
-              <li>Yasal bir yükümlülüğü yerine getirmek için gerekli olduğunda (örn. mahkeme kararı)</li>
-              <li>Sitemizin haklarını veya güvenliğini korumak için gerekli olduğunda</li>
-              <li>Hizmet sağlayıcılarımızla (Google Analytics, Google AdSense gibi) gerekli olduğunda</li>
+            </Text>
+            <ul className="list-disc pl-5 mb-3 space-y-2">
+              <li><Text as="span">Yasal bir yükümlülüğü yerine getirmek için gerekli olduğunda (örn. mahkeme kararı)</Text></li>
+              <li><Text as="span">Sitemizin haklarını veya güvenliğini korumak için gerekli olduğunda</Text></li>
+              <li><Text as="span">Hizmet sağlayıcılarımızla (Google Analytics, Google AdSense gibi) gerekli olduğunda</Text></li>
             </ul>
-            <p style={{ color: colors.text }}>
-              Topladığımız verileri, reklam gösterme, site performansını analiz etme ve kullanıcı deneyimini 
+            <Text>
+              Topladığımız verileri, reklam gösterme, site performansını analiz etme ve kullanıcı deneyimini
               iyileştirme amacıyla Google gibi üçüncü taraf hizmet sağlayıcılarımızla paylaşabiliriz.
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Veri Güvenliği
-            </h2>
-            <p style={{ color: colors.text }}>
-              Verilerinizin güvenliğini sağlamak için uygun teknik ve organizasyonel önlemler alıyoruz. 
-              Ancak, internet üzerinden veri iletiminin veya elektronik depolamanın %100 güvenli olduğu garanti 
+            </Heading2>
+            <Text>
+              Verilerinizin güvenliğini sağlamak için uygun teknik ve organizasyonel önlemler alıyoruz.
+              Ancak, internet üzerinden veri iletiminin veya elektronik depolamanın %100 güvenli olduğu garanti
               edilemez. Bu nedenle, verilerinizin mutlak güvenliğini garanti edemeyiz.
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Çocukların Gizliliği
-            </h2>
-            <p style={{ color: colors.text }}>
-              Sitemiz 13 yaşından küçük çocuklara yönelik değildir ve bilerek 13 yaşından küçük çocuklardan 
-              kişisel veri toplamıyoruz. Eğer 13 yaşından küçük bir çocuktan kişisel veri topladığımızı 
+            </Heading2>
+            <Text>
+              Sitemiz 13 yaşından küçük çocuklara yönelik değildir ve bilerek 13 yaşından küçük çocuklardan
+              kişisel veri toplamıyoruz. Eğer 13 yaşından küçük bir çocuktan kişisel veri topladığımızı
               öğrenirsek, bu verileri en kısa sürede silmek için adımlar atacağız.
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Gizlilik Politikası Değişiklikleri
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
-              Bu gizlilik politikasını zaman zaman güncelleyebiliriz. Önemli değişiklikler yaptığımızda, 
+            </Heading2>
+            <Text className="mb-3">
+              Bu gizlilik politikasını zaman zaman güncelleyebiliriz. Önemli değişiklikler yaptığımızda,
               bu değişiklikleri web sitemizde belirgin bir şekilde duyuracağız.
-            </p>
-            <p style={{ color: colors.text }}>
-              Sizin için en güncel gizlilik politikasını görmek için bu sayfayı düzenli olarak ziyaret 
+            </Text>
+            <Text>
+              Sizin için en güncel gizlilik politikasını görmek için bu sayfayı düzenli olarak ziyaret
               etmenizi öneririz. Bu politikayı son güncelleme tarihi: 05.03.2025
-            </p>
-          </section>
+            </Text>
+          </Card>
 
-          <section className="p-6 rounded-lg shadow-md" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card>
+            <Heading2 className="mb-4">
               Bize Ulaşın
-            </h2>
-            <p className="mb-3" style={{ color: colors.text }}>
+            </Heading2>
+            <Text className="mb-3">
               Bu gizlilik politikası hakkında sorularınız veya endişeleriniz varsa, lütfen bizimle iletişime geçin:
-            </p>
-            <p style={{ color: colors.text }}>
-              <Link href="/contact" className="underline hover:text-opacity-80" style={{ color: colors.accent }}>
+            </Text>
+            <Text>
+              <Link href="/contact" className="underline hover:text-opacity-80" style={{ color: designTokens.colors.accent }}>
                 İletişim Sayfası
               </Link>
-            </p>
-          </section>
+            </Text>
+          </Card>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

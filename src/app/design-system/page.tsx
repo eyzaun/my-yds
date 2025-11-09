@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import { colorThemes, designTokens, ThemeName, componentStyles } from '@/styles/designSystem';
 
 export default function DesignSystemPage() {
-  const { colors, theme, setTheme } = useTheme();
+  const [selectedTheme, setSelectedTheme] = useState<ThemeName>('dark');
   const [selectedSection, setSelectedSection] = useState<'colors' | 'components' | 'tokens'>('colors');
+  const colors = colorThemes[selectedTheme];
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
@@ -13,10 +13,10 @@ export default function DesignSystemPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2" style={{ color: colors.text }}>
-            🎨 Design System
+            Design System
           </h1>
           <p className="text-lg" style={{ color: colors.textSecondary }}>
-            Merkezi tema ve tasarım yönetim paneli
+            Merkezi tema ve tasarim yonetim paneli
           </p>
         </div>
 
@@ -33,43 +33,43 @@ export default function DesignSystemPage() {
                 boxShadow: selectedSection === section ? designTokens.shadows.md : designTokens.shadows.sm,
               }}
             >
-              {section === 'colors' && '🎨 Renkler & Temalar'}
-              {section === 'components' && '🧩 Componentler'}
-              {section === 'tokens' && '🎯 Design Tokens'}
+              {section === 'colors' && 'Renkler & Temalar'}
+              {section === 'components' && 'Componentler'}
+              {section === 'tokens' && 'Design Tokens'}
             </button>
           ))}
         </div>
 
         {/* Content Sections */}
-        {selectedSection === 'colors' && <ColorsSection />}
-        {selectedSection === 'components' && <ComponentsSection />}
-        {selectedSection === 'tokens' && <TokensSection />}
+        {selectedSection === 'colors' && <ColorsSection selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />}
+        {selectedSection === 'components' && <ComponentsSection selectedTheme={selectedTheme} />}
+        {selectedSection === 'tokens' && <TokensSection selectedTheme={selectedTheme} />}
       </div>
     </div>
   );
 }
 
-// 🎨 Renkler & Temalar Bölümü
-function ColorsSection() {
-  const { colors, theme, setTheme } = useTheme();
+// Renkler & Temalar Bolumu
+function ColorsSection({ selectedTheme, setSelectedTheme }: { selectedTheme: ThemeName; setSelectedTheme: (theme: ThemeName) => void }) {
+  const colors = colorThemes[selectedTheme];
 
   return (
     <div className="space-y-8">
       {/* Theme Selector */}
       <div className="p-6 rounded-xl" style={{ backgroundColor: colors.cardBackground }}>
         <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
-          Aktif Tema: {theme}
+          Aktif Tema: {selectedTheme}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {Object.keys(colorThemes).map((themeName) => (
             <button
               key={themeName}
-              onClick={() => setTheme(themeName as ThemeName)}
+              onClick={() => setSelectedTheme(themeName as ThemeName)}
               className="p-4 rounded-lg transition-all duration-300 transform hover:scale-105 border-2"
               style={{
                 backgroundColor: colorThemes[themeName as ThemeName].cardBackground,
-                borderColor: theme === themeName ? colorThemes[themeName as ThemeName].accent : 'transparent',
-                boxShadow: theme === themeName ? designTokens.shadows.lg : designTokens.shadows.sm,
+                borderColor: selectedTheme === themeName ? colorThemes[themeName as ThemeName].accent : 'transparent',
+                boxShadow: selectedTheme === themeName ? designTokens.shadows.lg : designTokens.shadows.sm,
               }}
             >
               <div className="font-semibold capitalize mb-2" style={{ color: colorThemes[themeName as ThemeName].text }}>
@@ -116,7 +116,7 @@ function ColorsSection() {
       {/* Opacity Variants */}
       <div className="p-6 rounded-xl" style={{ backgroundColor: colors.cardBackground }}>
         <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
-          Accent Renk Opacity Varyantları
+          Accent Renk Opacity Varyantlari
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {['10', '20', '30', '40', '50', '60', '70', '80', '90'].map((opacity) => (
@@ -139,9 +139,9 @@ function ColorsSection() {
   );
 }
 
-// 🧩 Componentler Bölümü
-function ComponentsSection() {
-  const { colors } = useTheme();
+// Componentler Bolumu
+function ComponentsSection({ selectedTheme }: { selectedTheme: ThemeName }) {
+  const colors = colorThemes[selectedTheme];
   const [quizAnswer, setQuizAnswer] = useState('');
 
   return (
@@ -232,7 +232,7 @@ function ComponentsSection() {
               Elevated Card
             </h3>
             <p style={{ color: colors.textSecondary }}>
-              Gölge ile vurgulanmış kart
+              Golge ile vurgulanmis kart
             </p>
           </div>
 
@@ -319,27 +319,27 @@ function ComponentsSection() {
       {/* Status Messages */}
       <div className="p-6 rounded-xl" style={{ backgroundColor: colors.cardBackground }}>
         <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
-          Durum Mesajları
+          Durum Mesajlari
         </h2>
         <div className="space-y-3">
           <div className="p-4 rounded-lg flex items-center gap-3" style={{ backgroundColor: `${colors.success}20`, border: `1px solid ${colors.success}` }}>
             <span className="text-2xl">✓</span>
-            <span style={{ color: colors.success }}>Başarılı işlem!</span>
+            <span style={{ color: colors.success }}>Basarili islem!</span>
           </div>
 
           <div className="p-4 rounded-lg flex items-center gap-3" style={{ backgroundColor: `${colors.error}20`, border: `1px solid ${colors.error}` }}>
             <span className="text-2xl">✗</span>
-            <span style={{ color: colors.error }}>Hata oluştu!</span>
+            <span style={{ color: colors.error }}>Hata olustu!</span>
           </div>
 
           <div className="p-4 rounded-lg flex items-center gap-3" style={{ backgroundColor: `${colors.warning}20`, border: `1px solid ${colors.warning}` }}>
             <span className="text-2xl">⚠</span>
-            <span style={{ color: colors.warning }}>Dikkat! Önemli bilgi.</span>
+            <span style={{ color: colors.warning }}>Dikkat! Onemli bilgi.</span>
           </div>
 
           <div className="p-4 rounded-lg flex items-center gap-3" style={{ backgroundColor: `${colors.info}20`, border: `1px solid ${colors.info}` }}>
             <span className="text-2xl">ℹ</span>
-            <span style={{ color: colors.info }}>Bilgilendirme mesajı.</span>
+            <span style={{ color: colors.info }}>Bilgilendirme mesaji.</span>
           </div>
         </div>
       </div>
@@ -347,16 +347,16 @@ function ComponentsSection() {
   );
 }
 
-// 🎯 Design Tokens Bölümü
-function TokensSection() {
-  const { colors } = useTheme();
+// Design Tokens Bolumu
+function TokensSection({ selectedTheme }: { selectedTheme: ThemeName }) {
+  const colors = colorThemes[selectedTheme];
 
   return (
     <div className="space-y-8">
       {/* Shadows */}
       <div className="p-6 rounded-xl" style={{ backgroundColor: colors.cardBackground }}>
         <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
-          Gölgeler (Shadows)
+          Golgeler (Shadows)
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {Object.entries(designTokens.shadows).map(([name, value]) => (
@@ -458,7 +458,7 @@ function TokensSection() {
       {/* Animations */}
       <div className="p-6 rounded-xl" style={{ backgroundColor: colors.cardBackground }}>
         <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>
-          Animasyon Süreleri
+          Animasyon Sureleri
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Object.entries(designTokens.animations).slice(0, 3).map(([name, value]) => (

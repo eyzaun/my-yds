@@ -1,7 +1,7 @@
 // src/components/Quiz.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
+import { designTokens } from '@/styles/designTokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizScore } from '@/firebase/firestore';
 import AdBanner from './AdBanner';
@@ -28,7 +28,6 @@ interface QuizProps {
 }
 
 const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQuizComplete }) => {
-  const { colors } = useTheme();
   const { user } = useAuth();
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
   const [showResults, setShowResults] = useState(false);
@@ -95,15 +94,15 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'max-w-4xl mx-auto'} p-4`}
-         style={isFullscreen ? { backgroundColor: colors.background } : {}}>
+         style={isFullscreen ? { backgroundColor: designTokens.colors.background } : {}}>
       {/* Tam ekran toggle butonu */}
       <div className="flex justify-end mb-4">
         <button
           onClick={() => setIsFullscreen(!isFullscreen)}
           className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
           style={{
-            backgroundColor: isFullscreen ? colors.accent : colors.cardBackground,
-            color: colors.text
+            backgroundColor: isFullscreen ? designTokens.colors.accent : designTokens.colors.cardBackground,
+            color: designTokens.colors.text
           }}
           title="Tam Ekran"
         >
@@ -121,12 +120,12 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
       {!showResults ? (
         <>
           {questions.map((question) => (
-            <div 
-              key={question.id} 
+            <div
+              key={question.id}
               className="mb-8 p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: colors.cardBackground }}
+              style={{ backgroundColor: designTokens.colors.cardBackground }}
             >
-              <p style={{ color: colors.text }} className="mb-4">
+              <p style={{ color: designTokens.colors.text }} className="mb-4">
                 {question.id}. {question.sentence}
               </p>
               <div className="space-y-2">
@@ -134,10 +133,10 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
                   <label
                     key={option}
                     className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-opacity-80 transition-colors duration-200"
-                    style={{ 
-                      backgroundColor: userAnswers[question.id] === option ? 
-                        colors.accent : 'transparent',
-                      color: colors.text
+                    style={{
+                      backgroundColor: userAnswers[question.id] === option ?
+                        designTokens.colors.accent : 'transparent',
+                      color: designTokens.colors.text
                     }}
                   >
                     <input
@@ -157,7 +156,7 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           
           {/* Kullanıcı giriş yapmamışsa uyarı mesajı */}
           {!user && (
-            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${colors.accent}30`, color: colors.text }}>
+            <div className="text-center p-3 my-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.accent}30`, color: designTokens.colors.text }}>
               <p className="text-sm">
                 Test sonuçlarınızı kaydetmek için <Link href="/login" className="underline">giriş yapın</Link> veya <Link href="/register" className="underline">kayıt olun</Link>.
               </p>
@@ -168,8 +167,8 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
             onClick={handleSubmit}
             className="w-full p-3 rounded-lg transition-colors duration-200"
             style={{
-              backgroundColor: colors.accent,
-              color: colors.text
+              backgroundColor: designTokens.colors.accent,
+              color: designTokens.colors.text
             }}
           >
             {savingScore ? 'Sınav Sonuçları Kaydediliyor...' : 'Sınavı Bitir'}
@@ -177,25 +176,25 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
         </>
       ) : (
         <div className="space-y-6">
-          <div 
+          <div
             className="p-4 rounded-lg shadow-md"
-            style={{ backgroundColor: colors.cardBackground }}
+            style={{ backgroundColor: designTokens.colors.cardBackground }}
           >
-            <h2 
+            <h2
               className="text-xl mb-4"
-              style={{ color: colors.text }}
+              style={{ color: designTokens.colors.text }}
             >
               Sonuçlar: {score} / {questions.length}
             </h2>
-            
+
             {user && (
               <div className="mt-2">
                 {scoreSaved ? (
-                  <p className="text-sm" style={{ color: colors.text }}>
+                  <p className="text-sm" style={{ color: designTokens.colors.text }}>
                     Sınav sonucunuz kaydedildi!
                   </p>
                 ) : savingScore ? (
-                  <p className="text-sm" style={{ color: colors.text }}>
+                  <p className="text-sm" style={{ color: designTokens.colors.text }}>
                     Sınav sonucunuz kaydediliyor...
                   </p>
                 ) : null}
@@ -204,16 +203,16 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
           </div>
           
           {questions.map((question) => (
-            <div 
-              key={question.id} 
+            <div
+              key={question.id}
               className="p-4 rounded-lg shadow-md"
-              style={{ backgroundColor: colors.cardBackground }}
+              style={{ backgroundColor: designTokens.colors.cardBackground }}
             >
-              <p className="mb-2" style={{ color: colors.text }}>
+              <p className="mb-2" style={{ color: designTokens.colors.text }}>
                 {question.sentence}
               </p>
-              <p className="mb-2" style={{ color: colors.text }}>
-                Kullanılan kelime: <span className="font-bold">{question.word}</span> 
+              <p className="mb-2" style={{ color: designTokens.colors.text }}>
+                Kullanılan kelime: <span className="font-bold">{question.word}</span>
                 ({categoryWords.find(w => w.en === question.word)?.tr})
               </p>
               <p className="mb-2">

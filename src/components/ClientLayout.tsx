@@ -1,13 +1,12 @@
 'use client';
 import NavigationBar from './NavigationBar';
-import { useTheme } from '@/contexts/ThemeContext';
 import { usePathname } from 'next/navigation';
+import { designTokens } from '@/styles/design-tokens';
 
 // Doğrudan bileşeni import edin
 import AdUnit from '@/components/AdUnit';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const { colors } = useTheme();
   const pathname = usePathname();
   
   // Bazı sayfalarda reklam göstermek istemiyorsanız
@@ -15,7 +14,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const shouldShowAds = !excludedPaths.includes(pathname || '');
 
   return (
-    <div style={{ backgroundColor: colors.background, minHeight: '100vh' }}>
+    <div style={{ backgroundColor: designTokens.colors.background, minHeight: '100vh' }}>
       <NavigationBar />
       
       {/* Üst reklam - Ana Sayfa Üst Banner */}

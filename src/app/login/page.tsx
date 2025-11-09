@@ -1,43 +1,43 @@
 // src/app/login/page.tsx
 'use client';
-import { useTheme } from '@/contexts/ThemeContext';
 import LoginForm from '@/components/auth/LoginForm';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import AdBanner from '../../components/AdBanner';
+import { Container } from '@/components/design-system/Container';
+import { Heading1, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/components/design-system/tokens';
 
 // Replace the import using path alias with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const LoginPage = () => {
-  const { colors } = useTheme();
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center" style={{ color: colors.text }}>
+    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background }}>
+      <Container maxWidth="md" className="py-8">
+        <Heading1 className="mb-8 text-center">
           Giriş Yap
-        </h1>
-        
+        </Heading1>
+
         <div className="max-w-md mx-auto">
           <LoginForm />
-          
-          <div className="mt-6 text-center" style={{ color: colors.text }}>
-            <p>
+
+          <div className="mt-6 text-center">
+            <Text>
               Hesabınız yok mu?{' '}
-              <Link href="/register" className="underline" style={{ color: colors.accent }}>
+              <Link href="/register" className="underline" style={{ color: designTokens.colors.accent }}>
                 Kayıt Ol
               </Link>
-            </p>
+            </Text>
           </div>
         </div>
-      </div>
-      <AdBanner 
-        slot="login-footer" 
-        format="horizontal" 
+      </Container>
+      <AdBanner
+        slot="login-footer"
+        format="horizontal"
         className="my-4 mx-auto max-w-6xl px-4"
       />
-      <ClientOnlyAd 
+      <ClientOnlyAd
         slot="login-banner"
         format="auto"
         className="my-4 mx-auto"

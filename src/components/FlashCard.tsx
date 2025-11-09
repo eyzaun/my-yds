@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { designTokens } from '@/styles/design-tokens';
 
 interface Word {
   en: string;
@@ -24,7 +26,6 @@ const MemoizedFlashCard = React.memo(function FlashCard({
   isQuizMode = false,
   forceFlipped
 }: FlashCardProps) {
-  const { colors } = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -212,15 +213,6 @@ const MemoizedFlashCard = React.memo(function FlashCard({
   const aspectRatio = 215 / 400; // Kart orantısı
   const cardHeight = cardWidth * aspectRatio;
 
-  // Butonların stili
-  const buttonStyle = {
-    backgroundColor: colors.cardBackground,
-    color: colors.text,
-  };
-
-  // Butonlar için ortak stil
-  const navigationButtonClass = "flex items-center justify-center h-12 w-12 rounded-full shadow-lg transition-colors duration-300";
-
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* Mobil ve masaüstü için farklı düzenler */}
@@ -248,16 +240,16 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             >
               {/* Front Side */}
               <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg"
-                  style={{ backgroundColor: colors.cardBackground }}>
-                <h2 style={{ color: colors.text }} className="text-4xl sm:text-5xl font-bold text-center">
+                  style={{ backgroundColor: designTokens.colors.surface.primary }}>
+                <h2 style={{ color: designTokens.colors.text.primary }} className="text-4xl sm:text-5xl font-bold text-center">
                   {currentWord.en}
                 </h2>
               </div>
 
               {/* Back Side */}
               <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg rotate-y-180"
-                  style={{ backgroundColor: colors.accent }}>
-                <h2 style={{ color: colors.text }} className="text-4xl sm:text-5xl font-bold text-center">
+                  style={{ backgroundColor: designTokens.colors.primary[600] }}>
+                <h2 style={{ color: designTokens.colors.text.inverse }} className="text-4xl sm:text-5xl font-bold text-center">
                   {currentWord.tr}
                 </h2>
               </div>
@@ -266,41 +258,35 @@ const MemoizedFlashCard = React.memo(function FlashCard({
 
           {/* Navigasyon Butonları - Alt Alta */}
           <div className="flex items-center justify-center space-x-6 mt-2 mb-4">
-            <button
+            <Button
               onClick={handlePrevious}
-              className={navigationButtonClass}
-              style={{
-                ...buttonStyle,
-                opacity: (currentIndex === 0 || isAnimating || isQuizMode) ? 0.5 : 1,
-                cursor: (currentIndex === 0 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
-              }}
+              variant="secondary"
+              className="h-12 w-12 rounded-full shadow-lg"
+              style={{ padding: 0 }}
               disabled={currentIndex === 0 || isAnimating || isQuizMode}
               aria-label="Önceki kelime"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M15 18l-6-6 6-6"/>
               </svg>
-            </button>
+            </Button>
 
-            <div className="px-4 py-2 rounded-lg" style={{ backgroundColor: colors.cardBackground, color: colors.text }}>
+            <div className="px-4 py-2 rounded-lg" style={{ backgroundColor: designTokens.colors.surface.primary, color: designTokens.colors.text.primary }}>
               {currentIndex + 1} / {words.length}
             </div>
 
-            <button
+            <Button
               onClick={handleNext}
-              className={navigationButtonClass}
-              style={{
-                ...buttonStyle,
-                opacity: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 0.5 : 1,
-                cursor: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
-              }}
+              variant="secondary"
+              className="h-12 w-12 rounded-full shadow-lg"
+              style={{ padding: 0 }}
               disabled={currentIndex === words.length - 1 || isAnimating || isQuizMode}
               aria-label="Sonraki kelime"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 18l6-6-6-6"/>
               </svg>
-            </button>
+            </Button>
           </div>
         </div>
       ) : (
@@ -308,21 +294,18 @@ const MemoizedFlashCard = React.memo(function FlashCard({
         <div className="relative w-full flex items-center justify-center mb-4">
           <div className="flex items-center justify-center w-full px-4">
             {/* Previous Button */}
-            <button
+            <Button
               onClick={handlePrevious}
-              className={`${navigationButtonClass} mr-4`}
-              style={{
-                ...buttonStyle,
-                opacity: (currentIndex === 0 || isAnimating || isQuizMode) ? 0.5 : 1,
-                cursor: (currentIndex === 0 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
-              }}
+              variant="secondary"
+              className="h-12 w-12 rounded-full shadow-lg mr-4"
+              style={{ padding: 0 }}
               disabled={currentIndex === 0 || isAnimating || isQuizMode}
               aria-label="Önceki kelime"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M15 18l-6-6 6-6"/>
               </svg>
-            </button>
+            </Button>
 
             {/* Flash Card - Responsive ve orantılı */}
             <div 
@@ -345,16 +328,16 @@ const MemoizedFlashCard = React.memo(function FlashCard({
               >
                 {/* Front Side */}
                 <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg"
-                    style={{ backgroundColor: colors.cardBackground }}>
-                  <h2 style={{ color: colors.text }} className="text-4xl sm:text-5xl font-bold text-center">
+                    style={{ backgroundColor: designTokens.colors.surface.primary }}>
+                  <h2 style={{ color: designTokens.colors.text.primary }} className="text-4xl sm:text-5xl font-bold text-center">
                     {currentWord.en}
                   </h2>
                 </div>
 
                 {/* Back Side */}
                 <div className="absolute w-full h-full backface-hidden rounded-xl p-4 flex flex-col items-center justify-center shadow-lg rotate-y-180"
-                    style={{ backgroundColor: colors.accent }}>
-                  <h2 style={{ color: colors.text }} className="text-4xl sm:text-5xl font-bold text-center">
+                    style={{ backgroundColor: designTokens.colors.primary[600] }}>
+                  <h2 style={{ color: designTokens.colors.text.inverse }} className="text-4xl sm:text-5xl font-bold text-center">
                     {currentWord.tr}
                   </h2>
                 </div>
@@ -362,29 +345,26 @@ const MemoizedFlashCard = React.memo(function FlashCard({
             </div>
 
             {/* Next Button */}
-            <button
+            <Button
               onClick={handleNext}
-              className={`${navigationButtonClass} ml-4`}
-              style={{
-                ...buttonStyle,
-                opacity: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 0.5 : 1,
-                cursor: (currentIndex === words.length - 1 || isAnimating || isQuizMode) ? 'not-allowed' : 'pointer'
-              }}
+              variant="secondary"
+              className="h-12 w-12 rounded-full shadow-lg ml-4"
+              style={{ padding: 0 }}
               disabled={currentIndex === words.length - 1 || isAnimating || isQuizMode}
               aria-label="Sonraki kelime"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 18l6-6-6-6"/>
               </svg>
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
       {/* Kelime çevirme ipucu */}
-      <div style={{ color: colors.text, opacity: 0.8 }} className="text-sm mb-2 text-center">
-        {isMobile ? 
-          "Kelime çevirmek için kartın üzerine dokunun veya yanlara kaydırın" : 
+      <div style={{ color: designTokens.colors.text.primary, opacity: 0.8 }} className="text-sm mb-2 text-center">
+        {isMobile ?
+          "Kelime çevirmek için kartın üzerine dokunun veya yanlara kaydırın" :
           "Kelime çevirmek için kartın üzerine tıklayın"
         }
       </div>

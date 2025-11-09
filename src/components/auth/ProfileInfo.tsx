@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { logoutUser } from '@/firebase/auth';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { Heading2, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 const ProfileInfo = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const { colors } = useTheme();
   const [loading, setLoading] = useState(false);
 
   if (!user) {
@@ -29,42 +31,41 @@ const ProfileInfo = () => {
   };
 
   return (
-    <div className="p-6 rounded-lg shadow-lg" style={{ backgroundColor: colors.cardBackground }}>
-      <h2 className="text-2xl font-bold mb-6" style={{ color: colors.text }}>
+    <Card>
+      <Heading2 className="mb-6">
         Profil Bilgileri
-      </h2>
-      
+      </Heading2>
+
       <div className="mb-6">
         <div className="flex flex-col space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: colors.text }}>
+            <Text className="block text-sm font-medium mb-1">
               Ad Soyad
-            </label>
-            <div className="p-2 rounded-md" style={{ backgroundColor: colors.background, color: colors.text }}>
+            </Text>
+            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background, color: designTokens.colors.text }}>
               {user.displayName || 'İsimsiz Kullanıcı'}
             </div>
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: colors.text }}>
+            <Text className="block text-sm font-medium mb-1">
               Email
-            </label>
-            <div className="p-2 rounded-md" style={{ backgroundColor: colors.background, color: colors.text }}>
+            </Text>
+            <div className="p-2 rounded-md" style={{ backgroundColor: designTokens.colors.background, color: designTokens.colors.text }}>
               {user.email}
             </div>
           </div>
         </div>
       </div>
-      
-      <button
+
+      <Button
         onClick={handleLogout}
-        className="w-full py-2 px-4 rounded-md font-medium"
-        style={{ backgroundColor: colors.accent, color: colors.text }}
+        className="w-full"
         disabled={loading}
       >
         {loading ? 'Çıkış Yapılıyor...' : 'Çıkış Yap'}
-      </button>
-    </div>
+      </Button>
+    </Card>
   );
 };
 

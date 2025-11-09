@@ -2,7 +2,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { FlashcardData } from '@/types/flashcard';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { designTokens } from '@/styles/design-tokens';
 import QuizMode from '@/components/flashcards/QuizMode';
 import FullscreenWrapper from '@/components/flashcards/FullscreenWrapper';
 import useFlashcardState from '@/hooks/useFlashcardState';
@@ -18,14 +20,13 @@ interface FlashcardDeckProps {
   quizMode?: boolean;
 }
 
-export default function FlashcardDeck({ 
+export default function FlashcardDeck({
   flashcards = [],
   onReset,
   categoryId = 'default',
   initialIndex = 0,
   quizMode = false
 }: FlashcardDeckProps) {
-  const { colors } = useTheme();
   const flashcardContainerRef = useRef<HTMLDivElement>(null);
   
   const { 
@@ -109,7 +110,7 @@ export default function FlashcardDeck({
   
   // Kart bulunmaması durumu
   if (!flashcards.length) {
-    return <div className="text-center p-8" style={{ color: colors.text }}>Henüz kart bulunmuyor.</div>;
+    return <div className="text-center p-8" style={{ color: designTokens.colors.text }}>Henüz kart bulunmuyor.</div>;
   }
   
   // MOBİL QUIZ MODU ÖZEL GÖRÜNÜM
@@ -121,7 +122,7 @@ export default function FlashcardDeck({
         handlers={handlers}
         dimensions={dimensions}
         cardStyles={cardStyles}
-        colors={colors}
+        colors={designTokens.colors}
       />
     );
   }
@@ -129,14 +130,14 @@ export default function FlashcardDeck({
   // Ana içerik
   const renderMainContent = () => (
     <>
-      <FlashcardControl 
+      <FlashcardControl
         state={state}
         handlers={handlers}
-        colors={colors}
+        colors={designTokens.colors}
         shouldRenderBottomButtons={isMobile}
         flashcards={flashcards}
       />
-      
+
       <FlashcardCard
         currentCard={flashcards[currentIndex]}
         flipped={flipped}
@@ -144,7 +145,7 @@ export default function FlashcardDeck({
         cardWidth={cardWidth}
         cardHeight={cardHeight}
         cardStyles={cardStyles}
-        colors={colors}
+        colors={designTokens.colors}
         handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
         dimensions={{isMobile, isLandscape}}
         completed={completed}
@@ -165,23 +166,23 @@ export default function FlashcardDeck({
       )}
 
       {/* Alt bilgiler */}
-      <div className="text-center mt-4 sm:mt-6 text-sm" style={{ color: colors.text }}>
-        <span className="inline-block px-4 py-1 rounded-full" style={{ backgroundColor: `${colors.accent}15` }}>
+      <div className="text-center text-sm" style={{ color: designTokens.colors.text, marginTop: designTokens.spacing.md }}>
+        <span className="inline-block rounded-full" style={{
+          backgroundColor: `${designTokens.colors.accent}15`,
+          padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`
+        }}>
           {quizMode ? 'Doğru cevabı görmek için kartın üzerine tıklayın' : 'Kelime çevirmek için kartın üzerine tıklayın'}
         </span>
       </div>
       
-      <div className="mt-3 sm:mt-4 text-center">
-        <button 
-          className="text-sm px-3 py-1 rounded-lg hover:bg-opacity-20 transition-all duration-300"
+      <div className="text-center" style={{ marginTop: designTokens.spacing.sm }}>
+        <Button
+          variant="secondary"
+          size="small"
           onClick={handleReset}
-          style={{ 
-            color: colors.accent,
-            backgroundColor: `${colors.accent}10`,
-          }}
         >
           Tüm kartları sıfırla
-        </button>
+        </Button>
       </div>
     </>
   );
@@ -197,7 +198,7 @@ export default function FlashcardDeck({
           cardWidth={fullscreenCardWidth}
           cardHeight={fullscreenCardHeight}
           cardStyles={cardStyles}
-          colors={colors}
+          colors={designTokens.colors}
           handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
           dimensions={{isMobile, isLandscape}}
           isFullscreen={true}
@@ -220,41 +221,46 @@ export default function FlashcardDeck({
         </div>
       )}
 
-      <div className="nav-buttons-wrapper flex items-center justify-center gap-4">
-        <button 
-          className="p-2 rounded-full opacity-75 hover:opacity-100 transition-all"
+      <div className="nav-buttons-wrapper flex items-center justify-center" style={{ gap: designTokens.spacing.md }}>
+        <Button
+          variant="secondary"
           onClick={handlePrevious}
           disabled={currentIndex === 0 || state.isAnimating}
           style={{
             visibility: currentIndex === 0 ? 'hidden' : 'visible',
-            backgroundColor: `${colors.accent}30`,
-            color: colors.accent
+            padding: designTokens.spacing.xs,
+            borderRadius: '50%',
+            opacity: 0.75
           }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-        </button>
+        </Button>
 
-        <div className="text-center px-3 py-1 rounded-full text-sm" style={{ backgroundColor: `${colors.accent}15`, color: colors.text }}>
+        <div className="text-center rounded-full text-sm" style={{
+          backgroundColor: `${designTokens.colors.accent}15`,
+          color: designTokens.colors.text,
+          padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`
+        }}>
           {currentIndex + 1} / {flashcards.length}
         </div>
 
-        <button 
-          className="p-2 rounded-full opacity-75 hover:opacity-100 transition-all"
+        <Button
+          variant="secondary"
           onClick={handleNext}
           disabled={currentIndex === flashcards.length - 1 || state.isAnimating || !canAdvance}
           style={{
             visibility: currentIndex === flashcards.length - 1 ? 'hidden' : 'visible',
-            backgroundColor: `${colors.accent}30`,
-            opacity: canAdvance ? 0.9 : 0.3,
-            color: colors.accent
+            padding: designTokens.spacing.xs,
+            borderRadius: '50%',
+            opacity: canAdvance ? 0.75 : 0.3
           }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
-        </button>
+        </Button>
       </div>
     </>
   );

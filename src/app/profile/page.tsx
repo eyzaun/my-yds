@@ -2,20 +2,23 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import ProfileInfo from '@/components/auth/ProfileInfo';
 import RequireAuth from '@/utils/requireAuth';
 import { getAllCategoryProgress, getUserScores } from '@/firebase/firestore';
 import Link from 'next/link';
 import { UserProgress, QuizScore } from '@/firebase/types';
 import dynamic from 'next/dynamic';
+import { Container } from '@/components/design-system/Container';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { Heading1, Heading2 } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProfilePage = () => {
   const { user } = useAuth();
-  const { colors } = useTheme();
   const [progress, setProgress] = useState<Record<string, UserProgress>>({});
   const [scores, setScores] = useState<QuizScore[]>([]);
   const [loading, setLoading] = useState(true);
@@ -64,11 +67,11 @@ const ProfilePage = () => {
 
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-8 text-center" style={{ color: colors.text }}>
+      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background }}>
+        <Container maxWidth="4xl">
+          <Heading1 className="mb-8 text-center">
             Profil
-          </h1>
+          </Heading1>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-1">
@@ -76,50 +79,50 @@ const ProfilePage = () => {
             </div>
 
             <div className="md:col-span-2">
-              <div className="p-6 rounded-lg shadow-lg mb-6" style={{ backgroundColor: colors.cardBackground }}>
-                <h2 className="text-xl font-bold mb-4" style={{ color: colors.text }}>
+              <Card variant="elevated" className="mb-6">
+                <Heading2 className="mb-4">
                   Kelime Çalışma İlerlemesi
-                </h2>
+                </Heading2>
 
                 {loading ? (
-                  <div style={{ color: colors.text }}>Yükleniyor...</div>
+                  <div style={{ color: designTokens.colors.text.primary }}>Yükleniyor...</div>
                 ) : Object.keys(progress).length > 0 ? (
                   <div className="space-y-4">
                     {Object.keys(progress).map((categoryId) => {
                       const category = progress[categoryId];
                       const categoryName = categoryNames[categoryId] || categoryId;
                       const studiedCount = category.studiedWords?.length || 0;
-                      
+
                       return (
-                        <div key={categoryId} className="border-b pb-2" style={{ borderColor: `${colors.accent}40` }}>
+                        <div key={categoryId} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.accent}40` }}>
                           <div className="flex justify-between mb-1">
-                            <span style={{ color: colors.text }}>{categoryName}</span>
-                            <span style={{ color: colors.accent }}>{studiedCount} kelime</span>
+                            <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
+                            <span style={{ color: designTokens.colors.accent }}>{studiedCount} kelime</span>
                           </div>
                           <Link href={`/${categoryId}`}>
-                            <span className="text-sm" style={{ color: colors.accent }}>Çalışmaya Devam Et</span>
+                            <span className="text-sm" style={{ color: designTokens.colors.accent }}>Çalışmaya Devam Et</span>
                           </Link>
                         </div>
                       );
                     })}
                   </div>
                 ) : (
-                  <div style={{ color: colors.text }}>
-                    Henüz kelime çalışmadınız. 
+                  <div style={{ color: designTokens.colors.text.primary }}>
+                    Henüz kelime çalışmadınız.
                     <Link href="/all-words">
-                      <span className="ml-2" style={{ color: colors.accent }}>Kelimeleri Keşfedin</span>
+                      <span className="ml-2" style={{ color: designTokens.colors.accent }}>Kelimeleri Keşfedin</span>
                     </Link>
                   </div>
                 )}
-              </div>
+              </Card>
 
-              <div className="p-6 rounded-lg shadow-lg" style={{ backgroundColor: colors.cardBackground }}>
-                <h2 className="text-xl font-bold mb-4" style={{ color: colors.text }}>
+              <Card variant="elevated">
+                <Heading2 className="mb-4">
                   Test Sonuçları
-                </h2>
+                </Heading2>
 
                 {loading ? (
-                  <div style={{ color: colors.text }}>Yükleniyor...</div>
+                  <div style={{ color: designTokens.colors.text.primary }}>Yükleniyor...</div>
                 ) : scores.length > 0 ? (
                   <div className="space-y-4">
                     {scores.slice(0, 5).map((score, index) => {
@@ -127,16 +130,16 @@ const ProfilePage = () => {
                       const scorePercentage = ((score.score / score.totalQuestions) * 100).toFixed(0);
                       const date = new Date(score.date.seconds * 1000);
                       const formattedDate = date.toLocaleDateString('tr-TR');
-                      
+
                       return (
-                        <div key={index} className="border-b pb-2" style={{ borderColor: `${colors.accent}40` }}>
+                        <div key={index} className="border-b pb-2" style={{ borderColor: `${designTokens.colors.accent}40` }}>
                           <div className="flex justify-between mb-1">
-                            <span style={{ color: colors.text }}>{categoryName}</span>
-                            <span style={{ color: Number(scorePercentage) >= 70 ? 'green' : Number(scorePercentage) >= 50 ? 'orange' : 'red' }}>
+                            <span style={{ color: designTokens.colors.text.primary }}>{categoryName}</span>
+                            <span style={{ color: Number(scorePercentage) >= 70 ? designTokens.colors.success : Number(scorePercentage) >= 50 ? designTokens.colors.warning : designTokens.colors.error }}>
                               %{scorePercentage} ({score.score}/{score.totalQuestions})
                             </span>
                           </div>
-                          <div className="text-sm" style={{ color: colors.textSecondary }}>
+                          <div className="text-sm" style={{ color: designTokens.colors.text.secondary }}>
                             {formattedDate}
                           </div>
                         </div>
@@ -144,25 +147,25 @@ const ProfilePage = () => {
                     })}
                   </div>
                 ) : (
-                  <div style={{ color: colors.text }}>
-                    Henüz test çözmediniz. 
+                  <div style={{ color: designTokens.colors.text.primary }}>
+                    Henüz test çözmediniz.
                     <Link href="/all-words">
-                      <span className="ml-2" style={{ color: colors.accent }}>Testleri Keşfedin</span>
+                      <span className="ml-2" style={{ color: designTokens.colors.accent }}>Testleri Keşfedin</span>
                     </Link>
                   </div>
                 )}
-              </div>
+              </Card>
             </div>
           </div>
-        </div>
-        <ClientOnlyAd 
+        </Container>
+        <ClientOnlyAd
           slot="profile-banner"
           format="auto"
           className="my-4 mx-auto"
         />
-        <ClientOnlyAd 
-          slot="profile-footer" 
-          format="horizontal" 
+        <ClientOnlyAd
+          slot="profile-footer"
+          format="horizontal"
           className="my-4 mx-auto max-w-6xl px-4"
         />
       </div>

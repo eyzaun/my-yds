@@ -4,7 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Container } from '@/components/design-system/Container';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { Input } from '@/components/design-system/Input';
+import { Heading1, Heading2, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 import { FlashcardData } from '@/types/flashcard';
 import { parseExcelFile, convertExcelRowsToFlashcards } from '@/utils/excelParser';
 import { saveFlashcardSet, getUserFlashcardSets, getFlashcardsBySetId, deleteFlashcardSet } from '@/lib/firebase/flashcardStorage';
@@ -37,7 +42,6 @@ export default function UploadFlashcardsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [showViewer, setShowViewer] = useState(false);
   const [currentSetId, setCurrentSetId] = useState<string>('');
-  const { colors } = useTheme();
 
   useEffect(() => {
     const auth = getAuth();
@@ -175,24 +179,22 @@ export default function UploadFlashcardsPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-6 text-center" style={{ color: colors.text }}>
+      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+        <Container maxWidth="4xl" className="py-8">
+          <Heading1 className="mb-6 text-center">
             Kişisel Kelime Kartları
-          </h1>
-          <div className="rounded-xl p-8 text-center" style={{ backgroundColor: colors.cardBackground }}>
-            <p className="mb-4" style={{ color: colors.text }}>
+          </Heading1>
+          <Card variant="elevated" className="p-8 text-center">
+            <Text className="mb-4">
               Bu özelliği kullanmak için giriş yapmanız gerekmektedir.
-            </p>
-            <Link
-              href="/login?redirect=/upload-flashcards"
-              className="inline-block px-6 py-3 rounded-lg font-medium transition-all"
-              style={{ backgroundColor: colors.accent, color: 'white' }}
-            >
-              Giriş Yap
+            </Text>
+            <Link href="/login?redirect=/upload-flashcards">
+              <Button variant="primary">
+                Giriş Yap
+              </Button>
             </Link>
-          </div>
-        </div>
+          </Card>
+        </Container>
       </div>
     );
   }
@@ -200,13 +202,13 @@ export default function UploadFlashcardsPage() {
   if (showViewer && flashcards.length > 0) {
     const words = convertFlashcardsToWords(flashcards);
     return (
-      <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
-        <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background.primary }}>
+        <Container maxWidth="6xl" className="py-8">
           {/* Header with close button */}
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold" style={{ color: colors.text }}>
+            <Heading1 className="text-2xl md:text-3xl">
               {setName}
-            </h1>
+            </Heading1>
             <button
               onClick={() => {
                 setShowViewer(false);
@@ -216,8 +218,8 @@ export default function UploadFlashcardsPage() {
               }}
               className="p-2 rounded-lg transition-all hover:bg-opacity-80"
               style={{
-                backgroundColor: colors.cardBackground,
-                color: colors.text
+                backgroundColor: designTokens.colors.background.secondary,
+                color: designTokens.colors.text.primary
               }}
               title="Geri Dön"
             >
@@ -229,44 +231,44 @@ export default function UploadFlashcardsPage() {
 
           {/* WordList Component */}
           <WordList words={words} categoryId={currentSetId || 'custom-flashcards'} isCustomCard={true} />
-        </div>
+        </Container>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center" style={{ color: colors.text }}>
+    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+      <Container maxWidth="6xl" className="py-8">
+        <Heading1 className="mb-8 text-center">
           Kişisel Kelime Kartları
-        </h1>
+        </Heading1>
 
         {/* Notifications */}
         {error && (
           <div className="mb-6 p-4 rounded-lg bg-red-500 bg-opacity-10 border border-red-500 border-opacity-20">
-            <p className="text-red-600">{error}</p>
+            <Text className="text-red-600">{error}</Text>
           </div>
         )}
-        
+
         {success && (
           <div className="mb-6 p-4 rounded-lg bg-green-500 bg-opacity-10 border border-green-500 border-opacity-20">
-            <p className="text-green-600">{success}</p>
+            <Text className="text-green-600">{success}</Text>
           </div>
         )}
 
         {/* Upload Section */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           {/* Upload Panel */}
-          <div className="rounded-xl p-6" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card variant="elevated" className="p-6">
+            <Heading2 className="mb-4">
               Excel Dosyanızı Yükleyin
-            </h2>
-            
-            <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: `${colors.accent}10` }}>
-              <p className="text-sm mb-2" style={{ color: colors.text }}>
+            </Heading2>
+
+            <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary}10` }}>
+              <Text className="text-sm mb-2">
                 <strong>Excel Format:</strong>
-              </p>
-              <ul className="text-sm space-y-1" style={{ color: colors.text }}>
+              </Text>
+              <ul className="text-sm space-y-1" style={{ color: designTokens.colors.text.primary }}>
                 <li>• <strong>C sütunu:</strong> Kelime (ön yüz)</li>
                 <li>• <strong>D sütunu:</strong> Anlam (arka yüz)</li>
                 <li>• <strong>E sütunu:</strong> İpucu/Not (ön yüzde küçük yazı)</li>
@@ -285,54 +287,48 @@ export default function UploadFlashcardsPage() {
                 htmlFor="excel-file"
                 className="block w-full p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-all hover:bg-opacity-5"
                 style={{
-                  borderColor: colors.accent,
-                  backgroundColor: `${colors.accent}05`
+                  borderColor: designTokens.colors.primary,
+                  backgroundColor: `${designTokens.colors.primary}05`
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke={colors.accent}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.primary}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
-                <p className="font-medium" style={{ color: colors.text }}>
+                <Text className="font-medium">
                   Dosya seçmek için tıklayın
-                </p>
-                <p className="text-sm mt-1 opacity-70" style={{ color: colors.text }}>
+                </Text>
+                <Text className="text-sm mt-1 opacity-70">
                   veya sürükleyip bırakın
-                </p>
+                </Text>
               </label>
             </div>
 
             {flashcards.length > 0 && (
-              <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${colors.accent}10` }}>
-                <p className="font-medium" style={{ color: colors.text }}>
+              <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${designTokens.colors.primary}10` }}>
+                <Text className="font-medium">
                   {flashcards.length} kelime yüklendi
-                </p>
+                </Text>
               </div>
             )}
-          </div>
+          </Card>
 
           {/* Preview & Save Panel */}
-          <div className="rounded-xl p-6" style={{ backgroundColor: colors.cardBackground }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+          <Card variant="elevated" className="p-6">
+            <Heading2 className="mb-4">
               Önizleme ve Kaydet
-            </h2>
+            </Heading2>
 
             {flashcards.length > 0 ? (
               <>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2" style={{ color: colors.text }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: designTokens.colors.text.primary }}>
                     Set Adı
                   </label>
-                  <input
+                  <Input
                     type="text"
                     value={setName}
                     onChange={(e) => setSetName(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg"
                     placeholder="Örn: YDS Kelimelerim"
-                    style={{
-                      backgroundColor: colors.background,
-                      color: colors.text,
-                      border: `1px solid ${colors.accent}40`
-                    }}
                   />
                 </div>
 
@@ -341,68 +337,61 @@ export default function UploadFlashcardsPage() {
                     <div
                       key={card.id}
                       className="mb-2 p-3 rounded-lg"
-                      style={{ backgroundColor: `${colors.accent}05` }}
+                      style={{ backgroundColor: `${designTokens.colors.primary}05` }}
                     >
-                      <p className="text-sm" style={{ color: colors.text }}>
+                      <Text className="text-sm">
                         <strong>{index + 1}.</strong> {card.front} → {card.back}
                         {card.notes && <span className="opacity-60"> ({card.notes})</span>}
-                      </p>
+                      </Text>
                     </div>
                   ))}
                   {flashcards.length > 5 && (
-                    <p className="text-sm text-center opacity-70" style={{ color: colors.text }}>
+                    <Text className="text-sm text-center opacity-70">
                       ...ve {flashcards.length - 5} kelime daha
-                    </p>
+                    </Text>
                   )}
                 </div>
 
                 <div className="flex gap-3">
-                  <button
+                  <Button
                     onClick={() => setShowViewer(true)}
-                    className="flex-1 py-2 rounded-lg font-medium transition-all"
-                    style={{
-                      backgroundColor: `${colors.accent}20`,
-                      color: colors.text
-                    }}
+                    variant="secondary"
+                    className="flex-1"
                   >
                     Önizle
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={handleSaveFlashcards}
                     disabled={isSaving}
-                    className="flex-1 py-2 rounded-lg font-medium transition-all"
-                    style={{
-                      backgroundColor: colors.accent,
-                      color: 'white',
-                      opacity: isSaving ? 0.7 : 1
-                    }}
+                    variant="primary"
+                    className="flex-1"
                   >
                     {isSaving ? 'Kaydediliyor...' : 'Kaydet'}
-                  </button>
+                  </Button>
                 </div>
               </>
             ) : (
               <div className="text-center py-12">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={colors.text}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.text.primary}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <p className="opacity-50" style={{ color: colors.text }}>
+                <Text className="opacity-50">
                   Henüz dosya yüklenmedi
-                </p>
+                </Text>
               </div>
             )}
-          </div>
+          </Card>
         </div>
 
         {/* Saved Sets Section */}
-        <div className="rounded-xl p-6" style={{ backgroundColor: colors.cardBackground }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+        <Card variant="elevated" className="p-6">
+          <Heading2 className="mb-4">
             Kaydedilmiş Kelime Setleriniz
-          </h2>
+          </Heading2>
 
           {isLoading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 mx-auto" style={{ borderColor: colors.accent }}></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 mx-auto" style={{ borderColor: designTokens.colors.primary }}></div>
             </div>
           ) : savedSets.length > 0 ? (
             <div className="grid gap-3">
@@ -410,16 +399,16 @@ export default function UploadFlashcardsPage() {
                 <div
                   key={set.id}
                   className="group flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
-                  style={{ backgroundColor: colors.background }}
+                  style={{ backgroundColor: designTokens.colors.background.primary }}
                   onClick={() => handleLoadFlashcardSet(set.id)}
                 >
                   <div className="flex-1 pointer-events-none">
-                    <h3 className="font-medium group-hover:underline" style={{ color: colors.text }}>
+                    <h3 className="font-medium group-hover:underline" style={{ color: designTokens.colors.text.primary }}>
                       {set.name}
                     </h3>
-                    <p className="text-sm opacity-70" style={{ color: colors.text }}>
+                    <Text className="text-sm opacity-70">
                       {set.cardCount} kelime • {set.createdAt.toLocaleDateString('tr-TR')}
-                    </p>
+                    </Text>
                   </div>
                   <div className="flex items-center gap-2 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
                     <button
@@ -442,16 +431,16 @@ export default function UploadFlashcardsPage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={colors.text}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke={designTokens.colors.text.primary}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
               </svg>
-              <p className="opacity-50" style={{ color: colors.text }}>
+              <Text className="opacity-50">
                 Henüz kaydedilmiş kelime setiniz yok
-              </p>
+              </Text>
             </div>
           )}
-        </div>
-      </div>
+        </Card>
+      </Container>
 
       {/* Ad - Sayfanın en altında */}
       <div className="mt-24 pb-16">

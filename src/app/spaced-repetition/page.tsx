@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useRouter } from 'next/navigation';
 import {
   getCardStatistics,
@@ -18,6 +17,11 @@ import {
   DailyStatistics,
 } from '@/types/spacedRepetition';
 import dynamic from 'next/dynamic';
+import { Container } from '@/components/design-system/Container';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { Heading1, Heading2, Heading3, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 const SpacedRepetitionQuiz = dynamic(
   () => import('@/components/SpacedRepetitionQuiz'),
@@ -26,7 +30,6 @@ const SpacedRepetitionQuiz = dynamic(
 
 export default function SpacedRepetitionPage() {
   const { user } = useAuth();
-  const { colors } = useTheme();
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -116,176 +119,147 @@ export default function SpacedRepetitionPage() {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: colors.background }}
+        style={{ backgroundColor: designTokens.colors.background }}
       >
         <div className="text-center">
           <div
             className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 mx-auto mb-4"
-            style={{ borderColor: colors.accent }}
+            style={{ borderColor: designTokens.colors.accent }}
           />
-          <p style={{ color: colors.text }}>Yükleniyor...</p>
+          <Text>Yükleniyor...</Text>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-16" style={{ backgroundColor: colors.background }}>
-      <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="min-h-screen pb-16" style={{ backgroundColor: designTokens.colors.background }}>
+      <Container>
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: colors.text }}>
-            📚 Aralıklı Tekrar Sistemi
-          </h1>
-          <p className="opacity-70" style={{ color: colors.text }}>
+          <Heading1>📚 Aralıklı Tekrar Sistemi</Heading1>
+          <Text className="opacity-70">
             Bilimsel yöntemlerle kelime öğrenin
-          </p>
+          </Text>
         </div>
 
         {/* Statistics Cards */}
         {statistics && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {/* Due Today */}
-            <div
-              className="rounded-xl p-6 text-center"
-              style={{ backgroundColor: colors.cardBackground }}
-            >
-              <div className="text-4xl font-bold mb-2" style={{ color: colors.accent }}>
+            <Card className="p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.accent }}>
                 {statistics.dueToday}
               </div>
-              <div className="text-sm opacity-70" style={{ color: colors.text }}>
+              <Text className="text-sm opacity-70">
                 Bugün Tekrar Et
-              </div>
-            </div>
+              </Text>
+            </Card>
 
             {/* Total Cards */}
-            <div
-              className="rounded-xl p-6 text-center"
-              style={{ backgroundColor: colors.cardBackground }}
-            >
-              <div className="text-4xl font-bold mb-2" style={{ color: colors.text }}>
+            <Card className="p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.text }}>
                 {statistics.totalCards}
               </div>
-              <div className="text-sm opacity-70" style={{ color: colors.text }}>
+              <Text className="text-sm opacity-70">
                 Toplam Kelime
-              </div>
-            </div>
+              </Text>
+            </Card>
 
             {/* Accuracy */}
-            <div
-              className="rounded-xl p-6 text-center"
-              style={{ backgroundColor: colors.cardBackground }}
-            >
-              <div className="text-4xl font-bold mb-2" style={{ color: colors.accent }}>
+            <Card className="p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.accent }}>
                 {statistics.overallAccuracy}%
               </div>
-              <div className="text-sm opacity-70" style={{ color: colors.text }}>
+              <Text className="text-sm opacity-70">
                 Doğruluk Oranı
-              </div>
-            </div>
+              </Text>
+            </Card>
 
             {/* Current Streak */}
-            <div
-              className="rounded-xl p-6 text-center"
-              style={{ backgroundColor: colors.cardBackground }}
-            >
-              <div className="text-4xl font-bold mb-2" style={{ color: colors.accent }}>
+            <Card className="p-6 text-center">
+              <div className="text-4xl font-bold mb-2" style={{ color: designTokens.colors.accent }}>
                 🔥 {streaks.currentStreak}
               </div>
-              <div className="text-sm opacity-70" style={{ color: colors.text }}>
+              <Text className="text-sm opacity-70">
                 Günlük Seri
-              </div>
-            </div>
+              </Text>
+            </Card>
           </div>
         )}
 
         {/* Quick Stats */}
         {statistics && statistics.totalCards > 0 && (
-          <div
-            className="rounded-xl p-6 mb-8"
-            style={{ backgroundColor: colors.cardBackground }}
-          >
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
-              📊 İlerleme Durumu
-            </h2>
+          <Card className="p-6 mb-8">
+            <Heading2>📊 İlerleme Durumu</Heading2>
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1" style={{ color: colors.text }}>
+                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.text }}>
                   {statistics.newCards}
                 </div>
-                <div className="text-sm opacity-70" style={{ color: colors.text }}>
+                <Text className="text-sm opacity-70">
                   Yeni
-                </div>
+                </Text>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1" style={{ color: colors.accent }}>
+                <div className="text-2xl font-bold mb-1" style={{ color: designTokens.colors.accent }}>
                   {statistics.learningCards}
                 </div>
-                <div className="text-sm opacity-70" style={{ color: colors.text }}>
+                <Text className="text-sm opacity-70">
                   Öğreniliyor
-                </div>
+                </Text>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold mb-1 text-green-500">
                   {statistics.masteredCards}
                 </div>
-                <div className="text-sm opacity-70" style={{ color: colors.text }}>
+                <Text className="text-sm opacity-70">
                   Ustalaşıldı
-                </div>
+                </Text>
               </div>
             </div>
-          </div>
+          </Card>
         )}
 
         {/* Start Review - All Cards */}
         {statistics && statistics.dueToday > 0 && (
-          <div
-            className="rounded-xl p-8 mb-8 text-center cursor-pointer hover:opacity-90 transition-all"
-            style={{ backgroundColor: colors.accent }}
+          <Card
+            className="p-8 mb-8 text-center cursor-pointer hover:opacity-90 transition-all"
+            style={{ backgroundColor: designTokens.colors.accent }}
             onClick={() => startQuiz('all')}
           >
-            <h2 className="text-2xl font-bold mb-2 text-white">
+            <Heading2 className="text-white">
               🎯 Tüm Kartları Tekrar Et
-            </h2>
-            <p className="text-white opacity-90">
+            </Heading2>
+            <Text className="text-white opacity-90">
               {statistics.dueToday} kart bugün için hazır
-            </p>
-          </div>
+            </Text>
+          </Card>
         )}
 
         {/* Category Groups */}
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4" style={{ color: colors.text }}>
-            📂 Kategoriler
-          </h2>
+          <Heading2>📂 Kategoriler</Heading2>
 
           {groupSummaries.length === 0 ? (
-            <div
-              className="rounded-xl p-8 text-center"
-              style={{ backgroundColor: colors.cardBackground }}
-            >
+            <Card className="p-8 text-center">
               <div className="text-6xl mb-4">📝</div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: colors.text }}>
-                Henüz kelime kartınız yok
-              </h3>
-              <p className="mb-6 opacity-70" style={{ color: colors.text }}>
+              <Heading3>Henüz kelime kartınız yok</Heading3>
+              <Text className="mb-6 opacity-70">
                 Quiz modunu kullanarak kelime öğrenmeye başlayın!
-              </p>
-              <button
+              </Text>
+              <Button
                 onClick={() => router.push('/')}
-                className="px-6 py-3 rounded-lg font-medium text-white"
-                style={{ backgroundColor: colors.accent }}
               >
                 Kategorilere Git
-              </button>
-            </div>
+              </Button>
+            </Card>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               {groupSummaries.map((group, index) => (
-                <div
+                <Card
                   key={`${group.type}-${group.categoryId || 'custom'}-${index}`}
-                  className="rounded-xl p-6 cursor-pointer hover:shadow-lg transition-all"
-                  style={{ backgroundColor: colors.cardBackground }}
+                  className="p-6 cursor-pointer hover:shadow-lg transition-all"
                   onClick={() =>
                     group.dueToday > 0 &&
                     startQuiz(group.type, group.categoryId, group.categoryName)
@@ -293,17 +267,15 @@ export default function SpacedRepetitionPage() {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-lg font-semibold mb-1" style={{ color: colors.text }}>
-                        {group.categoryName}
-                      </h3>
-                      <p className="text-sm opacity-70" style={{ color: colors.text }}>
+                      <Heading3>{group.categoryName}</Heading3>
+                      <Text className="text-sm opacity-70">
                         {group.totalCards} kelime
-                      </p>
+                      </Text>
                     </div>
                     {group.dueToday > 0 && (
                       <div
                         className="px-3 py-1 rounded-full text-sm font-medium text-white"
-                        style={{ backgroundColor: colors.accent }}
+                        style={{ backgroundColor: designTokens.colors.accent }}
                       >
                         {group.dueToday} hazır
                       </div>
@@ -312,35 +284,35 @@ export default function SpacedRepetitionPage() {
 
                   <div className="grid grid-cols-3 gap-2 text-center text-sm mb-4">
                     <div>
-                      <div className="font-semibold" style={{ color: colors.text }}>
+                      <div className="font-semibold" style={{ color: designTokens.colors.text }}>
                         {group.newCards}
                       </div>
-                      <div className="opacity-60" style={{ color: colors.text }}>
+                      <Text className="opacity-60 text-sm">
                         Yeni
-                      </div>
+                      </Text>
                     </div>
                     <div>
-                      <div className="font-semibold" style={{ color: colors.accent }}>
+                      <div className="font-semibold" style={{ color: designTokens.colors.accent }}>
                         {group.learningCards}
                       </div>
-                      <div className="opacity-60" style={{ color: colors.text }}>
+                      <Text className="opacity-60 text-sm">
                         Öğreniliyor
-                      </div>
+                      </Text>
                     </div>
                     <div>
                       <div className="font-semibold text-green-500">
                         {group.masteredCards}
                       </div>
-                      <div className="opacity-60" style={{ color: colors.text }}>
+                      <Text className="opacity-60 text-sm">
                         Ustalaşıldı
-                      </div>
+                      </Text>
                     </div>
                   </div>
 
-                  <div className="text-sm text-center opacity-70" style={{ color: colors.text }}>
+                  <Text className="text-sm text-center opacity-70">
                     Doğruluk: {group.accuracy}%
-                  </div>
-                </div>
+                  </Text>
+                </Card>
               ))}
             </div>
           )}
@@ -348,22 +320,17 @@ export default function SpacedRepetitionPage() {
 
         {/* Recent Activity */}
         {recentStats.length > 0 && (
-          <div
-            className="rounded-xl p-6"
-            style={{ backgroundColor: colors.cardBackground }}
-          >
-            <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
-              📈 Son 7 Günlük Aktivite
-            </h2>
+          <Card className="p-6">
+            <Heading2>📈 Son 7 Günlük Aktivite</Heading2>
             <div className="space-y-2">
               {recentStats.map((stat) => (
                 <div
                   key={stat.date}
                   className="flex items-center justify-between py-2 border-b border-opacity-10"
-                  style={{ borderColor: colors.text }}
+                  style={{ borderColor: designTokens.colors.text }}
                 >
                   <div className="flex-1">
-                    <div className="font-medium" style={{ color: colors.text }}>
+                    <div className="font-medium" style={{ color: designTokens.colors.text }}>
                       {new Date(stat.date).toLocaleDateString('tr-TR', {
                         weekday: 'short',
                         month: 'short',
@@ -372,7 +339,7 @@ export default function SpacedRepetitionPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
-                    <div style={{ color: colors.text }}>
+                    <div style={{ color: designTokens.colors.text }}>
                       <span className="font-semibold">{stat.reviewedCards}</span> kart
                     </div>
                     <div className="text-green-500">
@@ -381,7 +348,7 @@ export default function SpacedRepetitionPage() {
                     <div className="text-red-500">
                       ✗ {stat.incorrectAnswers}
                     </div>
-                    <div style={{ color: colors.text }} className="opacity-70">
+                    <div style={{ color: designTokens.colors.text }} className="opacity-70">
                       {stat.reviewedCards > 0
                         ? Math.round((stat.correctAnswers / stat.reviewedCards) * 100)
                         : 0}%
@@ -390,9 +357,9 @@ export default function SpacedRepetitionPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

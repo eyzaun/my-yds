@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { registerUser } from '@/firebase/auth';
-import { useTheme } from '@/contexts/ThemeContext';
 import { FirebaseError } from 'firebase/app';
+import { Button } from '@/components/design-system/Button';
+import { Input } from '@/components/design-system/Input';
+import { Card } from '@/components/design-system/Card';
+import { Typography } from '@/components/design-system/Typography';
+import { designTokens } from '@/components/design-system/tokens';
 
 const RegisterForm = () => {
-  const { colors } = useTheme();
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -61,86 +64,78 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-lg shadow-lg" style={{ backgroundColor: colors.cardBackground }}>
-      <h2 className="text-2xl font-bold mb-6 text-center" style={{ color: colors.text }}>
+    <Card className="max-w-md mx-auto">
+      <Typography variant="h2" className="mb-6 text-center">
         Hesap Oluştur
-      </h2>
-      
+      </Typography>
+
       {error && (
-        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: colors.text }}>
+        <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: designTokens.colors.text.primary }}>
           {error}
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
+          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
             Ad Soyad
           </label>
-          <input
+          <Input
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
           />
         </div>
-        
+
         <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
+          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
             Email
           </label>
-          <input
+          <Input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
           />
         </div>
-        
+
         <div className="mb-4">
-          <label className="block mb-2" style={{ color: colors.text }}>
+          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
             Şifre
           </label>
-          <input
+          <Input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
             minLength={6}
           />
         </div>
-        
+
         <div className="mb-6">
-          <label className="block mb-2" style={{ color: colors.text }}>
+          <label className="block mb-2" style={{ color: designTokens.colors.text.primary }}>
             Şifre Tekrar
           </label>
-          <input
+          <Input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-2 rounded-md"
-            style={{ backgroundColor: colors.background, color: colors.text, borderColor: `${colors.accent}40` }}
             required
             minLength={6}
           />
         </div>
-        
-        <button
+
+        <Button
           type="submit"
-          className="w-full py-2 px-4 rounded-md font-medium"
-          style={{ backgroundColor: colors.accent, color: colors.text }}
+          variant="primary"
+          className="w-full"
           disabled={loading}
         >
           {loading ? 'Kayıt Yapılıyor...' : 'Kayıt Ol'}
-        </button>
+        </Button>
       </form>
-    </div>
+    </Card>
   );
 };
 

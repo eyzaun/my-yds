@@ -1,30 +1,31 @@
 // src/app/protected-page/page.tsx
 'use client';
 import React from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import RequireAuth from '@/utils/requireAuth';
 import dynamic from 'next/dynamic';
+import { Container } from '@/components/design-system/Container';
+import { Card } from '@/components/design-system/Card';
+import { Heading1, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProtectedPage = () => {
-  const { colors } = useTheme();
-
   return (
     <RequireAuth>
-      <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-6 text-center" style={{ color: colors.text }}>
+      <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background.primary }}>
+        <Container maxWidth="lg" className="py-8">
+          <Heading1 className="text-3xl mb-6 text-center">
             Korumalı Sayfa
-          </h1>
-          <div className="p-6 rounded-lg shadow-lg" style={{ backgroundColor: colors.cardBackground }}>
-            <p style={{ color: colors.text }}>
+          </Heading1>
+          <Card variant="elevated">
+            <Text>
               Bu içeriği sadece giriş yapmış kullanıcılar görebilir. Giriş yaptığınız için bu sayfayı görüntüleyebiliyorsunuz.
-            </p>
-          </div>
-        </div>
-        <ClientOnlyAd 
+            </Text>
+          </Card>
+        </Container>
+        <ClientOnlyAd
           slot="protected-page-banner"
           format="auto"
           className="my-4 mx-auto"

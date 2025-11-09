@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
+import { designTokens } from '@/styles/design-tokens';
 
 interface FullscreenWrapperProps {
   children: React.ReactNode;
@@ -16,7 +16,6 @@ export default function FullscreenWrapper({
   onExit,
   //isQuizMode = false
 }: FullscreenWrapperProps) {
-  const { colors } = useTheme();
   const [windowDimensions, setWindowDimensions] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
     height: typeof window !== 'undefined' ? window.innerHeight : 800
@@ -90,22 +89,22 @@ export default function FullscreenWrapper({
   if (!isActive) return <>{children}</>;
   
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex flex-col h-screen"
-      style={{ 
-        backgroundColor: colors.background,
+      style={{
+        backgroundColor: designTokens.colors.background.primary,
       }}
     >
       <div className="absolute top-2 right-2 z-50">
-        <button 
+        <button
           onClick={onExit}
           className="p-2 rounded-full hover:bg-opacity-30 transition-colors"
-          style={{ 
-            backgroundColor: `${colors.accent}30`, 
-            color: colors.text,
+          style={{
+            backgroundColor: `${designTokens.colors.primary[600]}30`,
+            color: designTokens.colors.text.primary,
             border: 'none',
             outline: 'none',
-            boxShadow: `0 0 8px ${colors.accent}30`
+            boxShadow: `0 0 ${designTokens.spacing[2]} ${designTokens.colors.primary[600]}30`
           }}
           aria-label="Tam ekrandan çık"
         >
@@ -124,19 +123,19 @@ export default function FullscreenWrapper({
       
       <style jsx global>{`
         .fullscreen-quiz-form {
-          margin-bottom: ${isMobile ? '12px' : '20px'};
+          margin-bottom: ${isMobile ? designTokens.spacing[3] : designTokens.spacing[5]};
           margin-top: 0;
         }
-        
+
         .nav-buttons-wrapper {
-          margin-bottom: 10px;
+          margin-bottom: ${designTokens.spacing[2]};
         }
-        
+
         /* Mobil için optimize edilmiş stiller */
         @media (max-width: 768px) {
           .nav-buttons-wrapper {
-            margin-top: 8px;
-            margin-bottom: 12px;
+            margin-top: ${designTokens.spacing[2]};
+            margin-bottom: ${designTokens.spacing[3]};
           }
         }
       `}</style>

@@ -1,37 +1,37 @@
 // src/app/register/page.tsx
 'use client';
-import { useTheme } from '@/contexts/ThemeContext';
 import RegisterForm from '@/components/auth/RegisterForm';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { Container } from '@/components/design-system/Container';
+import { Heading1, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/components/design-system/tokens';
 
 // Replace path alias import with relative path
 const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const RegisterPage = () => {
-  const { colors } = useTheme();
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center" style={{ color: colors.text }}>
+    <div className="min-h-screen" style={{ backgroundColor: designTokens.colors.background }}>
+      <Container maxWidth="md" className="py-8">
+        <Heading1 className="mb-8 text-center">
           Hesap Oluştur
-        </h1>
-        
+        </Heading1>
+
         <div className="max-w-md mx-auto">
           <RegisterForm />
-          
-          <div className="mt-6 text-center" style={{ color: colors.text }}>
-            <p>
+
+          <div className="mt-6 text-center">
+            <Text>
               Zaten bir hesabınız var mı?{' '}
-              <Link href="/login" className="underline" style={{ color: colors.accent }}>
+              <Link href="/login" className="underline" style={{ color: designTokens.colors.accent }}>
                 Giriş Yap
               </Link>
-            </p>
+            </Text>
           </div>
         </div>
-      </div>
-      <ClientOnlyAd 
+      </Container>
+      <ClientOnlyAd
         slot="register-banner"
         format="auto"
         className="my-4 mx-auto"

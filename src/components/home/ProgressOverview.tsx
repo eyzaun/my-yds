@@ -1,11 +1,14 @@
 'use client';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import { db, auth } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { categories } from '@/data/categories';
+import { Card } from '@/components/design-system/Card';
+import { Button } from '@/components/design-system/Button';
+import { Heading2, Text } from '@/components/design-system/Typography';
+import { designTokens } from '@/styles/design-tokens';
 
 interface Timestamp {
   seconds: number;
@@ -24,7 +27,6 @@ interface UserProgress {
 }
 
 export function ProgressOverview() {
-  const { colors } = useTheme();
   const [user] = useAuthState(auth);
   const [progress, setProgress] = useState<UserProgress>({});
   const [loading, setLoading] = useState(true);
@@ -55,90 +57,96 @@ export function ProgressOverview() {
 
   if (loading) {
     return (
-      <div className="p-6 rounded-lg" style={{ backgroundColor: colors.cardBackground }}>
-        <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+      <Card>
+        <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
           İlerlemeniz Yükleniyor...
-        </h2>
+        </Heading2>
         <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: colors.accent }}></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style={{ borderColor: designTokens.colors.accent }}></div>
         </div>
-      </div>
+      </Card>
     );
   }
 
   if (!user) {
     return (
-      <div className="p-6 rounded-lg" style={{ backgroundColor: colors.cardBackground }}>
-        <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+      <Card>
+        <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
           İlerlemenizi Görmek İçin Giriş Yapın
-        </h2>
-        <p style={{ color: colors.text }}>
+        </Heading2>
+        <Text>
           Çalışma ilerlemenizi kaydetmek ve kaldığınız yerden devam etmek için giriş yapmanız gerekiyor.
-        </p>
-      </div>
+        </Text>
+      </Card>
     );
   }
 
   if (Object.keys(progress).length === 0) {
     return (
-      <div className="p-6 rounded-lg" style={{ backgroundColor: colors.cardBackground }}>
-        <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+      <Card>
+        <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
           Henüz İlerleme Kaydedilmedi
-        </h2>
-        <p style={{ color: colors.text }}>
+        </Heading2>
+        <Text>
           Kelime kategorilerinden birini seçerek çalışmaya başlayabilirsiniz.
-        </p>
-      </div>
+        </Text>
+      </Card>
     );
   }
 
   return (
-    <div className="p-6 rounded-lg" style={{ backgroundColor: colors.cardBackground }}>
-      <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text }}>
+    <Card>
+      <Heading2 style={{ marginBottom: designTokens.spacing.md }}>
         Çalışma İlerlemeniz
-      </h2>
-      
-      <div className="grid gap-4">
+      </Heading2>
+
+      <div className="grid" style={{ gap: designTokens.spacing.md }}>
         {Object.entries(progress).map(([categoryId, data]) => (
-          <div 
+          <div
             key={categoryId}
-            className="block p-4 rounded-lg cursor-pointer transition-all hover:scale-105"
-            style={{ 
-              backgroundColor: `${colors.accent}10`,
-              border: `1px solid ${colors.accent}30`
+            className="block cursor-pointer transition-all hover:scale-105"
+            style={{
+              padding: designTokens.spacing.md,
+              borderRadius: designTokens.borderRadius.md,
+              backgroundColor: `${designTokens.colors.accent}10`,
+              border: `1px solid ${designTokens.colors.accent}30`
             }}
             onClick={() => {
               window.location.href = `/${categoryId}?index=${data.index}`;
             }}
           >
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="font-medium" style={{ color: colors.text }}>
+            <div className="flex justify-between items-center" style={{ marginBottom: designTokens.spacing.sm }}>
+              <h3 className="font-medium" style={{ color: designTokens.colors.text }}>
                 {categories.find((c) => c.path === `/${categoryId}`)?.name || categoryId}
               </h3>
-              <span style={{ color: colors.accent }}>Kart {data.index + 1} / {data.totalCards}</span>
+              <span style={{ color: designTokens.colors.accent }}>Kart {data.index + 1} / {data.totalCards}</span>
             </div>
-            
-            <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-2">
-              <div 
-                className="h-full rounded-full" 
-                style={{ 
-                  width: `${Math.round((data.viewedCount / data.totalCards) * 100)}%`, 
-                  backgroundColor: colors.accent
+
+            <div className="w-full rounded-full overflow-hidden" style={{
+              height: '8px',
+              backgroundColor: designTokens.colors.surface,
+              marginBottom: designTokens.spacing.sm
+            }}>
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${Math.round((data.viewedCount / data.totalCards) * 100)}%`,
+                  backgroundColor: designTokens.colors.accent
                 }}
               />
             </div>
-            
+
             <div className="flex justify-between text-sm">
-              <span style={{ color: `${colors.text}80` }}>
+              <span style={{ color: designTokens.colors.textSecondary }}>
                 %{Math.round((data.viewedCount / data.totalCards) * 100)} tamamlandı
               </span>
-              <span style={{ color: `${colors.text}80` }}>
+              <span style={{ color: designTokens.colors.textSecondary }}>
                 Son çalışma: {new Date(data.timestamp.seconds * 1000).toLocaleDateString('tr-TR')}
               </span>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }

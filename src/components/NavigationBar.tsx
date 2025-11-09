@@ -2,46 +2,16 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import AdBanner from './AdBanner';
 import { useAuth } from '@/contexts/AuthContext';
 import { logoutUser } from '@/firebase/auth';
-
-// ThemeSelector bileşeni - değiştirilmedi
-const ThemeSelector = () => {
-  const { theme, setTheme } = useTheme();
-  
-  // Tema seçenekleri
-  const themeOptions = [
-    { name: 'blue', label: 'Mavi', color: '#0D7377' },
-    { name: 'purple', label: 'Mor', color: '#8A2BE2' },
-    { name: 'green', label: 'Yeşil', color: '#2E8B57' },
-    { name: 'orange', label: 'Turuncu', color: '#FF8C00' }
-  ];
-
-  return (
-    <div className="flex items-center space-x-2">
-      {themeOptions.map((option) => (
-        <button
-          key={option.name}
-          onClick={() => setTheme(option.name)}
-          className={`w-6 h-6 rounded-full hover:scale-110 transition-transform duration-200 ${
-            theme === option.name ? 'ring-2 ring-white' : ''
-          }`}
-          style={{ backgroundColor: option.color }}
-          aria-label={`${option.label} tema`}
-          title={option.label}
-        />
-      ))}
-    </div>
-  );
-};
+import { Button } from '@/components/design-system/Button';
+import { designTokens } from '@/styles/design-tokens';
 
 const NavigationBar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { colors } = useTheme();
   const { user } = useAuth();
 
   // Sayfa değiştiğinde menüyü kapat
@@ -111,13 +81,15 @@ const NavigationBar = () => {
   const renderAuthLinks = () => {
     if (user) {
       return (
-        <div className="flex items-center ml-4">
+        <div className="flex items-center" style={{ marginLeft: designTokens.spacing[4] }}>
           <Link
             href="/profile"
-            className="px-3 py-1 rounded-md transition-colors duration-200"
-            style={{ 
-              backgroundColor: pathname === '/profile' ? colors.accent : 'transparent',
-              color: colors.text 
+            className="transition-colors duration-200"
+            style={{
+              padding: `${designTokens.spacing[1]} ${designTokens.spacing[3]}`,
+              borderRadius: designTokens.borderRadius.md,
+              backgroundColor: pathname === '/profile' ? designTokens.colors.primary[600] : 'transparent',
+              color: designTokens.colors.text.primary
             }}
           >
             <span className="hidden md:inline mr-1">{user.displayName || 'Profil'}</span>
@@ -130,23 +102,29 @@ const NavigationBar = () => {
     }
 
     return (
-      <div className="flex items-center ml-4 space-x-2">
+      <div className="flex items-center" style={{ marginLeft: designTokens.spacing[4], gap: designTokens.spacing[2] }}>
         <Link
           href="/login"
-          className="px-3 py-1 rounded-md text-sm transition-colors duration-200"
-          style={{ 
-            backgroundColor: colors.cardBackground,
-            color: colors.text 
+          className="transition-colors duration-200"
+          style={{
+            padding: `${designTokens.spacing[1]} ${designTokens.spacing[3]}`,
+            borderRadius: designTokens.borderRadius.md,
+            fontSize: designTokens.typography.fontSize.sm,
+            backgroundColor: designTokens.colors.surface.primary,
+            color: designTokens.colors.text.primary
           }}
         >
           Giriş
         </Link>
         <Link
           href="/register"
-          className="px-3 py-1 rounded-md text-sm transition-colors duration-200"
-          style={{ 
-            backgroundColor: colors.accent,
-            color: colors.text 
+          className="transition-colors duration-200"
+          style={{
+            padding: `${designTokens.spacing[1]} ${designTokens.spacing[3]}`,
+            borderRadius: designTokens.borderRadius.md,
+            fontSize: designTokens.typography.fontSize.sm,
+            backgroundColor: designTokens.colors.primary[600],
+            color: designTokens.colors.text.primary
           }}
         >
           Kayıt Ol
@@ -159,23 +137,36 @@ const NavigationBar = () => {
     if (user) {
       return (
         <>
-          <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
-          <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+          <div className="border-t opacity-20" style={{ borderColor: designTokens.colors.text.primary, margin: `${designTokens.spacing[2]} 0` }}></div>
+          <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{
+            padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+            color: designTokens.colors.text.primary
+          }}>
             Hesap
           </h3>
-          <div className="px-4 py-3">
-            <div className="mb-2 font-medium" style={{ color: colors.text }}>
+          <div style={{ padding: `${designTokens.spacing[3]} ${designTokens.spacing[4]}` }}>
+            <div className="font-medium" style={{
+              marginBottom: designTokens.spacing[2],
+              color: designTokens.colors.text.primary
+            }}>
               {user.displayName || 'Kullanıcı'}
             </div>
-            <div className="text-sm opacity-70 mb-3" style={{ color: colors.text }}>
+            <div className="opacity-70" style={{
+              fontSize: designTokens.typography.fontSize.sm,
+              marginBottom: designTokens.spacing[3],
+              color: designTokens.colors.text.primary
+            }}>
               {user.email}
             </div>
             <Link
               href="/profile"
-              className="flex items-center space-x-2 py-2 rounded-lg px-2 transition-colors duration-200"
+              className="flex items-center transition-colors duration-200"
               style={{
-                backgroundColor: pathname === '/profile' ? colors.accent : 'transparent',
-                color: colors.text,
+                gap: designTokens.spacing[2],
+                padding: `${designTokens.spacing[2]} ${designTokens.spacing[2]}`,
+                borderRadius: designTokens.borderRadius.lg,
+                backgroundColor: pathname === '/profile' ? designTokens.colors.primary[600] : 'transparent',
+                color: designTokens.colors.text.primary,
               }}
               onClick={toggleMenu}
             >
@@ -189,8 +180,13 @@ const NavigationBar = () => {
                 await logoutUser();
                 toggleMenu();
               }}
-              className="flex items-center space-x-2 py-2 rounded-lg px-2 w-full text-left transition-colors duration-200"
-              style={{ color: colors.text }}
+              className="flex items-center w-full text-left transition-colors duration-200"
+              style={{
+                gap: designTokens.spacing[2],
+                padding: `${designTokens.spacing[2]} ${designTokens.spacing[2]}`,
+                borderRadius: designTokens.borderRadius.lg,
+                color: designTokens.colors.text.primary
+              }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -204,17 +200,23 @@ const NavigationBar = () => {
 
     return (
       <>
-        <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
-        <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+        <div className="border-t opacity-20" style={{ borderColor: designTokens.colors.text.primary, margin: `${designTokens.spacing[2]} 0` }}></div>
+        <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{
+          padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+          color: designTokens.colors.text.primary
+        }}>
           Hesap
         </h3>
-        <div className="grid grid-cols-1 gap-1">
+        <div className="grid grid-cols-1" style={{ gap: designTokens.spacing[1] }}>
           <Link
             href="/login"
-            className="flex items-center space-x-2 py-2 rounded-lg px-4 transition-colors duration-200"
+            className="flex items-center transition-colors duration-200"
             style={{
-              backgroundColor: pathname === '/login' ? colors.accent : 'transparent',
-              color: colors.text,
+              gap: designTokens.spacing[2],
+              padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+              borderRadius: designTokens.borderRadius.lg,
+              backgroundColor: pathname === '/login' ? designTokens.colors.primary[600] : 'transparent',
+              color: designTokens.colors.text.primary,
             }}
             onClick={toggleMenu}
           >
@@ -225,10 +227,13 @@ const NavigationBar = () => {
           </Link>
           <Link
             href="/register"
-            className="flex items-center space-x-2 py-2 rounded-lg px-4 transition-colors duration-200"
+            className="flex items-center transition-colors duration-200"
             style={{
-              backgroundColor: pathname === '/register' ? colors.accent : 'transparent',
-              color: colors.text,
+              gap: designTokens.spacing[2],
+              padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+              borderRadius: designTokens.borderRadius.lg,
+              backgroundColor: pathname === '/register' ? designTokens.colors.primary[600] : 'transparent',
+              color: designTokens.colors.text.primary,
             }}
             onClick={toggleMenu}
           >
@@ -246,21 +251,25 @@ const NavigationBar = () => {
     <header className="relative">
       {/* Üst Navbar */}
       <nav
-        style={{ 
-          backgroundColor: isScrolled ? colors.cardBackground : `${colors.cardBackground}dd`,
-          boxShadow: isScrolled ? '0 2px 10px rgba(0, 0, 0, 0.1)' : 'none',
+        style={{
+          backgroundColor: designTokens.colors.background.secondary,
+          boxShadow: isScrolled ? designTokens.shadows.md : 'none',
+          padding: `0 ${designTokens.spacing[4]}`,
         }}
-        className="sticky top-0 z-50 transition-all duration-300 px-4 lg:px-6"
+        className="sticky top-0 z-50 transition-all duration-300"
       >
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between" style={{ height: '4rem' }}>
           {/* Logo / Site Başlığı ve toggle butonu */}
           <div className="flex items-center">
             <button
               onClick={toggleMenu}
-              className="flex items-center p-2 mr-2 rounded-md hover:bg-opacity-20 focus:outline-none transition-colors duration-200"
-              style={{ 
-                backgroundColor: isMenuOpen ? colors.accent : 'transparent',
-                color: colors.text 
+              className="flex items-center hover:bg-opacity-20 focus:outline-none transition-colors duration-200"
+              style={{
+                padding: designTokens.spacing[2],
+                marginRight: designTokens.spacing[2],
+                borderRadius: designTokens.borderRadius.md,
+                backgroundColor: isMenuOpen ? designTokens.colors.primary[600] : 'transparent',
+                color: designTokens.colors.text.primary
               }}
               aria-label="Menüyü Aç/Kapat"
             >
@@ -296,10 +305,10 @@ const NavigationBar = () => {
                 </svg>
               )}
             </button>
-            
-            <Link href="/" className="flex items-center space-x-2">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
+
+            <Link href="/" className="flex items-center" style={{ gap: designTokens.spacing[2] }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -307,22 +316,26 @@ const NavigationBar = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="h-8 w-8"
-                style={{ color: colors.accent }}
+                style={{ color: designTokens.colors.primary[600] }}
               >
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
-              <span className="font-bold text-xl hidden sm:inline" style={{ color: colors.text }}>
+              <span className="font-bold hidden sm:inline" style={{
+                fontSize: designTokens.typography.fontSize.xl,
+                color: designTokens.colors.text.primary
+              }}>
                 YDS Kelime Listesi
               </span>
-              <span className="font-bold text-xl sm:hidden" style={{ color: colors.text }}>
+              <span className="font-bold sm:hidden" style={{
+                fontSize: designTokens.typography.fontSize.xl,
+                color: designTokens.colors.text.primary
+              }}>
                 YDS
               </span>
             </Link>
           </div>
 
-          {/* Tema Seçici */}
-          <ThemeSelector />
           {/* Auth Linkleri */}
           {renderAuthLinks()}
         </div>
@@ -339,24 +352,33 @@ const NavigationBar = () => {
           className={`fixed top-0 left-0 h-full transform transition-transform duration-300 ease-in-out overflow-hidden ${
             isMenuOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
-          style={{ 
-            backgroundColor: colors.background,
+          style={{
+            backgroundColor: designTokens.colors.background.primary,
             width: 'min(85%, 320px)',
-            boxShadow: '5px 0 25px rgba(0, 0, 0, 0.1)'
+            boxShadow: designTokens.shadows.xl
           }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Drawer Header */}
-          <div 
-            className="p-5 border-b flex items-center justify-between"
-            style={{ borderColor: `${colors.accent}40` }}
+          <div
+            className="border-b flex items-center justify-between"
+            style={{
+              padding: designTokens.spacing[5],
+              borderColor: `${designTokens.colors.primary[600]}40`
+            }}
           >
-            <h2 style={{ color: colors.text }} className="text-xl font-semibold">
+            <h2 className="font-semibold" style={{
+              color: designTokens.colors.text.primary,
+              fontSize: designTokens.typography.fontSize.xl
+            }}>
               Menü
             </h2>
             <button
-              style={{ color: colors.text }}
-              className="p-1 rounded-full hover:bg-opacity-10 focus:outline-none"
+              className="rounded-full hover:bg-opacity-10 focus:outline-none"
+              style={{
+                color: designTokens.colors.text.primary,
+                padding: designTokens.spacing[1]
+              }}
               onClick={toggleMenu}
               aria-label="Menüyü Kapat"
             >
@@ -378,30 +400,27 @@ const NavigationBar = () => {
           </div>
 
           {/* Drawer Content */}
-          <div className="p-1 overflow-y-auto h-[calc(100vh-64px)]">
-            {/* Tema Seçici - Drawer İçinde */}
-            <div className="px-4 py-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70 mb-2" style={{ color: colors.text }}>
-                Tema Seçin
-              </h3>
-              <ThemeSelector />
-            </div>
-            
-            <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
-            
+          <div className="overflow-y-auto h-[calc(100vh-64px)]" style={{ padding: designTokens.spacing[1] }}>
             {/* Ana Sayfa ve Tüm Kelimeler Linkleri */}
             <div>
-              <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+              <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{
+                padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+                color: designTokens.colors.text.primary
+              }}>
                 Ana Sayfalar
               </h3>
               {mainLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg my-1 transition-colors duration-200"
+                  className="flex items-center transition-colors duration-200"
                   style={{
-                    backgroundColor: pathname === link.path ? colors.accent : 'transparent',
-                    color: colors.text,
+                    gap: designTokens.spacing[3],
+                    padding: `${designTokens.spacing[3]} ${designTokens.spacing[4]}`,
+                    borderRadius: designTokens.borderRadius.lg,
+                    margin: `${designTokens.spacing[1]} 0`,
+                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
+                    color: designTokens.colors.text.primary,
                   }}
                   onClick={toggleMenu}
                 >
@@ -418,24 +437,33 @@ const NavigationBar = () => {
                   <span>{link.label}</span>
                 </Link>
               ))}
-              <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
+              <div className="border-t opacity-20" style={{
+                borderColor: designTokens.colors.text.primary,
+                margin: `${designTokens.spacing[2]} 0`
+              }}></div>
             </div>
 
             {/* Kategori Başlığı */}
-            <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{
+              padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+              color: designTokens.colors.text.primary
+            }}>
               Kategoriler
             </h3>
 
             {/* Kategori Linkleri */}
-            <div className="grid grid-cols-1 gap-1">
+            <div className="grid grid-cols-1" style={{ gap: designTokens.spacing[1] }}>
               {categoryLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-200"
+                  className="flex items-center transition-colors duration-200"
                   style={{
-                    backgroundColor: pathname === link.path ? colors.accent : 'transparent',
-                    color: colors.text,
+                    gap: designTokens.spacing[3],
+                    padding: `${designTokens.spacing[3]} ${designTokens.spacing[4]}`,
+                    borderRadius: designTokens.borderRadius.lg,
+                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
+                    color: designTokens.colors.text.primary,
                   }}
                   onClick={toggleMenu}
                 >
@@ -455,21 +483,30 @@ const NavigationBar = () => {
             </div>
 
             {/* Ayırıcı Çizgi */}
-            <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
+            <div className="border-t opacity-20" style={{
+              borderColor: designTokens.colors.text.primary,
+              margin: `${designTokens.spacing[2]} 0`
+            }}></div>
 
             {/* Hakkımızda ve İletişim Bölümü */}
-            <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{
+              padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
+              color: designTokens.colors.text.primary
+            }}>
               Site Bilgileri
             </h3>
-            <div className="grid grid-cols-1 gap-1">
+            <div className="grid grid-cols-1" style={{ gap: designTokens.spacing[1] }}>
               {aboutLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-200"
+                  className="flex items-center transition-colors duration-200"
                   style={{
-                    backgroundColor: pathname === link.path ? colors.accent : 'transparent',
-                    color: colors.text,
+                    gap: designTokens.spacing[3],
+                    padding: `${designTokens.spacing[3]} ${designTokens.spacing[4]}`,
+                    borderRadius: designTokens.borderRadius.lg,
+                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
+                    color: designTokens.colors.text.primary,
                   }}
                   onClick={toggleMenu}
                 >
@@ -492,17 +529,23 @@ const NavigationBar = () => {
             {renderProfileSection()}
             
             {/* Yan Menü Alt Reklam */}
-            <div className="mt-6 px-2">
-              <AdBanner 
-                slot="1423078098" 
+            <div style={{ marginTop: designTokens.spacing[6], padding: `0 ${designTokens.spacing[2]}` }}>
+              <AdBanner
+                slot="1423078098"
                 format="rectangle"
               />
             </div>
 
             {/* Footer / Telif Hakkı */}
-            <div className="mt-8 mb-4 px-4 text-center text-xs" style={{ color: `${colors.text}80` }}>
+            <div className="text-center" style={{
+              marginTop: designTokens.spacing[8],
+              marginBottom: designTokens.spacing[4],
+              padding: `0 ${designTokens.spacing[4]}`,
+              fontSize: designTokens.typography.fontSize.xs,
+              color: `${designTokens.colors.text.primary}80`
+            }}>
               <p>© {new Date().getFullYear()} YDS Kelime Listesi</p>
-              <p className="mt-1">Tüm Hakları Saklıdır</p>
+              <p style={{ marginTop: designTokens.spacing[1] }}>Tüm Hakları Saklıdır</p>
             </div>
           </div>
         </div>

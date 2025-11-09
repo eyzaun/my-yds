@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTheme } from '@/contexts/ThemeContext';
+import { designTokens } from '@/styles/design-tokens';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -10,8 +10,7 @@ interface DrawerProps {
 
 const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
-  const { colors } = useTheme();
-  
+
   // Main navigation links
   const mainLinks = [
     { path: '/', label: 'Ana Sayfa', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -52,16 +51,16 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
         className={`fixed top-0 left-0 h-full shadow-lg z-50 transition-transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ backgroundColor: colors.background, width: 'min(85%, 320px)' }}
+        style={{ backgroundColor: designTokens.colors.background.primary, width: 'min(85%, 320px)' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-4 border-b flex justify-between items-center" style={{ borderColor: `${colors.accent}40` }}>
-          <h2 style={{ color: colors.text }} className="text-xl font-bold">
+        <div className="border-b flex justify-between items-center" style={{ padding: designTokens.spacing.md, borderColor: `${designTokens.colors.primary[200]}40` }}>
+          <h2 style={{ color: designTokens.colors.text.primary }} className="text-xl font-bold">
             YDS Kelime Listesi
           </h2>
           <button
-            style={{ color: colors.text }}
-            className="p-2 rounded-full hover:bg-opacity-10"
+            style={{ color: designTokens.colors.text.primary }}
+            className="rounded-full hover:bg-opacity-10"
             onClick={onClose}
             aria-label="Menüyü Kapat"
           >
@@ -82,20 +81,36 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
         
-        <div className="p-1 overflow-y-auto h-[calc(100vh-64px)]">
+        <div style={{ padding: designTokens.spacing.xs }} className="overflow-y-auto h-[calc(100vh-64px)]">
           {/* Main Links */}
-          <div className="mt-2">
-            <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+          <div style={{ marginTop: designTokens.spacing.sm }}>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: designTokens.spacing.md, paddingRight: designTokens.spacing.md, paddingTop: designTokens.spacing.sm, paddingBottom: designTokens.spacing.sm, color: designTokens.colors.text.primary }}>
               Ana Sayfalar
             </h3>
             {mainLinks.map((link) => (
               <Link
                 key={link.path}
                 href={link.path}
-                className="flex items-center space-x-3 px-4 py-3 rounded-lg my-1 transition-colors duration-200"
+                className="flex items-center space-x-3 rounded-lg transition-colors duration-200 hover:bg-opacity-20"
                 style={{
-                  backgroundColor: pathname === link.path ? colors.accent : 'transparent',
-                  color: colors.text,
+                  paddingLeft: designTokens.spacing.md,
+                  paddingRight: designTokens.spacing.md,
+                  paddingTop: designTokens.spacing.sm,
+                  paddingBottom: designTokens.spacing.sm,
+                  marginTop: designTokens.spacing.xs,
+                  marginBottom: designTokens.spacing.xs,
+                  backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
+                  color: designTokens.colors.text.primary,
+                }}
+                onMouseEnter={(e) => {
+                  if (pathname !== link.path) {
+                    e.currentTarget.style.backgroundColor = designTokens.colors.primary[100];
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (pathname !== link.path) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
                 }}
                 onClick={onClose}
               >
@@ -115,20 +130,34 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Category Links */}
-          <div className="mt-4">
-            <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
-            <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+          <div style={{ marginTop: designTokens.spacing.md }}>
+            <div className="border-t opacity-20" style={{ marginTop: designTokens.spacing.sm, marginBottom: designTokens.spacing.sm, borderColor: designTokens.colors.text.primary }}></div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: designTokens.spacing.md, paddingRight: designTokens.spacing.md, paddingTop: designTokens.spacing.sm, paddingBottom: designTokens.spacing.sm, color: designTokens.colors.text.primary }}>
               Kategoriler
             </h3>
-            <div className="grid grid-cols-1 gap-1">
+            <div className="grid grid-cols-1" style={{ gap: designTokens.spacing.xs }}>
               {categoryLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-200"
+                  className="flex items-center space-x-3 rounded-lg transition-colors duration-200"
                   style={{
-                    backgroundColor: pathname === link.path ? colors.accent : 'transparent',
-                    color: colors.text,
+                    paddingLeft: designTokens.spacing.md,
+                    paddingRight: designTokens.spacing.md,
+                    paddingTop: designTokens.spacing.sm,
+                    paddingBottom: designTokens.spacing.sm,
+                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
+                    color: designTokens.colors.text.primary,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (pathname !== link.path) {
+                      e.currentTarget.style.backgroundColor = designTokens.colors.primary[100];
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (pathname !== link.path) {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }
                   }}
                   onClick={onClose}
                 >
@@ -149,20 +178,34 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* About Links */}
-          <div className="mt-4">
-            <div className="border-t my-2 opacity-20" style={{ borderColor: colors.text }}></div>
-            <h3 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider opacity-70" style={{ color: colors.text }}>
+          <div style={{ marginTop: designTokens.spacing.md }}>
+            <div className="border-t opacity-20" style={{ marginTop: designTokens.spacing.sm, marginBottom: designTokens.spacing.sm, borderColor: designTokens.colors.text.primary }}></div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider opacity-70" style={{ paddingLeft: designTokens.spacing.md, paddingRight: designTokens.spacing.md, paddingTop: designTokens.spacing.sm, paddingBottom: designTokens.spacing.sm, color: designTokens.colors.text.primary }}>
               Site Bilgileri
             </h3>
-            <div className="grid grid-cols-1 gap-1">
+            <div className="grid grid-cols-1" style={{ gap: designTokens.spacing.xs }}>
               {aboutLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-200"
+                  className="flex items-center space-x-3 rounded-lg transition-colors duration-200"
                   style={{
-                    backgroundColor: pathname === link.path ? colors.accent : 'transparent',
-                    color: colors.text,
+                    paddingLeft: designTokens.spacing.md,
+                    paddingRight: designTokens.spacing.md,
+                    paddingTop: designTokens.spacing.sm,
+                    paddingBottom: designTokens.spacing.sm,
+                    backgroundColor: pathname === link.path ? designTokens.colors.primary[600] : 'transparent',
+                    color: designTokens.colors.text.primary,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (pathname !== link.path) {
+                      e.currentTarget.style.backgroundColor = designTokens.colors.primary[100];
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (pathname !== link.path) {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }
                   }}
                   onClick={onClose}
                 >
@@ -183,9 +226,9 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 mb-4 px-4 text-center text-xs" style={{ color: `${colors.text}80` }}>
+          <div className="text-center text-xs" style={{ marginTop: designTokens.spacing.xl, marginBottom: designTokens.spacing.md, paddingLeft: designTokens.spacing.md, paddingRight: designTokens.spacing.md, color: designTokens.colors.text.secondary }}>
             <p>© {new Date().getFullYear()} YDS Kelime Listesi</p>
-            <p className="mt-1">Tüm Hakları Saklıdır</p>
+            <p style={{ marginTop: designTokens.spacing.xs }}>Tüm Hakları Saklıdır</p>
           </div>
         </div>
       </div>

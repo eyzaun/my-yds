@@ -2,7 +2,7 @@
 'use client';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { useTheme } from '@/contexts/ThemeContext';
+import { designTokens } from '@/styles/designTokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizResult } from '@/lib/firebase/spacedRepetition';
 import { CardType } from '@/types/spacedRepetition';
@@ -29,7 +29,6 @@ interface WordListProps {
 }
 
 const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, isCustomCard = false }) => {
-  const { colors } = useTheme();
   const { user } = useAuth();
 
   // Ana state'ler
@@ -227,7 +226,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
 
   return (
     <div className={`${isFullscreen ? 'fixed inset-0 z-50 overflow-auto' : 'w-full mx-auto'} px-2 py-2`}
-         style={isFullscreen ? { backgroundColor: colors.background } : {}}>
+         style={isFullscreen ? { backgroundColor: designTokens.colors.background } : {}}>
       {/* Üst Kontrol Paneli - sadeleştirildi */}
       <div className="flex flex-col space-y-3 mb-3">
         {/* Butonlar - mobil için optimize edildi */}
@@ -236,8 +235,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             onClick={toggleViewMode}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
-              backgroundColor: colors.cardBackground,
-              color: colors.text
+              backgroundColor: designTokens.colors.cardBackground,
+              color: designTokens.colors.text
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -255,8 +254,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
               onClick={toggleQuizMode}
               className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
               style={{
-                backgroundColor: isQuizMode ? colors.accent : colors.cardBackground,
-                color: colors.text
+                backgroundColor: isQuizMode ? designTokens.colors.accent : designTokens.colors.cardBackground,
+                color: designTokens.colors.text
               }}
               title="Quiz Modu"
             >
@@ -272,8 +271,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             onClick={toggleFullscreen}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
-              backgroundColor: isFullscreen ? colors.accent : colors.cardBackground,
-              color: colors.text
+              backgroundColor: isFullscreen ? designTokens.colors.accent : designTokens.colors.cardBackground,
+              color: designTokens.colors.text
             }}
             title="Tam Ekran"
           >
@@ -291,8 +290,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
             onClick={handleReset}
             className="px-4 py-2 rounded-lg text-sm flex items-center transition-colors duration-300"
             style={{
-              backgroundColor: colors.cardBackground,
-              color: colors.text
+              backgroundColor: designTokens.colors.cardBackground,
+              color: designTokens.colors.text
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -319,7 +318,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
           {isQuizMode && (
             <div className="w-full max-w-md mx-auto mt-4">
               <form onSubmit={handleQuizSubmit} className="flex flex-col">
-                <p className="text-sm mb-2" style={{ color: colors.text }}>
+                <p className="text-sm mb-2" style={{ color: designTokens.colors.text }}>
                   {quizResult === 'incorrect' && flipped
                     ? 'Doğru cevabı yazın (kartın arkasında):'
                     : 'Kelimenin Türkçe karşılığını yazın:'}
@@ -334,11 +333,11 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     className="flex-grow px-3 py-2 rounded-l-lg border focus:outline-none"
                     placeholder={quizResult === 'incorrect' && flipped ? 'Doğru cevabı yazın...' : 'Cevabınızı buraya yazın...'}
                     style={{
-                      backgroundColor: colors.background,
-                      color: colors.text,
+                      backgroundColor: designTokens.colors.background,
+                      color: designTokens.colors.text,
                       borderColor: quizResult === 'correct' ? 'green' :
                                    quizResult === 'incorrect' ? 'red' :
-                                   colors.accent,
+                                   designTokens.colors.accent,
                       fontSize: '16px',
                       height: '44px'
                     }}
@@ -353,7 +352,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     style={{
                       backgroundColor: quizResult === 'correct' ? 'green' :
                                       quizResult === 'incorrect' && flipped ? 'orange' :
-                                      colors.accent,
+                                      designTokens.colors.accent,
                       color: 'white',
                       fontSize: '16px',
                       height: '44px'
@@ -365,15 +364,15 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                 </div>
 
                 {quizResult === 'correct' && (
-                  <p className="text-green-500 mt-2 text-sm font-medium">✓ Doğru cevap! 👍</p>
+                  <p className="text-green-500 mt-2 text-sm font-medium">Doğru cevap!</p>
                 )}
 
                 {quizResult === 'incorrect' && flipped && (
                   <div className="mt-2">
                     <p className="text-red-500 text-sm font-medium">
-                      ✗ Yanlış cevap!
+                      Yanlış cevap!
                     </p>
-                    <p className="text-sm mt-1" style={{ color: colors.text }}>
+                    <p className="text-sm mt-1" style={{ color: designTokens.colors.text }}>
                       Kartın arkasına bak ve doğru cevabı yazıp devam et.
                     </p>
                   </div>
@@ -389,17 +388,17 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
               key={`${word.en}-${index}`}
               className="p-4 rounded-lg cursor-pointer transition-all duration-300 shadow-md"
               style={{
-                backgroundColor: colors.cardBackground
+                backgroundColor: designTokens.colors.cardBackground
               }}
               onClick={() => handleWordClick(index)}
             >
-              <div style={{ color: colors.text }} className="text-lg font-semibold">
+              <div style={{ color: designTokens.colors.text }} className="text-lg font-semibold">
                 {word.en}
               </div>
 
               {/* Sadece seçili kelime için anlamını göster */}
               {selectedWordIndex === index && (
-                <div style={{ color: colors.text, opacity: 0.8 }} className="mt-1">
+                <div style={{ color: designTokens.colors.text, opacity: 0.8 }} className="mt-1">
                   {word.tr}
                 </div>
               )}

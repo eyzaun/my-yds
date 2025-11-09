@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
-import { useTheme } from '@/contexts/ThemeContext';
+import { designTokens } from '@/styles/designTokens';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -84,7 +84,6 @@ export default function useFlashcardState({
   const [isAnimating, setIsAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const { colors } = useTheme();
   const [user] = useAuthState(auth);
   const [canAdvance, setCanAdvance] = useState(!quizMode);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -129,12 +128,12 @@ export default function useFlashcardState({
 
   const cardStyles: FlashcardStyles = {
     frontBackground: '#2a2a2a',
-    backBackground: '#1c1c1c', 
-    textColor: colors.accent || '#06b6d4',
+    backBackground: '#1c1c1c',
+    textColor: designTokens.colors.accent || '#06b6d4',
     notesColor: '#a3a3a3',
     boxShadow: `0 8px 32px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(6, 182, 212, 0.05)`,
     border: 'none',
-    glow: `0 0 25px ${colors.accent}30, 0 0 5px ${colors.accent}10`
+    glow: `0 0 25px ${designTokens.colors.accent}30, 0 0 5px ${designTokens.colors.accent}10`
   };
 
   const minSwipeDistance = 50;
