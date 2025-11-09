@@ -2,7 +2,7 @@
 'use client';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { designTokens } from '@/styles/designTokens';
+import { designTokens } from '@/styles/design-tokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizResult } from '@/lib/firebase/spacedRepetition';
 import { CardType } from '@/types/spacedRepetition';

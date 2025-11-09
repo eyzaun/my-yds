@@ -1,7 +1,7 @@
 // src/components/Quiz.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
-import { designTokens } from '@/styles/designTokens';
+import { designTokens } from '@/styles/design-tokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveQuizScore } from '@/firebase/firestore';
 import AdBanner from './AdBanner';

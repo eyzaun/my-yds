@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FlashcardData } from '@/types/flashcard';
-import { designTokens } from '@/styles/designTokens';
+import { designTokens } from '@/styles/design-tokens';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';

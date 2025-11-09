@@ -7,7 +7,7 @@ import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
 import { Card } from '@/components/design-system/Card';
 import { Typography } from '@/components/design-system/Typography';
-import { designTokens } from '@/components/design-system/tokens';
+import { designTokens } from '@/styles/design-tokens';
 
 const LoginForm = () => {
   const router = useRouter();
