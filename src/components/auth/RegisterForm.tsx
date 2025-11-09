@@ -7,7 +7,7 @@ import { FirebaseError } from 'firebase/app';
 import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
 import { Card } from '@/components/design-system/Card';
-import { Typography } from '@/components/design-system/Typography';
+import { Heading2 } from '@/components/design-system/Typography';
 import { designTokens } from '@/styles/design-tokens';
 
 const RegisterForm = () => {
@@ -65,9 +65,9 @@ const RegisterForm = () => {
 
   return (
     <Card className="max-w-md mx-auto">
-      <Typography variant="h2" className="mb-6 text-center">
+      <Heading2 className="mb-6 text-center">
         Hesap Oluştur
-      </Typography>
+      </Heading2>
 
       {error && (
         <div className="p-3 mb-4 rounded-md" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: designTokens.colors.text.primary }}>
