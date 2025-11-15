@@ -41,6 +41,8 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
   const [quizAnswer, setQuizAnswer] = useState('');
   const [quizResult, setQuizResult] = useState<'correct' | 'incorrect' | null>(null);
   const [flipped, setFlipped] = useState(false);
+  const [answerHistory, setAnswerHistory] = useState<string[]>([]); // Son 3 cevabın geçmişi
+  const [historyIndex, setHistoryIndex] = useState(-1); // Geçmiş içinde navegasyon
   const quizInputRef = useRef<HTMLInputElement>(null);
 
   // Callback fonksiyonları
@@ -53,6 +55,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
       setQuizAnswer('');
       setQuizResult(null);
       setFlipped(false);
+      setHistoryIndex(-1); // Geçmiş navigasyonunu sıfırla
 
       // Quiz modunda input'a focus
       if (isQuizMode) {
@@ -72,6 +75,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
       setQuizAnswer('');
       setQuizResult(null);
       setFlipped(false);
+      setHistoryIndex(-1); // Geçmiş navigasyonunu sıfırla
     }
   }, [currentIndex]);
 
@@ -82,6 +86,7 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
     setQuizResult(null);
     setFlipped(false);
     setIsQuizMode(false);
+    setHistoryIndex(-1); // Geçmiş navigasyonunu sıfırla
   }, []);
 
   const toggleViewMode = useCallback(() => {
@@ -127,6 +132,11 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
 
     // Tam eşleşme kontrolü - kullanıcı cevabı herhangi bir alternative ile tamamen eşleşmeli
     const isCorrect = correctAnswers.includes(userAnswer);
+
+    // Cevabı geçmişe ekle (son 3 cevabı tutar)
+    const newHistory = [userAnswer, ...answerHistory].slice(0, 3);
+    setAnswerHistory(newHistory);
+    setHistoryIndex(-1);
 
     // Eğer yanlış cevap durumundaysak ve kullanıcı doğru cevabı yazıyorsa
     if (quizResult === 'incorrect' && flipped) {
@@ -333,6 +343,31 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
                     type="text"
                     value={quizAnswer}
                     onChange={(e) => setQuizAnswer(e.target.value)}
+                    onKeyDown={(e) => {
+                      // Yukarı ok tuşu - geçmişte geri git
+                      if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (answerHistory.length > 0) {
+                          const newIndex = Math.min(historyIndex + 1, answerHistory.length - 1);
+                          setHistoryIndex(newIndex);
+                          setQuizAnswer(answerHistory[answerHistory.length - 1 - newIndex]);
+                        }
+                        return;
+                      }
+                      // Aşağı ok tuşu - geçmiş içinde ileri git
+                      if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (historyIndex > 0) {
+                          const newIndex = historyIndex - 1;
+                          setHistoryIndex(newIndex);
+                          setQuizAnswer(answerHistory[answerHistory.length - 1 - newIndex]);
+                        } else if (historyIndex === 0) {
+                          setHistoryIndex(-1);
+                          setQuizAnswer('');
+                        }
+                        return;
+                      }
+                    }}
                     className="flex-grow px-3 py-2 rounded-l-lg border focus:outline-none"
                     placeholder={quizResult === 'incorrect' && flipped ? 'Doğru cevabı yazın...' : 'Cevabınızı buraya yazın...'}
                     style={{
