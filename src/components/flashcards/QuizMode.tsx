@@ -162,24 +162,19 @@ export default function QuizMode({
     if (isCorrectAnswer) {
       setIsCorrect(true);
 
-      // Doğru cevap bildirimi
+      // Doğru cevap - kartı çevirmeden direkt sonraki karta geç
       setTimeout(() => {
-        onCorrectAnswer();
+        onMoveNext();
+        setAnswer('');
+        setIsCorrect(null);
 
-        // Sonraki kelimeye geçiş
+        // Otomatik focus
         setTimeout(() => {
-          onMoveNext();
-          setAnswer('');
-          setIsCorrect(null);
-
-          // Otomatik focus
-          setTimeout(() => {
-            if (inputRef.current) {
-              inputRef.current.focus();
-            }
-          }, 300);
-        }, 800);
-      }, 700);
+          if (inputRef.current) {
+            inputRef.current.focus();
+          }
+        }, 300);
+      }, 800);
     } else {
       setIsCorrect(false);
       // Yanlış cevap - kartı çevir
@@ -192,7 +187,7 @@ export default function QuizMode({
         }
       }, 200);
     }
-  }, [waitingForEnter, currentIndex, answer, flashcards, onMoveNext, onCorrectAnswer, onIncorrectAnswer, answerHistory]);
+  }, [waitingForEnter, currentIndex, answer, flashcards, onMoveNext, onIncorrectAnswer, answerHistory]);
 
   // Klavye event işleyicisi
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
