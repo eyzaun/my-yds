@@ -19,7 +19,7 @@ const isMobileDevice = () => {
 
 export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentVersion, setCurrentVersion] = useState<number>(1);
-  const [serverVersion, setServerVersion] = useState<number | null>(null);
+  const [latestVersion, setLatestVersion] = useState<number | null>(null);
   const [needsUpdate, setNeedsUpdate] = useState(false);
   const [updateDismissed, setUpdateDismissed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -29,49 +29,51 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setIsMobile(isMobileDevice());
   }, []);
 
-  // Main version checking - simple buildNumber comparison
+  // Version checking logic
+  const checkAndCompareVersions = (current: number, latest: number | null) => {
+    if (latest && latest > current) {
+      setNeedsUpdate(true);
+    } else {
+      setNeedsUpdate(false);
+    }
+  };
+
+  // Main version checking - fetch from app-version.json
   useEffect(() => {
     const checkVersion = async () => {
       try {
-        // Local app-version.json'dan current version'ı al
+        // Fetch current version from app-version.json
         const localVersionResponse = await fetch('/app-version.json');
         if (localVersionResponse.ok) {
           const localVersion = await localVersionResponse.json();
-          const current = localVersion.buildNumber;
-          setCurrentVersion(current);
+          const buildNumber = localVersion.buildNumber;
+          setCurrentVersion(buildNumber);
 
-          // If serverVersion hasn't been fetched yet, fetch it
-          if (serverVersion === null) {
-            // For now, we'll check if there's a deployed version
-            // In a real app, this would call an API
-            // For this simple system, server version = what's in app-version.json on server
-            setServerVersion(current);
+          // First time: set latestVersion from initial load
+          if (latestVersion === null) {
+            setLatestVersion(buildNumber);
           }
         }
       } catch (error) {
-        console.warn('Could not fetch version info');
+        console.warn('Could not fetch version:', error);
       }
     };
 
-    // İlk kontrol
+    // First check
     checkVersion();
 
-    // Version check every 30 minutes
-    const interval = setInterval(checkVersion, 30 * 60 * 1000);
+    // Check every 5 minutes for updates
+    const interval = setInterval(checkVersion, 5 * 60 * 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [serverVersion]);
+  }, [latestVersion]);
 
-  // Check if update is needed whenever versions change
+  // Check if update is needed
   useEffect(() => {
-    if (serverVersion !== null && currentVersion < serverVersion && !updateDismissed) {
-      setNeedsUpdate(true);
-    } else if (currentVersion >= serverVersion) {
-      setNeedsUpdate(false);
-    }
-  }, [currentVersion, serverVersion, updateDismissed]);
+    checkAndCompareVersions(currentVersion, latestVersion);
+  }, [currentVersion, latestVersion]);
 
   const dismissUpdate = () => {
     setUpdateDismissed(true);
@@ -81,7 +83,7 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // Exposed context value
   const value: VersionContextType = {
     currentVersion,
-    needsUpdate,
+    needsUpdate: needsUpdate && !updateDismissed,
     dismissUpdate,
     isMobile
   };
