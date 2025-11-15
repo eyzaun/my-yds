@@ -18,48 +18,45 @@ const isMobileDevice = () => {
 };
 
 export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentVersion, setCurrentVersion] = useState<number>(1);
-  const [latestVersion, setLatestVersion] = useState<number | null>(null);
+  // cachedVersion: version the user currently has (from last successful deployment they loaded)
+  // deployedVersion: version currently on the server (from app-version.json)
+  const [cachedVersion, setCachedVersion] = useState<number>(1);
+  const [deployedVersion, setDeployedVersion] = useState<number | null>(null);
   const [needsUpdate, setNeedsUpdate] = useState(false);
   const [updateDismissed, setUpdateDismissed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Initialize mobile detection
   useEffect(() => {
     setIsMobile(isMobileDevice());
   }, []);
 
-  // Version checking logic
-  const checkAndCompareVersions = (current: number, latest: number | null) => {
-    if (latest && latest > current) {
-      setNeedsUpdate(true);
-    } else {
-      setNeedsUpdate(false);
-    }
-  };
-
   // Main version checking - fetch from app-version.json
   useEffect(() => {
     const checkVersion = async () => {
       try {
-        // Fetch current version from app-version.json
-        const localVersionResponse = await fetch('/app-version.json');
-        if (localVersionResponse.ok) {
-          const localVersion = await localVersionResponse.json();
-          const buildNumber = localVersion.buildNumber;
-          setCurrentVersion(buildNumber);
+        // Fetch deployed version from app-version.json
+        const response = await fetch('/app-version.json', { cache: 'no-store' });
+        if (response.ok) {
+          const data = await response.json();
+          const buildNumber = data.buildNumber;
 
-          // First time: set latestVersion from initial load
-          if (latestVersion === null) {
-            setLatestVersion(buildNumber);
+          // On first load, set cached version to deployed version (user has current version)
+          if (!isInitialized) {
+            setCachedVersion(buildNumber);
+            setIsInitialized(true);
           }
+
+          // Always update deployed version (what's on server)
+          setDeployedVersion(buildNumber);
         }
       } catch (error) {
         console.warn('Could not fetch version:', error);
       }
     };
 
-    // First check
+    // First check immediately
     checkVersion();
 
     // Check every 5 minutes for updates
@@ -68,12 +65,27 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return () => {
       clearInterval(interval);
     };
-  }, [latestVersion]);
+  }, [isInitialized]);
 
   // Check if update is needed
   useEffect(() => {
-    checkAndCompareVersions(currentVersion, latestVersion);
-  }, [currentVersion, latestVersion]);
+    if (deployedVersion !== null && deployedVersion > cachedVersion) {
+      setNeedsUpdate(true);
+    } else {
+      setNeedsUpdate(false);
+    }
+
+    // Debug logging
+    if (typeof window !== 'undefined') {
+      console.log('[Version Check]', {
+        cachedVersion,
+        deployedVersion,
+        needsUpdate,
+        updateDismissed,
+        isInitialized
+      });
+    }
+  }, [cachedVersion, deployedVersion, needsUpdate, updateDismissed, isInitialized]);
 
   const dismissUpdate = () => {
     setUpdateDismissed(true);
@@ -82,7 +94,7 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Exposed context value
   const value: VersionContextType = {
-    currentVersion,
+    currentVersion: cachedVersion,
     needsUpdate: needsUpdate && !updateDismissed,
     dismissUpdate,
     isMobile
