@@ -19,7 +19,7 @@ const isMobileDevice = () => {
 
 export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentVersion, setCurrentVersion] = useState<number>(1);
-  const [latestVersion, setLatestVersion] = useState<number>(1);
+  const [serverVersion, setServerVersion] = useState<number | null>(null);
   const [needsUpdate, setNeedsUpdate] = useState(false);
   const [updateDismissed, setUpdateDismissed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -40,14 +40,16 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           const current = localVersion.buildNumber;
           setCurrentVersion(current);
 
-          // Simple comparison: just check if there's a newer version available
-          // You can manually update buildNumber in public/app-version.json
-          if (current < latestVersion) {
-            setNeedsUpdate(true);
+          // If serverVersion hasn't been fetched yet, fetch it
+          if (serverVersion === null) {
+            // For now, we'll check if there's a deployed version
+            // In a real app, this would call an API
+            // For this simple system, server version = what's in app-version.json on server
+            setServerVersion(current);
           }
         }
       } catch (error) {
-        console.warn('Could not fetch local version:', error);
+        console.warn('Could not fetch version info');
       }
     };
 
@@ -60,7 +62,16 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return () => {
       clearInterval(interval);
     };
-  }, [latestVersion]);
+  }, [serverVersion]);
+
+  // Check if update is needed whenever versions change
+  useEffect(() => {
+    if (serverVersion !== null && currentVersion < serverVersion && !updateDismissed) {
+      setNeedsUpdate(true);
+    } else if (currentVersion >= serverVersion) {
+      setNeedsUpdate(false);
+    }
+  }, [currentVersion, serverVersion, updateDismissed]);
 
   const dismissUpdate = () => {
     setUpdateDismissed(true);
@@ -70,7 +81,7 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // Exposed context value
   const value: VersionContextType = {
     currentVersion,
-    needsUpdate: needsUpdate && !updateDismissed,
+    needsUpdate,
     dismissUpdate,
     isMobile
   };
