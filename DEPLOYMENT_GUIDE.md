@@ -1,107 +1,130 @@
 # Version Management Guide
 
-## Simple Version Tracking
-
-Bu projede version takibi çok basittir - sadece **buildNumber** kontrol edilir.
-
-### Nasıl Çalışır?
+## How Version Checking Works
 
 ```
-1. Uygulama yüklenir
-2. /public/app-version.json dosyasından currentVersion alınır
-3. 30 dakikada bir kontrol yapılır
-4. Eğer yeni bir versiyon çıkmışsa UpdateModal gösterilir
-5. Kullanıcı "Şimdi Güncelle" veya "Daha Sonra" seçer
+User opens app
+    ↓
+VersionProvider fetches /app-version.json (currentVersion)
+    ↓
+Sets serverVersion = currentVersion (first load)
+    ↓
+If currentVersion < serverVersion
+    ↓
+Show UpdateModal automatically
+    ↓
+User clicks "Şimdi Güncelle" → Clear cache + Reload
 ```
 
-### Versiyon Güncellemesi
+## Updating Your Version
 
-**Tek yapmanız gereken**: `public/app-version.json` dosyasında `buildNumber` artırmak
+### Step 1: Make Changes
+```bash
+npm run dev
+# Make your feature changes and test locally
+```
 
+### Step 2: Build
+```bash
+npm run build
+```
+
+### Step 3: Update buildNumber
+Edit `public/app-version.json`:
+
+**BEFORE** (deployed version):
 ```json
 {
-  "buildNumber": 1  // Bunu 2, 3, 4... şeklinde artırın
+  "buildNumber": 1
 }
 ```
 
-### Adımlar
-
-1. **Değişiklik yapın ve test edin**
-   ```bash
-   npm run dev
-   ```
-
-2. **Build edin**
-   ```bash
-   npm run build
-   ```
-
-3. **buildNumber artırın** (public/app-version.json)
-   ```json
-   // Değiştir:
-   "buildNumber": 1
-
-   // Yapı:
-   "buildNumber": 2
-   ```
-
-4. **Deploy edin**
-   ```bash
-   npm run deploy
-   ```
-
-5. **Test edin** (farklı browser/device)
-   - Eski cache'li sayfaya girin
-   - UpdateModal otomatik görünecek
-   - "Şimdi Güncelle" tıklayın
-
-### Örnek Workflow
-
-```
-Build #1 → production
-   ↓
-Yeni özellik ekle
-   ↓
-npm run build
-   ↓
-public/app-version.json'da buildNumber: 1 → 2
-   ↓
-npm run deploy
-   ↓
-Eski versiyondan açan kullanıcılar güncelleme isteği görür
+**AFTER** (new version):
+```json
+{
+  "buildNumber": 2
+}
 ```
 
-### Important Files
-
-- `public/app-version.json` - Güncel version bilgisi (sadece buildNumber)
-- `src/contexts/VersionContext.tsx` - Version kontrol mantığı
-- `src/components/UpdateModal.tsx` - Güncelleme UI
-
-### Güvenlik Kuralları
-
-Firestore security rules `firestore.rules` dosyasında tanımlanmıştır:
-- ✅ appConfig/version dokümantı herkese açık (read)
-- ❌ Yazma işlemi yasaklı (sadece admin SDK)
-
-Rules zaten deployed. Değiştirmek için:
+### Step 4: Deploy
 ```bash
-firebase deploy --only firestore:rules
+npm run deploy
+```
+
+### Step 5: Test Version Check
+
+**On same device (cache will show old version):**
+1. Open app in incognito/private window
+2. UpdateModal should appear automatically
+3. Click "Şimdi Güncelle"
+4. Cache clears + page reloads
+5. Voilà!
+
+**Or test on different device:**
+1. Open app on phone/tablet
+2. UpdateModal appears if buildNumber increased
+
+## Important Files
+
+| File | Purpose |
+|------|---------|
+| `public/app-version.json` | Current deployed buildNumber |
+| `src/contexts/VersionContext.tsx` | Version comparison logic |
+| `src/components/UpdateModal.tsx` | Update notification UI |
+
+## Testing Scenarios
+
+### Scenario 1: First Time (Testing)
+- buildNumber: 1 (local)
+- buildNumber: 1 (deployed)
+- **Result**: No update (versions match)
+
+### Scenario 2: New Version Available
+- buildNumber: 1 (local/cached)
+- buildNumber: 2 (deployed)
+- **Result**: UpdateModal shows ✓
+
+### Scenario 3: User Dismisses Update
+- Click "Daha Sonra"
+- Modal dismissed for this session
+- Reappears after browser restart
+
+## Current State
+
+```
+Local buildNumber:    1
+Server buildNumber:   1
+Update showing:       No (versions match)
+
+To test: Change buildNumber to 2, deploy, then reload from different device
 ```
 
 ## Q&A
 
-**S: Firestore'a neden ihtiyaç var?**
-A: Şu anki kurulumda ihtiyaç yok. Sadece `public/app-version.json` kullanılıyor.
+**Q: UpdateModal is not showing?**
+A: Make sure:
+1. buildNumber in public/app-version.json is deployed
+2. You're loading from cache (incognito mode to test)
+3. Browser DevTools Network tab shows new app-version.json
 
-**S: Cache problemi varsa?**
-A: UpdateModal otomatik cache temizler ve sayfayı yeniler.
+**Q: How do I deploy?**
+A:
+```bash
+npm run deploy
+```
 
-**S: Mobil/Desktop farklı davranır mı?**
-A: UpdateModal ikisinde de aynı şekilde çalışır. Responsive tasarım vardır.
+**Q: Can I force everyone to update?**
+A: Currently, it shows a notification. Users can dismiss with "Daha Sonra". To make it mandatory, add `forceUpdate` flag.
 
-**S: Zorunlu güncelleme yapabilir miyim?**
-A: Şu anki haliyle hayır. Yapılmak istiyorsa VersionContext'e `forceUpdate` mantığı eklenebilir.
+**Q: Does cache clearing happen automatically?**
+A: Yes! UpdateModal handler clears:
+- Service worker registrations
+- All browser caches
+- Then reloads page
+
+**Q: What about Firestore?**
+A: Not used anymore. System runs entirely on public/app-version.json
 
 ---
 
-**Kısaca:** Yeni version için sadece `buildNumber`'ı artırın ve deploy edin! 🚀
+**TL;DR**: Just increment buildNumber in `public/app-version.json` and deploy! 🚀
