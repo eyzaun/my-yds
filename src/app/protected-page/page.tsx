@@ -8,8 +8,6 @@ import { Card } from '@/components/design-system/Card';
 import { Heading1, Text } from '@/components/design-system/Typography';
 import { useTheme } from '@/hooks/useTheme';
 
-// Replace path alias import with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProtectedPage = () => {
   const { tokens } = useTheme();
@@ -26,11 +24,6 @@ const ProtectedPage = () => {
             </Text>
           </Card>
         </Container>
-        <ClientOnlyAd
-          slot="5661706007"
-          format="auto"
-          className="my-4 mx-auto"
-        />
       </div>
     </RequireAuth>
   );

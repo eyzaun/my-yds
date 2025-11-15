@@ -14,8 +14,6 @@ import { Button } from '@/components/design-system/Button';
 import { Heading1, Heading2 } from '@/components/design-system/Typography';
 import { useTheme } from '@/hooks/useTheme';
 
-// Replace path alias import with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const ProfilePage = () => {
   const { tokens } = useTheme();
@@ -159,16 +157,6 @@ const ProfilePage = () => {
             </div>
           </div>
         </Container>
-        <ClientOnlyAd
-          slot="5661706007"
-          format="auto"
-          className="my-4 mx-auto"
-        />
-        <ClientOnlyAd
-          slot="3007186106"
-          format="horizontal"
-          className="my-4 mx-auto max-w-6xl px-4"
-        />
       </div>
     </RequireAuth>
   );

@@ -7,8 +7,6 @@ import { Container } from '@/components/design-system/Container';
 import { Heading1, Text } from '@/components/design-system/Typography';
 import { useTheme } from '@/hooks/useTheme';
 
-// Replace path alias import with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const RegisterPage = () => {
   const { tokens } = useTheme();
@@ -32,11 +30,6 @@ const RegisterPage = () => {
           </div>
         </div>
       </Container>
-      <ClientOnlyAd
-        slot="5661706007"
-        format="auto"
-        className="my-4 mx-auto"
-      />
     </div>
   );
 };

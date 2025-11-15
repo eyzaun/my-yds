@@ -8,8 +8,6 @@ import { Container } from '@/components/design-system/Container';
 import { Heading1, Text } from '@/components/design-system/Typography';
 import { useTheme } from '@/hooks/useTheme';
 
-// Replace the import using path alias with relative path
-const ClientOnlyAd = dynamic(() => import('../../components/ClientOnlyAd'), { ssr: false });
 
 const LoginPage = () => {
   const { tokens } = useTheme();
@@ -37,11 +35,6 @@ const LoginPage = () => {
         slot="3007186106"
         format="horizontal"
         className="my-4 mx-auto max-w-6xl px-4"
-      />
-      <ClientOnlyAd
-        slot="5661706007"
-        format="auto"
-        className="my-4 mx-auto"
       />
     </div>
   );
