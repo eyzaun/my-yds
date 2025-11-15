@@ -18,7 +18,7 @@ export default function ÇevreveBiyolojiPage() {
 
   const categoryId = 'environment-biology';
   const categoryName = 'Çevre ve Biyoloji';
-  const categoryKey = 'environmentBiology' as keyof typeof vocabulary;
+  const categoryKey = 'environment_biology' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

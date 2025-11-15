@@ -18,7 +18,7 @@ export default function İşDünyasıveİletişimPage() {
 
   const categoryId = 'business-communication';
   const categoryName = 'İş Dünyası ve İletişim';
-  const categoryKey = 'businessCommunication' as keyof typeof vocabulary;
+  const categoryKey = 'business_communication' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

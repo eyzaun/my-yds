@@ -18,7 +18,7 @@ export default function TemelZarflarPage() {
 
   const categoryId = 'basic-adverbs';
   const categoryName = 'Temel Zarflar';
-  const categoryKey = 'basicAdverbs' as keyof typeof vocabulary;
+  const categoryKey = 'basic_adverbs' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

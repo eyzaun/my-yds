@@ -18,7 +18,7 @@ export default function HedefFiillerPage() {
 
   const categoryId = 'target-verbs';
   const categoryName = 'Hedef Fiiller';
-  const categoryKey = 'targetVerbs' as keyof typeof vocabulary;
+  const categoryKey = 'target_verbs' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

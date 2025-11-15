@@ -18,7 +18,7 @@ export default function TemelSıfatlarPage() {
 
   const categoryId = 'basic-adjectives';
   const categoryName = 'Temel Sıfatlar';
-  const categoryKey = 'basicAdjectives' as keyof typeof vocabulary;
+  const categoryKey = 'basic_adjectives' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

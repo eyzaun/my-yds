@@ -18,7 +18,7 @@ export default function HedefİsimlerPage() {
 
   const categoryId = 'target-nouns';
   const categoryName = 'Hedef İsimler';
-  const categoryKey = 'targetNouns' as keyof typeof vocabulary;
+  const categoryKey = 'target_nouns' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

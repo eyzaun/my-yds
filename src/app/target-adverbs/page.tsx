@@ -18,7 +18,7 @@ export default function HedefZarflarPage() {
 
   const categoryId = 'target-adverbs';
   const categoryName = 'Hedef Zarflar';
-  const categoryKey = 'targetAdverbs' as keyof typeof vocabulary;
+  const categoryKey = 'target_adverbs' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

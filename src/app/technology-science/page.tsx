@@ -18,7 +18,7 @@ export default function TeknolojiveBilimPage() {
 
   const categoryId = 'technology-science';
   const categoryName = 'Teknoloji ve Bilim';
-  const categoryKey = 'technologyScience' as keyof typeof vocabulary;
+  const categoryKey = 'technology_science' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

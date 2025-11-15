@@ -18,7 +18,7 @@ export default function HedefBağlaçlarPage() {
 
   const categoryId = 'target-conjunctions';
   const categoryName = 'Hedef Bağlaçlar';
-  const categoryKey = 'targetConjunctions' as keyof typeof vocabulary;
+  const categoryKey = 'target_conjunctions' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

@@ -18,7 +18,7 @@ export default function TemelİsimlerPage() {
 
   const categoryId = 'basic-nouns';
   const categoryName = 'Temel İsimler';
-  const categoryKey = 'basicNouns' as keyof typeof vocabulary;
+  const categoryKey = 'basic_nouns' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

@@ -18,7 +18,7 @@ export default function SağlıkveTıpPage() {
 
   const categoryId = 'health-medicine';
   const categoryName = 'Sağlık ve Tıp';
-  const categoryKey = 'healthMedicine' as keyof typeof vocabulary;
+  const categoryKey = 'health_medicine' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

@@ -18,7 +18,7 @@ export default function HedefSıfatlarPage() {
 
   const categoryId = 'target-adjectives';
   const categoryName = 'Hedef Sıfatlar';
-  const categoryKey = 'targetAdjectives' as keyof typeof vocabulary;
+  const categoryKey = 'target_adjectives' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

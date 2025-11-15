@@ -18,7 +18,7 @@ export default function PsikolojiveSosyolojiPage() {
 
   const categoryId = 'psychology-sociology';
   const categoryName = 'Psikoloji ve Sosyoloji';
-  const categoryKey = 'psychologySociology' as keyof typeof vocabulary;
+  const categoryKey = 'psychology_sociology' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

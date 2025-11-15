@@ -18,7 +18,7 @@ export default function TemelBağlaçlarPage() {
 
   const categoryId = 'basic-conjunctions';
   const categoryName = 'Temel Bağlaçlar';
-  const categoryKey = 'basicConjunctions' as keyof typeof vocabulary;
+  const categoryKey = 'basic_conjunctions' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

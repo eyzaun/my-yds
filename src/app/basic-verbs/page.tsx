@@ -18,7 +18,7 @@ export default function TemelFiillerPage() {
 
   const categoryId = 'basic-verbs';
   const categoryName = 'Temel Fiiller';
-  const categoryKey = 'basicVerbs' as keyof typeof vocabulary;
+  const categoryKey = 'basic_verbs' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');
