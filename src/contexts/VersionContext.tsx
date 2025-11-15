@@ -72,7 +72,11 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           checkAndCompareVersions(currentVersion, latest);
         }
       } catch (error) {
-        console.error('Error checking version:', error);
+        if (error instanceof Error && error.message.includes('permission')) {
+          console.warn('Firestore permission error - version check skipped (rules may need deployment)');
+        } else {
+          console.error('Error checking version:', error);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -98,7 +102,11 @@ export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }
       });
     } catch (error) {
-      console.warn('Real-time version listening not available:', error);
+      if (error instanceof Error && error.message.includes('permission')) {
+        console.warn('Firestore permission for real-time listener - rules deployed?');
+      } else {
+        console.warn('Real-time version listening not available:', error);
+      }
     }
 
     return () => {
