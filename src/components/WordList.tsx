@@ -117,16 +117,21 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
     if (!quizAnswer.trim()) return;
 
     const currentWord = words[currentIndex];
-    const correctAnswer = currentWord.tr.trim().toLowerCase();
     const userAnswer = quizAnswer.trim().toLowerCase();
+
+    // Doğru cevapları virgülle ayır ve her birini normalize et
+    const correctAnswers = currentWord.tr
+      .split(',')
+      .map(ans => ans.trim().toLowerCase())
+      .filter(ans => ans.length > 0);
+
+    // Tam eşleşme kontrolü - kullanıcı cevabı herhangi bir alternative ile tamamen eşleşmeli
+    const isCorrect = correctAnswers.includes(userAnswer);
 
     // Eğer yanlış cevap durumundaysak ve kullanıcı doğru cevabı yazıyorsa
     if (quizResult === 'incorrect' && flipped) {
       // Kullanıcının yazdığı doğru cevapla eşleşiyor mu kontrol et
-      const isExactMatch = userAnswer === correctAnswer;
-      const isCloseMatch = correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2;
-
-      if (isExactMatch || isCloseMatch) {
+      if (isCorrect) {
         // Doğru yazdı, sonraki kelimeye geç
         handleNext();
       } else {
@@ -137,9 +142,6 @@ const WordList: React.FC<WordListProps> = ({ words, categoryId, categoryName, is
     }
 
     // İlk deneme - kullanıcının cevabını kontrol et
-    const isExactMatch = userAnswer === correctAnswer;
-    const isCloseMatch = correctAnswer.includes(userAnswer) && userAnswer.length > correctAnswer.length / 2;
-    const isCorrect = isExactMatch || isCloseMatch;
 
     if (isCorrect) {
       setQuizResult('correct');
