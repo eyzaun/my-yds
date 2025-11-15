@@ -81,7 +81,7 @@ async function updateVersion() {
     const versionRef = db.collection('appConfig').doc('version');
     const currentDoc = await versionRef.get();
 
-    if (!currentDoc.exists()) {
+    if (!currentDoc.exists) {
       log('❌ Version document bulunamadı!', 'red');
       log('Lütfen önce: npm run init-firestore\n', 'yellow');
       process.exit(1);

@@ -53,7 +53,7 @@ async function initializeFirestore() {
     const appConfigRef = db.collection('appConfig').doc('version');
     const existingDoc = await appConfigRef.get();
 
-    if (existingDoc.exists()) {
+    if (existingDoc.exists) {
       log('⚠️  Firestore zaten initialize edilmiş!', 'yellow');
       log(`\nMevcut versiyon:`, 'cyan');
       const data = existingDoc.data();
