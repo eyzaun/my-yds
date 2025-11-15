@@ -38,6 +38,7 @@ interface FlashcardCardProps {
   };
   isFullscreen?: boolean;
   completed?: Record<string, boolean>;
+  quizMode?: boolean;
 }
 
 const FlashcardCard: React.FC<FlashcardCardProps> = ({
@@ -50,36 +51,38 @@ const FlashcardCard: React.FC<FlashcardCardProps> = ({
   handlers,
   dimensions,
   isFullscreen = false,
-  completed = {}
+  completed = {},
+  quizMode = false
 }) => {
   const { handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd } = handlers;
   const { isMobile, isLandscape } = dimensions;
-  
+
   return (
-    <div 
+    <div
       className="perspective-1000 mx-auto overflow-visible"
-      style={{ 
-        width: `${cardWidth}px`, 
+      style={{
+        width: `${cardWidth}px`,
         maxWidth: "100%",
         marginLeft: "auto",
         marginRight: "auto",
         marginBottom: isFullscreen ? '20px' : '0'
       }}
     >
-      <div 
-        className={`w-full transform-style-3d cursor-pointer transition-transform duration-500 ${
+      <div
+        className={`w-full transform-style-3d transition-transform duration-500 ${
           flipped ? "rotate-y-180" : ""
         }`}
-        style={{ 
+        style={{
           height: `${cardHeight}px`,
           maxHeight: isLandscape ? "60vh" : "50vh",
           backgroundColor: 'transparent',
+          cursor: quizMode ? 'default' : 'pointer'
         }}
-        onClick={handleFlip}
-        onContextMenu={handleRightClick}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onClick={quizMode ? undefined : handleFlip}
+        onContextMenu={quizMode ? undefined : handleRightClick}
+        onTouchStart={quizMode ? undefined : handleTouchStart}
+        onTouchMove={quizMode ? undefined : handleTouchMove}
+        onTouchEnd={quizMode ? undefined : handleTouchEnd}
       >
         {/* Ön yüz */}
         <div 

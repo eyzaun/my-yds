@@ -165,6 +165,7 @@ export default function FlashcardDeck({
         handlers={{handleFlip, handleRightClick, handleTouchStart, handleTouchMove, handleTouchEnd}}
         dimensions={{isMobile, isLandscape}}
         completed={completed}
+        quizMode={quizMode}
       />
       
       {/* Quiz modu */}
@@ -223,6 +224,7 @@ export default function FlashcardDeck({
           dimensions={{isMobile, isLandscape}}
           isFullscreen={true}
           completed={completed}
+          quizMode={quizMode}
         />
       </div>
 

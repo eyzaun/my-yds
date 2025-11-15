@@ -129,18 +129,14 @@ const FlashcardMobileView: React.FC<FlashcardMobileViewProps> = ({
             maxWidth: "100%"
           }}
         >
-          <div 
-            className={`w-full transform-style-3d cursor-pointer transition-transform duration-500 ${
+          <div
+            className={`w-full transform-style-3d transition-transform duration-500 ${
               flipped ? "rotate-y-180" : ""
             }`}
-            style={{ 
-              height: `${cardHeight}px`
+            style={{
+              height: `${cardHeight}px`,
+              cursor: 'default'
             }}
-            onClick={handleFlip}
-            onContextMenu={handleRightClick}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
           >
             <div 
               className="absolute inset-0 w-full h-full flex items-center justify-center p-4 backface-hidden transition-all duration-300 overflow-hidden flashcard-content"
