@@ -18,7 +18,7 @@ export default function TarihveArkeolojiPage() {
 
   const categoryId = 'history-archaeology';
   const categoryName = 'Tarih ve Arkeoloji';
-  const categoryKey = 'history_archaeology' as keyof typeof vocabulary;
+  const categoryKey = 'history_and_archaeology' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

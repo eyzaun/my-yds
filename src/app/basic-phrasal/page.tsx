@@ -18,7 +18,7 @@ export default function TemelPhrasalVerbsPage() {
 
   const categoryId = 'basic-phrasal';
   const categoryName = 'Temel Phrasal Verbs';
-  const categoryKey = 'basic_phrasal' as keyof typeof vocabulary;
+  const categoryKey = 'basic_phrasal_verbs' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');

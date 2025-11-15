@@ -18,7 +18,7 @@ export default function HedefPhrasalVerbsPage() {
 
   const categoryId = 'target-phrasal';
   const categoryName = 'Hedef Phrasal Verbs';
-  const categoryKey = 'target_phrasal' as keyof typeof vocabulary;
+  const categoryKey = 'target_phrasal_verbs' as keyof typeof vocabulary;
   
   useEffect(() => {
     const script = document.createElement('script');
