@@ -7,7 +7,9 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nfix: correct all design token usages across the application\n\n- Fixed spacing tokens: replaced spacing.xs/sm/md/lg/xl with array notation (spacing[1]/[2]/[6]/[8]/[12])\n- Fixed color tokens: replaced colors.text with colors.text.primary where applicable\n- Fixed color tokens: replaced colors.background with colors.background.primary where applicable\n- Added FlashcardFullscreenContext for proper fullscreen mode state management\n- Updated ClientLayout to hide ads and navigation during fullscreen flashcard mode\n- Fixed ClashcardDeck to sync fullscreen state with context\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit:*)",
       "Bash(firebase deploy:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(git rm:*)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
