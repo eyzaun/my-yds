@@ -2,12 +2,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const AD_LOAD_TIMEOUT = 10000; // 10 saniye timeout
+let processedAdIds = new Set(); // Global set to track processed ads
 
 export default function ClientOnlyAd({ slot, format = 'auto', className = '', style = {} }) {
   const adRef = useRef(null);
   const [mounted, setMounted] = useState(false);
   const retryCountRef = useRef(0);
   const maxRetriesRef = useRef(5);
+  const uniqueAdIdRef = useRef(`ad-${slot}-${Math.random().toString(36).substring(2, 9)}`);
 
   useEffect(() => {
     setMounted(true);
@@ -21,8 +23,10 @@ export default function ClientOnlyAd({ slot, format = 'auto', className = '', st
 
     const initAd = () => {
       try {
-        // Temizle
-        currentRef.innerHTML = '';
+        // Temizle - önceki tüm child elementleri kaldır
+        while (currentRef.firstChild) {
+          currentRef.removeChild(currentRef.firstChild);
+        }
 
         // AdSense scripti yüklenene kadar bekle
         if (typeof window.adsbygoogle === 'undefined') {
@@ -38,9 +42,11 @@ export default function ClientOnlyAd({ slot, format = 'auto', className = '', st
         // Reset retry counter on success
         retryCountRef.current = 0;
 
-        // ins elementini oluştur
+        // Sadece yeni bir ins elementi ekle
+        const uniqueAdId = uniqueAdIdRef.current;
         const ins = document.createElement('ins');
         ins.className = 'adsbygoogle';
+        ins.id = uniqueAdId;
         ins.style.display = 'block';
         ins.style.textAlign = 'center';
         ins.dataset.adClient = 'ca-pub-3638586001556511';
@@ -56,8 +62,11 @@ export default function ClientOnlyAd({ slot, format = 'auto', className = '', st
 
         currentRef.appendChild(ins);
 
-        // AdSense'i push et
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        // AdSense'i push et - ama sadece bu ad henüz işlenmediyse
+        if (!processedAdIds.has(uniqueAdId)) {
+          processedAdIds.add(uniqueAdId);
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
 
       } catch (error) {
         console.error(`AdSense error for slot ${slot}:`, error);
@@ -69,7 +78,9 @@ export default function ClientOnlyAd({ slot, format = 'auto', className = '', st
     return () => {
       if (currentRef) {
         try {
-          currentRef.innerHTML = '';
+          while (currentRef.firstChild) {
+            currentRef.removeChild(currentRef.firstChild);
+          }
         } catch {
           // Ignore cleanup errors
         }

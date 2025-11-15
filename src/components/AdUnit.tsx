@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
+// Global set to track processed ad elements
+const processedAdIds = new Set<string>();
+
 interface AdUnitProps {
   slot: string;
   format?: 'auto' | 'horizontal' | 'vertical' | 'rectangle';
@@ -10,7 +13,7 @@ interface AdUnitProps {
 
 export default function AdUnit({ slot, format = 'auto', style = {}, className = '' }: AdUnitProps) {
   const adContainerRef = useRef<HTMLDivElement>(null);
-  const adId = `ad-${slot}-${Math.random().toString(36).substring(2, 9)}`;
+  const adIdRef = useRef(`ad-${slot}-${Math.random().toString(36).substring(2, 9)}`);
   const retryCountRef = useRef(0);
   const maxRetriesRef = useRef(10);
 
@@ -36,8 +39,10 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
     const checkAndInitAd = () => {
       if (!currentRef) return;
 
-      // Önceki içeriği temizleyin
-      currentRef.innerHTML = '';
+      // Önceki elementleri temizle (innerHTML yerine removeChild kullan)
+      while (currentRef.firstChild) {
+        currentRef.removeChild(currentRef.firstChild);
+      }
 
       // AdSense scriptinin yüklenip yüklenilmediğini kontrol edin
       if (typeof window.adsbygoogle === 'undefined') {
@@ -57,8 +62,10 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
 
       try {
         // Reklam elementini oluştur
+        const uniqueAdId = adIdRef.current;
         const ins = document.createElement('ins');
         ins.className = 'adsbygoogle';
+        ins.id = uniqueAdId;
         ins.style.display = 'block';
         ins.style.textAlign = 'center';
 
@@ -81,8 +88,11 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
         // Div'e ekleyin
         currentRef.appendChild(ins);
 
-        // AdSense'i yükleyin
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        // AdSense'i yükleyin - ama sadece bu ad henüz işlenmediyse
+        if (!processedAdIds.has(uniqueAdId)) {
+          processedAdIds.add(uniqueAdId);
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
 
       } catch (error) {
         console.error('Error creating ad:', error);
@@ -96,13 +106,15 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
     return () => {
       if (currentRef) {
         try {
-          currentRef.innerHTML = '';
+          while (currentRef.firstChild) {
+            currentRef.removeChild(currentRef.firstChild);
+          }
         } catch {
           // Ignore cleanup errors
         }
       }
     };
-  }, [slot, format, adId]);
+  }, [slot, format]);
 
   const getMinHeight = (): string => {
     switch (format) {
@@ -121,7 +133,7 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
   return (
     <div
       ref={adContainerRef}
-      id={adId}
+      id={adIdRef.current}
       className={`ad-container ${className}`}
       style={{
         width: '100%',
