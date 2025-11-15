@@ -10,7 +10,10 @@
       "Bash(curl:*)",
       "Bash(git rm:*)",
       "Bash(done)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npm run init-firestore:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run update-version:*)"
     ],
     "deny": [],
     "ask": []

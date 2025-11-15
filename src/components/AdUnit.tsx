@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
-// Global set to track processed ad elements
-const processedAdIds = new Set<string>();
+// Global map to track ad instances and prevent re-pushing
+const adInstanceMap = new Map<string, { pushed: boolean; tries: number }>();
 
 interface AdUnitProps {
   slot: string;
@@ -88,10 +88,17 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
         // Div'e ekleyin
         currentRef.appendChild(ins);
 
-        // AdSense'i yükleyin - ama sadece bu ad henüz işlenmediyse
-        if (!processedAdIds.has(uniqueAdId)) {
-          processedAdIds.add(uniqueAdId);
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        // AdSense'i yükleyin - track attempt
+        const adInstance = adInstanceMap.get(uniqueAdId) || { pushed: false, tries: 0 };
+        if (!adInstance.pushed && adInstance.tries < 3) {
+          adInstance.tries++;
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            adInstance.pushed = true;
+          } catch (e) {
+            console.warn(`AdSense push attempt ${adInstance.tries} failed for ${slot}`);
+          }
+          adInstanceMap.set(uniqueAdId, adInstance);
         }
 
       } catch (error) {
