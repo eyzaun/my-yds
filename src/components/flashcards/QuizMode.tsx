@@ -137,23 +137,34 @@ export default function QuizMode({
     }
     
     if (!flashcards[currentIndex]) return;
-    
+
     const currentCard = flashcards[currentIndex];
-    const correctAnswer = currentCard.back.trim().toLowerCase();
     const userAnswer = answer.trim().toLowerCase();
 
-    // Split correct answer by comma to get all valid alternatives
-    const alternatives = correctAnswer.split(',').map(alt => alt.trim());
+    // Doğru cevapları virgülle ayır, her birini normalize et
+    const correctAnswers = currentCard.back
+      .split(',')
+      .map(ans => ans.trim().toLowerCase())
+      .filter(ans => ans.length > 0); // Boş değerleri filtrele
 
-    // Check if user's answer matches any of the alternatives (exact match)
-    const isExactMatch = alternatives.some(alt => userAnswer === alt);
+    // Tam eşleşme kontrolü - kullanıcının cevabı alternatiflerden biriyle tam olarak eşleşiyor mu?
+    const isExactMatch = correctAnswers.includes(userAnswer);
 
-    // Check for close match with any alternative
-    const isCloseMatch = alternatives.some(alt =>
-      alt.includes(userAnswer) && userAnswer.length > alt.length / 2
-    );
-      
-    if (isExactMatch || isCloseMatch) {
+    // Yaklaşık eşleşme kontrolü - her alternatif için ayrı ayrı kontrol et
+    const isCloseMatch = !isExactMatch && correctAnswers.some(correctAns => {
+      // Kullanıcının cevabı doğru cevabın bir parçasını içeriyor mu?
+      const answeredPartOfCorrect = correctAns.includes(userAnswer);
+      // Kullanıcı en az 3 karakter yazmış mı?
+      const hasMinimumLength = userAnswer.length >= 3;
+      // Kullanıcı kelimenin yarısından fazlasını yazmış mı?
+      const hasEnoughCharacters = userAnswer.length > correctAns.length / 2;
+
+      return answeredPartOfCorrect && hasMinimumLength && hasEnoughCharacters;
+    });
+
+    const isCorrectAnswer = isExactMatch || isCloseMatch;
+
+    if (isCorrectAnswer) {
       setIsCorrect(true);
       
       // Doğru cevap bildirimi
