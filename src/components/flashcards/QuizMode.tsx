@@ -140,57 +140,43 @@ export default function QuizMode({
 
     const currentCard = flashcards[currentIndex];
 
-    // Türkçe karakterler için normalize fonksiyonu
-    const normalizeTurkish = (text: string): string => {
-      return text
-        .trim()
-        .toLocaleLowerCase('tr-TR') // Türkçe locale kullan (İ → i, I → ı)
-        .replace(/\s+/g, ' '); // Fazla boşlukları tek boşluğa çevir
-    };
+    // Kullanıcının cevabını temizle ve küçük harfe çevir
+    const userInput = answer.trim().toLocaleLowerCase('tr-TR');
 
-    // Kullanıcının cevabını normalize et
-    const userAnswer = normalizeTurkish(answer);
-
-    // Doğru cevapları virgülle ayır ve her birini normalize et
-    const correctAnswers = currentCard.back
+    // Doğru cevabı virgülle ayır ve her birini temizle
+    const correctOptions = currentCard.back
       .split(',')
-      .map(ans => normalizeTurkish(ans))
-      .filter(ans => ans.length > 0);
+      .map(option => option.trim().toLocaleLowerCase('tr-TR'));
 
-    // Debug için (geliştirme sırasında görmek için)
-    console.log('Kullanıcı cevabı:', userAnswer);
-    console.log('Doğru cevaplar:', correctAnswers);
+    console.log('==================');
+    console.log('Kullanıcı yazdı:', userInput);
+    console.log('Doğru cevaplar:', correctOptions);
+    console.log('Orijinal cevap:', currentCard.back);
 
-    // 1. TAM EŞLEŞME: Kullanıcının cevabı alternatiflerden biriyle TAM olarak eşleşiyor mu?
-    let isCorrectAnswer = false;
+    // KONTROL 1: Tam eşleşme var mı?
+    // Kullanıcının yazdığı, doğru cevaplardan herhangi biriyle TAM olarak eşleşiyor mu?
+    const hasExactMatch = correctOptions.includes(userInput);
+    console.log('Tam eşleşme var mı?', hasExactMatch);
 
-    for (let i = 0; i < correctAnswers.length; i++) {
-      if (correctAnswers[i] === userAnswer) {
-        isCorrectAnswer = true;
-        console.log('TAM EŞLEŞME BULUNDU:', correctAnswers[i]);
-        break;
-      }
-    }
-
-    // 2. YAKLAŞIK EŞLEŞME: Eğer tam eşleşme yoksa, yaklaşık eşleşmeye bak
-    if (!isCorrectAnswer) {
-      for (let i = 0; i < correctAnswers.length; i++) {
-        const correctAns = correctAnswers[i];
-
-        // Kullanıcı en az 3 karakter yazmış olmalı
-        if (userAnswer.length < 3) continue;
-
-        // Doğru cevap kullanıcının cevabını içeriyor mu?
-        if (correctAns.includes(userAnswer)) {
-          // Kullanıcı kelimenin yarısından fazlasını yazmış mı?
-          if (userAnswer.length > correctAns.length / 2) {
-            isCorrectAnswer = true;
-            console.log('YAKLAŞIK EŞLEŞME BULUNDU:', correctAns);
-            break;
-          }
+    // KONTROL 2: Kısmi eşleşme var mı? (en az 3 karakter ve yarısından fazlası doğru)
+    let hasPartialMatch = false;
+    if (!hasExactMatch && userInput.length >= 3) {
+      for (const correctOption of correctOptions) {
+        const includesAnswer = correctOption.includes(userInput);
+        const longEnough = userInput.length > correctOption.length / 2;
+        console.log(`  "${correctOption}" içeriyor mu "${userInput}"?`, includesAnswer, '- Yeterince uzun mu?', longEnough);
+        if (includesAnswer && longEnough) {
+          hasPartialMatch = true;
+          break;
         }
       }
     }
+    console.log('Kısmi eşleşme var mı?', hasPartialMatch);
+
+    // Sonuç: Tam veya kısmi eşleşme varsa doğru kabul et
+    const isCorrectAnswer = hasExactMatch || hasPartialMatch;
+    console.log('SONUÇ: Cevap doğru mu?', isCorrectAnswer);
+    console.log('==================');
 
     if (isCorrectAnswer) {
       setIsCorrect(true);
