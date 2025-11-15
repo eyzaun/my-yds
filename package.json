@@ -9,7 +9,9 @@
     "install:deps": "npm install critters",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "node scripts/deploy.js"
+    "deploy": "node scripts/deploy.js",
+    "init-firestore": "node scripts/initialize-firestore.js",
+    "update-version": "node scripts/update-version.js"
   },
   "dependencies": {
     "critters": "^0.0.23",
