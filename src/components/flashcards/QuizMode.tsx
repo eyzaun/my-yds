@@ -162,19 +162,22 @@ export default function QuizMode({
     if (isCorrectAnswer) {
       setIsCorrect(true);
 
-      // Doğru cevap - kartı çevirmeden direkt sonraki karta geç
+      // Kısa success gösterimi sonrası direkt geçiş (normal mod gibi)
       setTimeout(() => {
+        // Direkt sonraki karta geç (resetCardAndMoveNext içinde animasyon var)
         onMoveNext();
+
+        // State'leri temizle
         setAnswer('');
         setIsCorrect(null);
 
-        // Otomatik focus
+        // Focus
         setTimeout(() => {
           if (inputRef.current) {
             inputRef.current.focus();
           }
-        }, 300);
-      }, 800);
+        }, 350);
+      }, 300);
     } else {
       setIsCorrect(false);
       // Yanlış cevap - kartı çevir
