@@ -148,26 +148,8 @@ export default function QuizMode({
       .map(ans => ans.trim().toLocaleLowerCase('tr-TR'))
       .filter(ans => ans.length > 0);
 
-    // KONTROL: Kullanıcının cevabı, doğru cevaplardan herhangi biriyle eşleşiyor mu?
-    let isCorrectAnswer = false;
-
-    // 1. Tam eşleşme kontrolü
-    for (const correctAns of correctAnswers) {
-      if (userInput === correctAns) {
-        isCorrectAnswer = true;
-        break;
-      }
-    }
-
-    // 2. Kısmi eşleşme kontrolü (en az 3 karakter ve yarısından fazlası doğru)
-    if (!isCorrectAnswer && userInput.length >= 3) {
-      for (const correctAns of correctAnswers) {
-        if (correctAns.includes(userInput) && userInput.length > correctAns.length / 2) {
-          isCorrectAnswer = true;
-          break;
-        }
-      }
-    }
+    // Tam eşleşme kontrolü - kullanıcı cevabı herhangi bir alternative ile tamamen eşleşmeli
+    const isCorrectAnswer = correctAnswers.includes(userInput);
 
     if (isCorrectAnswer) {
       setIsCorrect(true);

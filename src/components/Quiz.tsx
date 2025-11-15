@@ -37,17 +37,21 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
   const [scoreSaved, setScoreSaved] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Kullanıcı cevabının doğru olup olmadığını kontrol et
+  // Kullanıcı cevabının doğru olup olmadığını kontrol et (sadece tam eşleşme)
   const isAnswerCorrect = (question: QuizQuestion): boolean => {
     const userAnswer = userAnswers[question.id];
     if (!userAnswer) return false;
 
+    // Kullanıcı cevabını normalize et
     const normalizedUserAnswer = userAnswer.trim().toLowerCase();
+
+    // Doğru cevapları virgülle ayır ve her birini normalize et
     const correctAnswers = question.correctAnswer
       .split(',')
       .map(ans => ans.trim().toLowerCase())
       .filter(ans => ans.length > 0);
 
+    // Tam eşleşme kontrolü - kullanıcı cevabı herhangi bir alternative ile tamamen eşleşmeli
     return correctAnswers.includes(normalizedUserAnswer);
   };
   
