@@ -36,6 +36,20 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
   const [savingScore, setSavingScore] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Kullanıcı cevabının doğru olup olmadığını kontrol et
+  const isAnswerCorrect = (question: QuizQuestion): boolean => {
+    const userAnswer = userAnswers[question.id];
+    if (!userAnswer) return false;
+
+    const normalizedUserAnswer = userAnswer.trim().toLowerCase();
+    const correctAnswers = question.correctAnswer
+      .split(',')
+      .map(ans => ans.trim().toLowerCase())
+      .filter(ans => ans.length > 0);
+
+    return correctAnswers.includes(normalizedUserAnswer);
+  };
   
   const handleAnswerSelect = (questionId: number, answer: string) => {
     setUserAnswers(prev => ({
@@ -46,7 +60,21 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
   
   const handleSubmit = async () => {
     const totalScore = questions.reduce((acc, question) => {
-      return acc + (userAnswers[question.id] === question.correctAnswer ? 1 : 0);
+      const userAnswer = userAnswers[question.id];
+      if (!userAnswer) return acc;
+
+      // Kullanıcı cevabını normalize et
+      const normalizedUserAnswer = userAnswer.trim().toLowerCase();
+
+      // Doğru cevapları virgülle ayır ve her birini normalize et
+      const correctAnswers = question.correctAnswer
+        .split(',')
+        .map(ans => ans.trim().toLowerCase())
+        .filter(ans => ans.length > 0);
+
+      // Eğer kullanıcı cevabı doğru cevaplardan herhangi biriyle eşleşirse doğru say
+      const isCorrect = correctAnswers.includes(normalizedUserAnswer);
+      return acc + (isCorrect ? 1 : 0);
     }, 0);
     
     setScore(totalScore);
@@ -218,13 +246,13 @@ const Quiz: React.FC<QuizProps> = ({ questions, categoryWords, categoryId, onQui
               </p>
               <p className="mb-2">
                 Sizin cevabınız: <span style={{
-                  color: userAnswers[question.id] === question.correctAnswer ?
+                  color: isAnswerCorrect(question) ?
                     tokens.colors.green[300] : tokens.colors.red[400]
                 }}>
                   {userAnswers[question.id]}
                 </span>
               </p>
-              {userAnswers[question.id] !== question.correctAnswer && (
+              {!isAnswerCorrect(question) && (
                 <p style={{ color: tokens.colors.green[300] }}>
                   Doğru cevap: {question.correctAnswer}
                 </p>
