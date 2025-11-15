@@ -141,14 +141,17 @@ export default function QuizMode({
     const currentCard = flashcards[currentIndex];
     const correctAnswer = currentCard.back.trim().toLowerCase();
     const userAnswer = answer.trim().toLowerCase();
-    
-    // Geliştirilmiş cevap kontrolü
-    const isExactMatch = userAnswer === correctAnswer;
-    
-    // Yaklaşık eşleşme kontrolü - kelimenin büyük kısmını doğru yazmış mı?
-    const isCloseMatch = 
-      correctAnswer.includes(userAnswer) && 
-      userAnswer.length > correctAnswer.length / 2;
+
+    // Split correct answer by comma to get all valid alternatives
+    const alternatives = correctAnswer.split(',').map(alt => alt.trim());
+
+    // Check if user's answer matches any of the alternatives (exact match)
+    const isExactMatch = alternatives.some(alt => userAnswer === alt);
+
+    // Check for close match with any alternative
+    const isCloseMatch = alternatives.some(alt =>
+      alt.includes(userAnswer) && userAnswer.length > alt.length / 2
+    );
       
     if (isExactMatch || isCloseMatch) {
       setIsCorrect(true);
