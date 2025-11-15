@@ -32,6 +32,8 @@ export default function QuizMode({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [waitingForEnter, setWaitingForEnter] = useState(false);
+  const [answerHistory, setAnswerHistory] = useState<string[]>([]); // Son 3 cevabın geçmişi
+  const [historyIndex, setHistoryIndex] = useState(-1); // Geçmiş içinde navegasyon
 
   const inputRef = useRef<HTMLInputElement>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
@@ -42,7 +44,8 @@ export default function QuizMode({
     setIsCorrect(null);
     setShowHint(false);
     setWaitingForEnter(false);
-    
+    setHistoryIndex(-1); // Geçmiş navigasyonunu sıfırla
+
     // Input alanına focus
     setTimeout(() => {
       if (inputRef.current) {
@@ -151,19 +154,24 @@ export default function QuizMode({
     // Tam eşleşme kontrolü - kullanıcı cevabı herhangi bir alternative ile tamamen eşleşmeli
     const isCorrectAnswer = correctAnswers.includes(userInput);
 
+    // Cevabı geçmişe ekle (son 3 cevabı tutar)
+    const newHistory = [userInput, ...answerHistory].slice(0, 3);
+    setAnswerHistory(newHistory);
+    setHistoryIndex(-1);
+
     if (isCorrectAnswer) {
       setIsCorrect(true);
-      
+
       // Doğru cevap bildirimi
       setTimeout(() => {
         onCorrectAnswer();
-        
+
         // Sonraki kelimeye geçiş
         setTimeout(() => {
           onMoveNext();
           setAnswer('');
           setIsCorrect(null);
-          
+
           // Otomatik focus
           setTimeout(() => {
             if (inputRef.current) {
@@ -176,7 +184,7 @@ export default function QuizMode({
       setIsCorrect(false);
       // Yanlış cevap - kartı çevir
       onIncorrectAnswer();
-      
+
       // Input'a focus
       setTimeout(() => {
         if (inputRef.current) {
@@ -184,20 +192,45 @@ export default function QuizMode({
         }
       }, 200);
     }
-  }, [waitingForEnter, currentIndex, answer, flashcards, onMoveNext, onCorrectAnswer, onIncorrectAnswer]);
+  }, [waitingForEnter, currentIndex, answer, flashcards, onMoveNext, onCorrectAnswer, onIncorrectAnswer, answerHistory]);
 
   // Klavye event işleyicisi
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     // Event yayılmasını engelle
     e.stopPropagation();
-    
+
+    // Yukarı ok tuşu - geçmişte geri git
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (answerHistory.length > 0) {
+        const newIndex = Math.min(historyIndex + 1, answerHistory.length - 1);
+        setHistoryIndex(newIndex);
+        setAnswer(answerHistory[answerHistory.length - 1 - newIndex]);
+      }
+      return;
+    }
+
+    // Aşağı ok tuşu - geçmiş içinde ileri git
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setAnswer(answerHistory[answerHistory.length - 1 - newIndex]);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setAnswer('');
+      }
+      return;
+    }
+
     // Kart çevrilmiş ve yanlış cevap verilmişse
     if (isFlipped && isCorrect === false) {
       if (e.key === 'Enter') {
         e.preventDefault();
         setWaitingForEnter(false);
         onMoveNext();
-        
+
         // Sonraki karta geçince focus
         setTimeout(() => {
           if (inputRef.current) {
@@ -207,12 +240,12 @@ export default function QuizMode({
       }
       return;
     }
-    
+
     // Normal cevap kontrolü
     if (e.key === 'Enter') {
       handleSubmit(e);
     }
-  }, [isFlipped, isCorrect, handleSubmit, onMoveNext]);
+  }, [isFlipped, isCorrect, handleSubmit, onMoveNext, answerHistory, historyIndex]);
   
   // Focus kaybını önleme
   const handleBlur = useCallback(() => {
