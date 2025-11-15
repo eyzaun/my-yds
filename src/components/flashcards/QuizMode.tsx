@@ -154,11 +154,6 @@ export default function QuizMode({
     // Tam eşleşme kontrolü - kullanıcı cevabı herhangi bir alternative ile tamamen eşleşmeli
     const isCorrectAnswer = correctAnswers.includes(userInput);
 
-    // Debug: Console'da göster (geliştirme sırasında)
-    console.log('Kullanıcı cevabı:', userInput);
-    console.log('Doğru cevaplar:', correctAnswers);
-    console.log('Sonuç:', isCorrectAnswer);
-
     // Cevabı geçmişe ekle (son 3 cevabı tutar)
     const newHistory = [userInput, ...answerHistory].slice(0, 3);
     setAnswerHistory(newHistory);
