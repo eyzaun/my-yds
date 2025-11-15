@@ -1,19 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getAppVersion, AppVersion } from '@/firebase/firestore';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '@/firebase/firebase';
 
 interface VersionContextType {
   currentVersion: number;
-  latestVersion: AppVersion | null;
   needsUpdate: boolean;
-  forceUpdate: boolean;
   dismissUpdate: () => void;
-  isLoading: boolean;
   isMobile: boolean;
-  lastCheckTime: number;
 }
 
 const VersionContext = createContext<VersionContextType | undefined>(undefined);
@@ -26,114 +19,60 @@ const isMobileDevice = () => {
 
 export const VersionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentVersion, setCurrentVersion] = useState<number>(1);
-  const [latestVersion, setLatestVersion] = useState<AppVersion | null>(null);
+  const [latestVersion, setLatestVersion] = useState<number>(1);
   const [needsUpdate, setNeedsUpdate] = useState(false);
-  const [forceUpdate, setForceUpdate] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [updateDismissed, setUpdateDismissed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [lastCheckTime, setLastCheckTime] = useState(0);
 
   // Initialize mobile detection
   useEffect(() => {
     setIsMobile(isMobileDevice());
   }, []);
 
-  // Version checking logic
-  const checkAndCompareVersions = (current: number, latest: AppVersion) => {
-    if (latest.buildNumber > current) {
-      setNeedsUpdate(true);
-    }
-
-    if (latest.forceUpdate && latest.buildNumber > current) {
-      setForceUpdate(true);
-      setUpdateDismissed(false);
-    }
-  };
-
-  // Main version checking
+  // Main version checking - simple buildNumber comparison
   useEffect(() => {
     const checkVersion = async () => {
       try {
-        setIsLoading(true);
-        setLastCheckTime(Date.now());
-
-        // Local public app-version.json'dan current version'ı al
+        // Local app-version.json'dan current version'ı al
         const localVersionResponse = await fetch('/app-version.json');
         if (localVersionResponse.ok) {
-          const localVersion = (await localVersionResponse.json()) as AppVersion;
-          setCurrentVersion(localVersion.buildNumber);
-        }
+          const localVersion = await localVersionResponse.json();
+          const current = localVersion.buildNumber;
+          setCurrentVersion(current);
 
-        // Firestore'dan latest version'ı al (ilk defa)
-        const latest = await getAppVersion();
-        if (latest) {
-          setLatestVersion(latest);
-          checkAndCompareVersions(currentVersion, latest);
+          // Simple comparison: just check if there's a newer version available
+          // You can manually update buildNumber in public/app-version.json
+          if (current < latestVersion) {
+            setNeedsUpdate(true);
+          }
         }
       } catch (error) {
-        if (error instanceof Error && error.message.includes('permission')) {
-          console.warn('Firestore permission error - version check skipped (rules may need deployment)');
-        } else {
-          console.error('Error checking version:', error);
-        }
-      } finally {
-        setIsLoading(false);
+        console.warn('Could not fetch local version:', error);
       }
     };
 
     // İlk kontrol
     checkVersion();
 
-    // Version check every 30 minutes (daha frequent)
+    // Version check every 30 minutes
     const interval = setInterval(checkVersion, 30 * 60 * 1000);
-
-    // Real-time Firestore listener for version changes
-    let unsubscribe: (() => void) | null = null;
-    try {
-      const versionRef = doc(db, 'appConfig', 'version');
-      unsubscribe = onSnapshot(versionRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const latest = docSnapshot.data() as AppVersion;
-          setLatestVersion(latest);
-          // Get current version from state
-          const currentVer = currentVersion || 1;
-          checkAndCompareVersions(currentVer, latest);
-        }
-      });
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('permission')) {
-        console.warn('Firestore permission for real-time listener - rules deployed?');
-      } else {
-        console.warn('Real-time version listening not available:', error);
-      }
-    }
 
     return () => {
       clearInterval(interval);
-      if (unsubscribe) {
-        unsubscribe();
-      }
     };
-  }, [currentVersion]);
+  }, [latestVersion]);
 
   const dismissUpdate = () => {
-    if (!forceUpdate) {
-      setUpdateDismissed(true);
-      setNeedsUpdate(false);
-    }
+    setUpdateDismissed(true);
+    setNeedsUpdate(false);
   };
 
   // Exposed context value
   const value: VersionContextType = {
     currentVersion,
-    latestVersion,
     needsUpdate: needsUpdate && !updateDismissed,
-    forceUpdate,
     dismissUpdate,
-    isLoading,
-    isMobile,
-    lastCheckTime
+    isMobile
   };
 
   return <VersionContext.Provider value={value}>{children}</VersionContext.Provider>;

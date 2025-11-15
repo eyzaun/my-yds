@@ -1,140 +1,107 @@
-# Deployment Guide
+# Version Management Guide
 
-## Version Management & Deployment
+## Simple Version Tracking
 
-### 1. Firebase Setup (One-time)
+Bu projede version takibi çok basittir - sadece **buildNumber** kontrol edilir.
 
-If you haven't already, set up Firebase credentials:
+### Nasıl Çalışır?
 
-```bash
-# Copy your Firebase admin SDK JSON file to project root as:
-# serviceAccountKey.json
-
-# Then initialize Firestore with version data
-npm run init-firestore
+```
+1. Uygulama yüklenir
+2. /public/app-version.json dosyasından currentVersion alınır
+3. 30 dakikada bir kontrol yapılır
+4. Eğer yeni bir versiyon çıkmışsa UpdateModal gösterilir
+5. Kullanıcı "Şimdi Güncelle" veya "Daha Sonra" seçer
 ```
 
-### 2. Firestore Security Rules
+### Versiyon Güncellemesi
 
-Security rules have been configured in `firestore.rules`:
-- ✅ Public read access to `appConfig/version` for all users
-- ✅ Write access restricted to admin SDK only
-- ✅ All other collections denied by default
+**Tek yapmanız gereken**: `public/app-version.json` dosyasında `buildNumber` artırmak
 
-Rules are automatically deployed when you run:
+```json
+{
+  "buildNumber": 1  // Bunu 2, 3, 4... şeklinde artırın
+}
+```
 
+### Adımlar
+
+1. **Değişiklik yapın ve test edin**
+   ```bash
+   npm run dev
+   ```
+
+2. **Build edin**
+   ```bash
+   npm run build
+   ```
+
+3. **buildNumber artırın** (public/app-version.json)
+   ```json
+   // Değiştir:
+   "buildNumber": 1
+
+   // Yapı:
+   "buildNumber": 2
+   ```
+
+4. **Deploy edin**
+   ```bash
+   npm run deploy
+   ```
+
+5. **Test edin** (farklı browser/device)
+   - Eski cache'li sayfaya girin
+   - UpdateModal otomatik görünecek
+   - "Şimdi Güncelle" tıklayın
+
+### Örnek Workflow
+
+```
+Build #1 → production
+   ↓
+Yeni özellik ekle
+   ↓
+npm run build
+   ↓
+public/app-version.json'da buildNumber: 1 → 2
+   ↓
+npm run deploy
+   ↓
+Eski versiyondan açan kullanıcılar güncelleme isteği görür
+```
+
+### Important Files
+
+- `public/app-version.json` - Güncel version bilgisi (sadece buildNumber)
+- `src/contexts/VersionContext.tsx` - Version kontrol mantığı
+- `src/components/UpdateModal.tsx` - Güncelleme UI
+
+### Güvenlik Kuralları
+
+Firestore security rules `firestore.rules` dosyasında tanımlanmıştır:
+- ✅ appConfig/version dokümantı herkese açık (read)
+- ❌ Yazma işlemi yasaklı (sadece admin SDK)
+
+Rules zaten deployed. Değiştirmek için:
 ```bash
 firebase deploy --only firestore:rules
 ```
 
-### 3. Managing Versions
+## Q&A
 
-#### Option A: Firebase Console (Recommended)
+**S: Firestore'a neden ihtiyaç var?**
+A: Şu anki kurulumda ihtiyaç yok. Sadece `public/app-version.json` kullanılıyor.
 
-1. Go to [Firebase Console](https://console.firebase.google.com)
-2. Select project: **my-yds**
-3. Go to Firestore Database
-4. Collection: **appConfig** → Document: **version**
-5. Edit fields:
-   - `buildNumber` - Increment for updates
-   - `version` - Semantic version (e.g., 0.2.0)
-   - `updateMessage` - User-facing message
-   - `changelog` - What changed
-   - `forceUpdate` - true/false (true = mandatory update)
+**S: Cache problemi varsa?**
+A: UpdateModal otomatik cache temizler ve sayfayı yeniler.
 
-#### Option B: CLI Script
+**S: Mobil/Desktop farklı davranır mı?**
+A: UpdateModal ikisinde de aynı şekilde çalışır. Responsive tasarım vardır.
 
-```bash
-npm run update-version
-```
+**S: Zorunlu güncelleme yapabilir miyim?**
+A: Şu anki haliyle hayır. Yapılmak istiyorsa VersionContext'e `forceUpdate` mantığı eklenebilir.
 
-Interactive prompts will guide you through version updates.
+---
 
-### 4. Deployment
-
-```bash
-npm run deploy
-```
-
-This will:
-1. Increment build number automatically
-2. Update `public/app-version.json`
-3. Deploy to Firebase Hosting
-4. Update Firestore version document
-
-### 5. Version Update Flow
-
-```
-User visits app
-    ↓
-VersionContext loads
-    ↓
-Checks /app-version.json (current version)
-    ↓
-Fetches appConfig/version from Firestore
-    ↓
-Compares build numbers
-    ↓
-If newer version exists:
-  - Show UpdateModal
-  - If forceUpdate=true: Cannot dismiss
-  - If forceUpdate=false: Can dismiss or update
-```
-
-### 6. Current Firestore Document
-
-Location: `appConfig/version`
-
-```json
-{
-  "buildNumber": 1,
-  "version": "0.1.0",
-  "releaseDate": "2025-11-15T...",
-  "minSupportedBuild": 1,
-  "forceUpdate": false,
-  "updateMessage": "Hoşgeldiniz! Bu uygulamanın ilk versiyonudur.",
-  "changelog": "Initial release\n- AdSense integration\n- User authentication\n- Word learning system"
-}
-```
-
-### 7. Testing Version Updates
-
-To test:
-
-1. Update `buildNumber` in Firebase Console (e.g., 1 → 2)
-2. Refresh app in browser (different device or incognito)
-3. UpdateModal should appear automatically
-4. Click "Şimdi Güncelle" to test update flow
-
-### 8. Troubleshooting
-
-**Error: "Missing or insufficient permissions"**
-- Firestore rules may not be deployed
-- Run: `firebase deploy --only firestore:rules`
-
-**Error: "Cannot find serviceAccountKey.json"**
-- Place your Firebase admin SDK JSON in project root
-- Rename to `serviceAccountKey.json`
-- Update `.gitignore` to prevent accidental commit
-
-**Ad errors in console**
-- AdSense script loads asynchronously
-- Minor errors are suppressed and retried
-- Check Firebase console for ad approval status
-
-## Files Modified
-
-- `firestore.rules` - Security rules for Firestore
-- `src/contexts/VersionContext.tsx` - Version management logic
-- `src/components/UpdateModal.tsx` - Update notification UI
-- `src/components/AdUnit.tsx` - Ad loading improvements
-- `scripts/initialize-firestore.js` - Firestore setup
-- `scripts/update-version.js` - CLI for manual updates
-- `package.json` - Added npm scripts
-
-## Support
-
-For issues with:
-- **Firebase**: [Firebase Docs](https://firebase.google.com/docs)
-- **Next.js**: [Next.js Docs](https://nextjs.org/docs)
-- **Version Management**: Check `src/contexts/VersionContext.tsx`
+**Kısaca:** Yeni version için sadece `buildNumber`'ı artırın ve deploy edin! 🚀

@@ -7,7 +7,7 @@ import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';
 
 export default function UpdateModal() {
-  const { needsUpdate, forceUpdate, latestVersion, dismissUpdate, isMobile, currentVersion } = useVersion();
+  const { needsUpdate, dismissUpdate, isMobile, currentVersion } = useVersion();
   const { tokens } = useTheme();
 
   if (!needsUpdate) return null;
@@ -34,9 +34,7 @@ export default function UpdateModal() {
   };
 
   const handleDismiss = () => {
-    if (!forceUpdate) {
-      dismissUpdate();
-    }
+    dismissUpdate();
   };
 
   // Responsive sizes for mobile and desktop
@@ -77,82 +75,31 @@ export default function UpdateModal() {
       >
         <Heading2 className="mb-4">Yeni Sürüm Mevcut</Heading2>
 
-        <Text className="mb-2" style={{ color: tokens.colors.text.secondary }}>
-          Uygulamanın yeni bir sürümü kullanılabilir.
+        <Text className="mb-4" style={{ color: tokens.colors.text.secondary }}>
+          Uygulamanın yeni bir sürümü bulunmaktadır. Lütfen en son sürümü kullanmak için sayfayı yenileyin.
         </Text>
 
-        {/* Version Info */}
-        {latestVersion && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              gap: '12px',
-              marginBottom: '16px',
-              padding: '12px',
-              backgroundColor: `${tokens.colors.primary[50]}40`,
-              borderRadius: '8px',
-              fontSize: tokens.typography.fontSize.sm,
-              color: tokens.colors.text.secondary
-            }}
-          >
-            <div>
-              <Text style={{ fontSize: tokens.typography.fontSize.xs, marginBottom: '4px' }}>
-                Mevcut:
-              </Text>
-              <Text style={{ fontSize: tokens.typography.fontSize.sm, fontWeight: 'bold', color: tokens.colors.text.primary }}>
-                Build #{currentVersion}
-              </Text>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <Text style={{ fontSize: tokens.typography.fontSize.xs, marginBottom: '4px' }}>
-                Yeni:
-              </Text>
-              <Text style={{ fontSize: tokens.typography.fontSize.sm, fontWeight: 'bold', color: tokens.colors.primary[600] }}>
-                Build #{latestVersion.buildNumber}
-              </Text>
-            </div>
-          </div>
-        )}
-
-        {latestVersion?.updateMessage && (
-          <div
-            style={{
-              backgroundColor: `${tokens.colors.primary[50]}40`,
-              padding: '12px',
-              borderRadius: '8px',
-              marginBottom: '16px',
-              borderLeft: `4px solid ${tokens.colors.primary[600]}`
-            }}
-          >
-            <Text style={{ fontSize: tokens.typography.fontSize.sm }}>
-              {latestVersion.updateMessage}
+        {/* Build Info */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '12px',
+            marginBottom: '20px',
+            padding: '12px',
+            backgroundColor: `${tokens.colors.primary[50]}40`,
+            borderRadius: '8px'
+          }}
+        >
+          <div>
+            <Text style={{ fontSize: tokens.typography.fontSize.xs, marginBottom: '4px' }}>
+              Mevcut:
+            </Text>
+            <Text style={{ fontSize: tokens.typography.fontSize.sm, fontWeight: 'bold', color: tokens.colors.text.primary }}>
+              Build #{currentVersion}
             </Text>
           </div>
-        )}
-
-        {latestVersion?.changelog && (
-          <div
-            style={{
-              backgroundColor: `${tokens.colors.background.secondary}80`,
-              padding: '12px',
-              borderRadius: '8px',
-              marginBottom: '16px',
-              maxHeight: '150px',
-              overflowY: 'auto'
-            }}
-          >
-            <Text
-              style={{
-                fontSize: tokens.typography.fontSize.xs,
-                whiteSpace: 'pre-wrap',
-                color: tokens.colors.text.secondary
-              }}
-            >
-              {latestVersion.changelog}
-            </Text>
-          </div>
-        )}
+        </div>
 
         <div
           style={{
@@ -163,20 +110,18 @@ export default function UpdateModal() {
             marginTop: '20px'
           }}
         >
-          {!forceUpdate && (
-            <Button
-              variant="outlined"
-              onClick={handleDismiss}
-              style={{
-                borderColor: tokens.colors.primary[600],
-                color: tokens.colors.primary[600],
-                flex: isSmallScreen ? 1 : 'auto',
-                minHeight: isSmallScreen ? '44px' : 'auto'
-              }}
-            >
-              Daha Sonra
-            </Button>
-          )}
+          <Button
+            variant="outlined"
+            onClick={handleDismiss}
+            style={{
+              borderColor: tokens.colors.primary[600],
+              color: tokens.colors.primary[600],
+              flex: isSmallScreen ? 1 : 'auto',
+              minHeight: isSmallScreen ? '44px' : 'auto'
+            }}
+          >
+            Daha Sonra
+          </Button>
 
           <Button
             variant="contained"
@@ -189,22 +134,9 @@ export default function UpdateModal() {
               fontWeight: 'bold'
             }}
           >
-            {forceUpdate ? 'Güncelle' : 'Şimdi Güncelle'}
+            Şimdi Güncelle
           </Button>
         </div>
-
-        {forceUpdate && (
-          <Text
-            style={{
-              fontSize: tokens.typography.fontSize.xs,
-              color: tokens.colors.accent.warning.main,
-              marginTop: '12px',
-              textAlign: 'center'
-            }}
-          >
-            Bu güncelleme zorunludur. Lütfen uygulamayı güncelleyin.
-          </Text>
-        )}
       </div>
     </div>
   );

@@ -1,9 +1,3 @@
 {
-  "buildNumber": 2,
-  "version": "0.1.1",
-  "releaseDate": "2025-11-15T00:00:00Z",
-  "minSupportedBuild": 1,
-  "forceUpdate": false,
-  "updateMessage": "Uygulamanın yeni bir versiyonu mevcut. Lütfen sayfayı yenileyin.",
-  "changelog": "- İlk build\n- AdSense hata düzeltmeleri"
+  "buildNumber": 1
 }
