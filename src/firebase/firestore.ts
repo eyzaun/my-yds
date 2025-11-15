@@ -127,14 +127,14 @@ export const getUserScores = async (userId: string, categoryId?: string) => {
 // Tüm kategori ilerlemelerini getirme
 export const getAllCategoryProgress = async (userId: string) => {
   if (!isClient) return { progressByCategory: {} };
-  
+
   try {
     const progressRef = collection(db, 'userProgress');
     const q = query(progressRef, where('userId', '==', userId));
-    
+
     const querySnapshot = await getDocs(q);
     const progressByCategory: Record<string, UserProgress> = {};
-    
+
     querySnapshot.forEach(doc => {
       // Veriyi UserProgress türüne dönüştürme
       const data = doc.data();
@@ -145,8 +145,55 @@ export const getAllCategoryProgress = async (userId: string) => {
         lastStudied: data.lastStudied
       } as UserProgress;
     });
-    
+
     return { progressByCategory };
+  } catch (error) {
+    return { error };
+  }
+};
+
+// ============================================
+// VERSION MANAGEMENT
+// ============================================
+
+export interface AppVersion {
+  buildNumber: number;
+  version: string;
+  releaseDate: any;
+  minSupportedBuild: number;
+  forceUpdate: boolean;
+  updateMessage: string;
+  changelog: string;
+}
+
+// Mevcut app versiyonunu getir
+export const getAppVersion = async (): Promise<AppVersion | null> => {
+  if (!isClient) return null;
+
+  try {
+    const versionRef = doc(db, 'appConfig', 'version');
+    const versionDoc = await getDoc(versionRef);
+
+    if (!versionDoc.exists()) {
+      console.warn('Version document not found in Firestore');
+      return null;
+    }
+
+    return versionDoc.data() as AppVersion;
+  } catch (error) {
+    console.error('Error fetching app version:', error);
+    return null;
+  }
+};
+
+// Version'ı güncelle (admin/deploy script tarafından kullanılır)
+export const updateAppVersion = async (versionData: AppVersion) => {
+  if (!isClient) return { error: 'Server-side only' };
+
+  try {
+    const versionRef = doc(db, 'appConfig', 'version');
+    await setDoc(versionRef, versionData, { merge: true });
+    return { success: true };
   } catch (error) {
     return { error };
   }

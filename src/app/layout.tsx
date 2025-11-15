@@ -4,9 +4,11 @@ import ClientLayout from '@/components/ClientLayout';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { FlashcardFullscreenProvider } from '@/contexts/FlashcardFullscreenContext';
+import { VersionProvider } from '@/contexts/VersionContext';
 // Import the client wrapper instead of using dynamic directly
 import AdSenseScriptWrapper from '@/components/AdSenseScriptWrapper';
 import FirebaseStatus from '@/components/FirebaseStatus';
+import UpdateModal from '@/components/UpdateModal';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://my-yds.web.app'),
@@ -259,15 +261,18 @@ export default function RootLayout({
         {/* Add FirebaseStatus component to show when in safe mode */}
         <FirebaseStatus />
 
-        <AuthProvider>
-          <ThemeProvider>
-            <FlashcardFullscreenProvider>
-              <ClientLayout>
-                {children}
-              </ClientLayout>
-            </FlashcardFullscreenProvider>
-          </ThemeProvider>
-        </AuthProvider>
+        <VersionProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <FlashcardFullscreenProvider>
+                <ClientLayout>
+                  {children}
+                </ClientLayout>
+              </FlashcardFullscreenProvider>
+            </ThemeProvider>
+          </AuthProvider>
+          <UpdateModal />
+        </VersionProvider>
       </body>
     </html>
   );
