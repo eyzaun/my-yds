@@ -48,10 +48,6 @@ export default function HomePage() {
     };
   }, []);
 
-  // Verify that the upload-flashcards route exists - add this on development
-  useEffect(() => {
-    console.log("Available routes: check that /upload-flashcards exists");
-  }, []);
 
   return (
     <div className="min-h-screen pb-16" style={{ backgroundColor: tokens.colors.background.primary }}>

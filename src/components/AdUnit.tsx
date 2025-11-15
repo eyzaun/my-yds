@@ -96,7 +96,8 @@ export default function AdUnit({ slot, format = 'auto', style = {}, className = 
             (window.adsbygoogle = window.adsbygoogle || []).push({});
             adInstance.pushed = true;
           } catch (e) {
-            console.warn(`AdSense push attempt ${adInstance.tries} failed for ${slot}`);
+            // Silently fail - AdSense will retry automatically
+            // console.warn prevented to reduce console noise
           }
           adInstanceMap.set(uniqueAdId, adInstance);
         }
