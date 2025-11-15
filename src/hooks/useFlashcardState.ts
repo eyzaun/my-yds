@@ -266,9 +266,9 @@ export default function useFlashcardState({
   // Kartı sıfırlayıp sonraki karta geçme fonksiyonu (Enter tuşu için)
   const resetCardAndMoveNext = useCallback(() => {
     if (isAnimating || currentIndex >= flashcards.length - 1) return false;
-    
+
     setIsAnimating(true);
-    
+
     if (flashcards.length > 0) {
       const currentCard = flashcards[currentIndex];
       setViewed(prev => ({
@@ -276,17 +276,28 @@ export default function useFlashcardState({
         [currentCard.id]: true
       }));
     }
-    
-    setFlipped(false);
-    
-    setTimeout(() => {
+
+    // Eğer kart arkada ise, önce ön tarafa çevir, sonra sonraki karta geç
+    if (flipped) {
+      setFlipped(false);
+
+      setTimeout(() => {
+        setCurrentIndex(prev => prev + 1);
+        setIsAnimating(false);
+        setCanAdvance(!quizMode);
+      }, 300);
+    } else {
+      // Kart zaten önde, direkt sonraki karta geç
       setCurrentIndex(prev => prev + 1);
-      setIsAnimating(false);
-      setCanAdvance(!quizMode);
-    }, 300);
-    
+
+      setTimeout(() => {
+        setIsAnimating(false);
+        setCanAdvance(!quizMode);
+      }, 300);
+    }
+
     return true;
-  }, [isAnimating, currentIndex, flashcards, quizMode]);
+  }, [isAnimating, currentIndex, flashcards, quizMode, flipped]);
 
   // Önceki karta geçme
   const handlePrevious = useCallback(() => {
