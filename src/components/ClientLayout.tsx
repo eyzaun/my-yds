@@ -1,9 +1,8 @@
 'use client';
 import NavigationBar from './NavigationBar';
 import { usePathname } from 'next/navigation';
-import { getDesignTokensByTheme } from '@/styles/design-tokens';
 import { useFlashcardFullscreen } from '@/contexts/FlashcardFullscreenContext';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 
 // Doğrudan bileşeni import edin
 import AdUnit from '@/components/AdUnit';
@@ -11,10 +10,10 @@ import AdUnit from '@/components/AdUnit';
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isFullscreen } = useFlashcardFullscreen();
-  const { theme } = useTheme();
+  const { tokens } = useTheme();
 
   // Tema renglerini al
-  const themeTokens = getDesignTokensByTheme(theme);
+  const themeTokens = tokens;
 
   // Bazı sayfalarda reklam göstermek istemiyorsanız
   const excludedPaths = ['/login', '/register'];

@@ -1,4 +1,4 @@
-import { useTheme as useThemeContext } from '@/contexts/ThemeContext';
+import { useThemeContext } from '@/contexts/ThemeContext';
 import { getDesignTokensByTheme } from '@/styles/design-tokens';
 
 /**
