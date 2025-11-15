@@ -139,30 +139,58 @@ export default function QuizMode({
     if (!flashcards[currentIndex]) return;
 
     const currentCard = flashcards[currentIndex];
-    const userAnswer = answer.trim().toLowerCase();
 
-    // Doğru cevapları virgülle ayır, her birini normalize et
+    // Türkçe karakterler için normalize fonksiyonu
+    const normalizeTurkish = (text: string): string => {
+      return text
+        .trim()
+        .toLocaleLowerCase('tr-TR') // Türkçe locale kullan (İ → i, I → ı)
+        .replace(/\s+/g, ' '); // Fazla boşlukları tek boşluğa çevir
+    };
+
+    // Kullanıcının cevabını normalize et
+    const userAnswer = normalizeTurkish(answer);
+
+    // Doğru cevapları virgülle ayır ve her birini normalize et
     const correctAnswers = currentCard.back
       .split(',')
-      .map(ans => ans.trim().toLowerCase())
-      .filter(ans => ans.length > 0); // Boş değerleri filtrele
+      .map(ans => normalizeTurkish(ans))
+      .filter(ans => ans.length > 0);
 
-    // Tam eşleşme kontrolü - kullanıcının cevabı alternatiflerden biriyle tam olarak eşleşiyor mu?
-    const isExactMatch = correctAnswers.includes(userAnswer);
+    // Debug için (geliştirme sırasında görmek için)
+    console.log('Kullanıcı cevabı:', userAnswer);
+    console.log('Doğru cevaplar:', correctAnswers);
 
-    // Yaklaşık eşleşme kontrolü - her alternatif için ayrı ayrı kontrol et
-    const isCloseMatch = !isExactMatch && correctAnswers.some(correctAns => {
-      // Kullanıcının cevabı doğru cevabın bir parçasını içeriyor mu?
-      const answeredPartOfCorrect = correctAns.includes(userAnswer);
-      // Kullanıcı en az 3 karakter yazmış mı?
-      const hasMinimumLength = userAnswer.length >= 3;
-      // Kullanıcı kelimenin yarısından fazlasını yazmış mı?
-      const hasEnoughCharacters = userAnswer.length > correctAns.length / 2;
+    // 1. TAM EŞLEŞME: Kullanıcının cevabı alternatiflerden biriyle TAM olarak eşleşiyor mu?
+    let isCorrectAnswer = false;
 
-      return answeredPartOfCorrect && hasMinimumLength && hasEnoughCharacters;
-    });
+    for (let i = 0; i < correctAnswers.length; i++) {
+      if (correctAnswers[i] === userAnswer) {
+        isCorrectAnswer = true;
+        console.log('TAM EŞLEŞME BULUNDU:', correctAnswers[i]);
+        break;
+      }
+    }
 
-    const isCorrectAnswer = isExactMatch || isCloseMatch;
+    // 2. YAKLAŞIK EŞLEŞME: Eğer tam eşleşme yoksa, yaklaşık eşleşmeye bak
+    if (!isCorrectAnswer) {
+      for (let i = 0; i < correctAnswers.length; i++) {
+        const correctAns = correctAnswers[i];
+
+        // Kullanıcı en az 3 karakter yazmış olmalı
+        if (userAnswer.length < 3) continue;
+
+        // Doğru cevap kullanıcının cevabını içeriyor mu?
+        if (correctAns.includes(userAnswer)) {
+          // Kullanıcı kelimenin yarısından fazlasını yazmış mı?
+          if (userAnswer.length > correctAns.length / 2) {
+            isCorrectAnswer = true;
+            console.log('YAKLAŞIK EŞLEŞME BULUNDU:', correctAns);
+            break;
+          }
+        }
+      }
+    }
 
     if (isCorrectAnswer) {
       setIsCorrect(true);
