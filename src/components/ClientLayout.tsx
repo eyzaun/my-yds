@@ -25,27 +25,31 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {/* Üst reklam - Ana Sayfa Üst Banner */}
       {shouldShowAds && (
-        <div className="max-w-6xl mx-auto px-4 mt-4">
-          <AdUnit
-            slot="6727613341" /* Ana Sayfa Üst Banner */
-            format="horizontal"
-            className="my-4"
-          />
+        <div className="w-full" style={{ padding: '1rem 0' }}>
+          <div className="max-w-6xl mx-auto px-2 sm:px-4">
+            <AdUnit
+              slot="6727613341" /* Ana Sayfa Üst Banner */
+              format="horizontal"
+              className="my-2"
+            />
+          </div>
         </div>
       )}
-      
+
       <main>
         {children}
       </main>
-      
+
       {/* Alt reklam - Site Alt Reklam */}
       {shouldShowAds && (
-        <div className="max-w-6xl mx-auto px-4 mb-8">
-          <AdUnit
-            slot="3007186106" /* Site Alt Reklam */
-            format="auto"
-            className="my-4"
-          />
+        <div className="w-full" style={{ padding: '1rem 0' }}>
+          <div className="max-w-6xl mx-auto px-2 sm:px-4 mb-8">
+            <AdUnit
+              slot="3007186106" /* Site Alt Reklam */
+              format="auto"
+              className="my-2"
+            />
+          </div>
         </div>
       )}
     </div>

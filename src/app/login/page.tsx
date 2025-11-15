@@ -34,12 +34,12 @@ const LoginPage = () => {
         </div>
       </Container>
       <AdBanner
-        slot="login-footer"
+        slot="3007186106"
         format="horizontal"
         className="my-4 mx-auto max-w-6xl px-4"
       />
       <ClientOnlyAd
-        slot="login-banner"
+        slot="5661706007"
         format="auto"
         className="my-4 mx-auto"
       />

@@ -456,7 +456,7 @@ export default function UploadFlashcardsPage() {
       {/* Ad - Sayfanın en altında */}
       <div className="mt-24 pb-16">
         <ClientOnlyAd
-          slot="flashcards-footer"
+          slot="3007186106"
           format="auto"
           className="my-4 mx-auto"
         />

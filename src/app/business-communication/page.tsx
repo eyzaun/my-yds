@@ -1,6 +1,6 @@
 'use client';
 import WordList from '@/components/WordList';
-import { vocabulary } from '@/data/vocabulary2';
+import { vocabulary } from '@/data/vocabulary';
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -85,8 +85,8 @@ export default function İşDünyasıveİletişimPage() {
         </Card>
       </Container>
       
-      <ClientOnlyAd 
-        slot="business-communication-footer"
+      <ClientOnlyAd
+        slot="3007186106"
         format="auto"
         className="my-4 mx-auto"
       />

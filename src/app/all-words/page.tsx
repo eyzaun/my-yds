@@ -1,7 +1,7 @@
 // src/app/all-words/page.tsx
 'use client';
 import WordList from '@/components/WordList';
-import { vocabulary } from '@/data/vocabulary2';
+import { vocabulary } from '@/data/vocabulary';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -107,7 +107,7 @@ export default function AllWords() {
       </Container>
 
       <AdBanner
-        slot="all-words-footer"
+        slot="3007186106"
         format="horizontal"
         className="my-4 mx-auto max-w-6xl px-4"
       />

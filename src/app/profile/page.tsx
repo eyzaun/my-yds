@@ -160,12 +160,12 @@ const ProfilePage = () => {
           </div>
         </Container>
         <ClientOnlyAd
-          slot="profile-banner"
+          slot="5661706007"
           format="auto"
           className="my-4 mx-auto"
         />
         <ClientOnlyAd
-          slot="profile-footer"
+          slot="3007186106"
           format="horizontal"
           className="my-4 mx-auto max-w-6xl px-4"
         />

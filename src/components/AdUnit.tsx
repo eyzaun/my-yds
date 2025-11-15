@@ -11,78 +11,122 @@ interface AdUnitProps {
 export default function AdUnit({ slot, format = 'auto', style = {}, className = '' }: AdUnitProps) {
   const adContainerRef = useRef<HTMLDivElement>(null);
   const adId = `ad-${slot}-${Math.random().toString(36).substring(2, 9)}`;
-  
+  const retryCountRef = useRef(0);
+  const maxRetriesRef = useRef(10);
+
   useEffect(() => {
-    // Ref'i değişkende tutuyoruz (cleanup için)
     const currentRef = adContainerRef.current;
-    
+
+    // Minimum height hesapla
+    const getMinHeight = (): string => {
+      switch (format) {
+        case 'rectangle':
+          return '250px';
+        case 'vertical':
+          return '600px';
+        case 'horizontal':
+          return '90px';
+        case 'auto':
+        default:
+          return '90px';
+      }
+    };
+
     // AdSense scriptinin yüklenmesini bekleyin
     const checkAndInitAd = () => {
       if (!currentRef) return;
-      
+
       // Önceki içeriği temizleyin
       currentRef.innerHTML = '';
-      
+
       // AdSense scriptinin yüklenip yüklenilmediğini kontrol edin
       if (typeof window.adsbygoogle === 'undefined') {
-        // Sessizce bekle, log spam'i önle
-        setTimeout(checkAndInitAd, 500); // 500ms sonra tekrar dene
-        return;
+        if (retryCountRef.current < maxRetriesRef.current) {
+          retryCountRef.current++;
+          // Sessizce bekle, log spam'i önle
+          setTimeout(checkAndInitAd, 500); // 500ms sonra tekrar dene
+          return;
+        } else {
+          console.warn(`AdSense script not loaded after ${maxRetriesRef.current} retries for slot ${slot}`);
+          return;
+        }
       }
-      
+
+      // Reset retry counter
+      retryCountRef.current = 0;
+
       try {
-        // Çok basit bir şekilde reklam elementini ekleyin
+        // Reklam elementini oluştur
         const ins = document.createElement('ins');
         ins.className = 'adsbygoogle';
         ins.style.display = 'block';
-        ins.style.width = '100%';
-        ins.style.height = format === 'rectangle' ? '250px' : '90px';
+        ins.style.textAlign = 'center';
+
+        // Format'a göre stiller
+        if (format === 'auto' || format === 'horizontal') {
+          ins.style.width = '100%';
+          ins.style.maxWidth = '100%';
+          ins.dataset.fullWidthResponsive = 'true';
+        } else {
+          // Sabit formlar için
+          ins.style.width = '100%';
+          ins.style.maxWidth = '100%';
+          ins.style.minHeight = getMinHeight();
+        }
+
         ins.dataset.adClient = 'ca-pub-3638586001556511';
         ins.dataset.adSlot = slot;
         ins.dataset.adFormat = format;
-        ins.dataset.fullWidthResponsive = 'true';
-        
+
         // Div'e ekleyin
         currentRef.appendChild(ins);
-        
+
         // AdSense'i yükleyin
-        try {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-          // Sessiz log - sadece development'ta
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`Ad initialized: ${slot}`);
-          }
-        } catch (pushError) {
-          // Hata logunu sadeleştir
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('AdSense push error:', pushError);
-          }
-        }
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+
       } catch (error) {
         console.error('Error creating ad:', error);
       }
     };
-    
+
     // İlk deneme
     checkAndInitAd();
-    
-    // Temizleme - currentRef değişkenini kullan
+
+    // Temizleme
     return () => {
       if (currentRef) {
-        currentRef.innerHTML = '';
+        try {
+          currentRef.innerHTML = '';
+        } catch {
+          // Ignore cleanup errors
+        }
       }
     };
   }, [slot, format, adId]);
-  
+
+  const getMinHeight = (): string => {
+    switch (format) {
+      case 'rectangle':
+        return '250px';
+      case 'vertical':
+        return '600px';
+      case 'horizontal':
+        return '90px';
+      case 'auto':
+      default:
+        return '100px';
+    }
+  };
+
   return (
-    <div 
+    <div
       ref={adContainerRef}
       id={adId}
       className={`ad-container ${className}`}
       style={{
         width: '100%',
-        minHeight: format === 'rectangle' ? '250px' : '90px', 
-        overflow: 'hidden',
+        minHeight: getMinHeight(),
+        overflow: 'visible',
         textAlign: 'center',
         margin: '0 auto',
         ...style

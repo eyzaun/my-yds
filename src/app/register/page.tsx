@@ -33,7 +33,7 @@ const RegisterPage = () => {
         </div>
       </Container>
       <ClientOnlyAd
-        slot="register-banner"
+        slot="5661706007"
         format="auto"
         className="my-4 mx-auto"
       />
