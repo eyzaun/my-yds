@@ -120,63 +120,54 @@ export default function QuizMode({
   // Cevap kontrolü ve sonraki karta geçiş
   const handleSubmit = useCallback((e: React.FormEvent | React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    
+
     // Enter tuşu bekleme modu
     if (waitingForEnter) {
       setWaitingForEnter(false);
       onMoveNext();
-      
-      // Sonraki karta geçtikten sonra input'a focus
+
       setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus();
         }
       }, 300);
-      
+
       return;
     }
-    
+
     if (!flashcards[currentIndex]) return;
 
     const currentCard = flashcards[currentIndex];
 
-    // Kullanıcının cevabını temizle ve küçük harfe çevir
+    // Kullanıcının cevabını normalize et (boşlukları temizle, küçük harfe çevir)
     const userInput = answer.trim().toLocaleLowerCase('tr-TR');
 
-    // Doğru cevabı virgülle ayır ve her birini temizle
-    const correctOptions = currentCard.back
+    // Doğru cevabı virgülle ayır ve her alternatifi normalize et
+    const correctAnswers = currentCard.back
       .split(',')
-      .map(option => option.trim().toLocaleLowerCase('tr-TR'));
+      .map(ans => ans.trim().toLocaleLowerCase('tr-TR'))
+      .filter(ans => ans.length > 0);
 
-    console.log('==================');
-    console.log('Kullanıcı yazdı:', userInput);
-    console.log('Doğru cevaplar:', correctOptions);
-    console.log('Orijinal cevap:', currentCard.back);
+    // KONTROL: Kullanıcının cevabı, doğru cevaplardan herhangi biriyle eşleşiyor mu?
+    let isCorrectAnswer = false;
 
-    // KONTROL 1: Tam eşleşme var mı?
-    // Kullanıcının yazdığı, doğru cevaplardan herhangi biriyle TAM olarak eşleşiyor mu?
-    const hasExactMatch = correctOptions.includes(userInput);
-    console.log('Tam eşleşme var mı?', hasExactMatch);
+    // 1. Tam eşleşme kontrolü
+    for (const correctAns of correctAnswers) {
+      if (userInput === correctAns) {
+        isCorrectAnswer = true;
+        break;
+      }
+    }
 
-    // KONTROL 2: Kısmi eşleşme var mı? (en az 3 karakter ve yarısından fazlası doğru)
-    let hasPartialMatch = false;
-    if (!hasExactMatch && userInput.length >= 3) {
-      for (const correctOption of correctOptions) {
-        const includesAnswer = correctOption.includes(userInput);
-        const longEnough = userInput.length > correctOption.length / 2;
-        console.log(`  "${correctOption}" içeriyor mu "${userInput}"?`, includesAnswer, '- Yeterince uzun mu?', longEnough);
-        if (includesAnswer && longEnough) {
-          hasPartialMatch = true;
+    // 2. Kısmi eşleşme kontrolü (en az 3 karakter ve yarısından fazlası doğru)
+    if (!isCorrectAnswer && userInput.length >= 3) {
+      for (const correctAns of correctAnswers) {
+        if (correctAns.includes(userInput) && userInput.length > correctAns.length / 2) {
+          isCorrectAnswer = true;
           break;
         }
       }
     }
-    console.log('Kısmi eşleşme var mı?', hasPartialMatch);
-
-    // Sonuç: Tam veya kısmi eşleşme varsa doğru kabul et
-    const isCorrectAnswer = hasExactMatch || hasPartialMatch;
-    console.log('SONUÇ: Cevap doğru mu?', isCorrectAnswer);
-    console.log('==================');
 
     if (isCorrectAnswer) {
       setIsCorrect(true);
