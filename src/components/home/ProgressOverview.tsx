@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, auth } from '@/lib/firebase';
-import { categories } from '@/data/categories';
+import { categories } from '@/data/homeData';
 import { Card } from '@/components/design-system/Card';
 import { Button } from '@/components/design-system/Button';
 import { Heading2, Text } from '@/components/design-system/Typography';

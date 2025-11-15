@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useTheme } from '@/hooks/useTheme';
-import { categories } from '@/data/categories';
+import { categories } from '@/data/homeData';
 
 export default function CategoryPage() {
   const { tokens } = useTheme();
@@ -27,22 +27,27 @@ export default function CategoryPage() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Object.entries(categories).map(([key, category]) => (
+          {categories.map((category) => (
             <Link
-              key={key}
-              href={`/${key}`}
+              key={category.path}
+              href={category.path}
               className="p-6 rounded-lg transition-all duration-300 transform hover:scale-105"
               style={{
                 backgroundColor: tokens.colors.background.card,
                 boxShadow: tokens.shadows.md,
               }}
             >
-              <h2
-                className="text-xl font-semibold mb-2"
-                style={{ color: tokens.colors.primary[600] }}
-              >
-                {category.name}
-              </h2>
+              <div className="flex items-center gap-3 mb-2">
+                <div style={{ color: tokens.colors.primary[600] }}>
+                  {category.icon}
+                </div>
+                <h2
+                  className="text-xl font-semibold"
+                  style={{ color: tokens.colors.primary[600] }}
+                >
+                  {category.name}
+                </h2>
+              </div>
               <p style={{ color: tokens.colors.text.secondary }}>
                 {category.description || 'Kategori detaylarina goz atin'}
               </p>
